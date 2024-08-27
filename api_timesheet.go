@@ -72,22 +72,53 @@ func (s *TimesheetService) CreateTimesheet(
 // -----------------------------------------------------------------------------
 
 type GetTimesheetsRequest struct {
-	ID                          *ID         `url:"id,omitempty"`                             // [可选]id 支持多ID查询
-	WorkspaceID                 *int        `url:"workspace_id,omitempty"`                   // [必选]项目ID
-	EntityType                  *EntityType `url:"entity_type,omitempty"`                    // [可选]对象类型，如story、task、bug等
-	EntityID                    *int        `url:"entity_id,omitempty"`                      // [可选]对象ID
-	Timespent                   *string     `url:"timespent,omitempty"`                      // [可选]花费工时
-	Spentdate                   *string     `url:"spentdate,omitempty"`                      // [可选]花费日期 支持时间查询
-	Modified                    *string     `url:"modified,omitempty"`                       // [可选]最后修改时间 支持时间查询
-	Owner                       *string     `url:"owner,omitempty"`                          // [可选]花费创建人
-	IncludeParentStoryTimesheet *int        `url:"include_parent_story_timesheet,omitempty"` // [可选]值=0不返回父需求的花费
-	Created                     *string     `url:"created,omitempty"`                        // [可选]创建时间 支持时间查询
-	Memo                        *string     `url:"memo,omitempty"`                           // [可选]花费描述
-	IsDelete                    *int        `url:"is_delete,omitempty"`                      // [可选]是否已删除。默认取 0，不返回已删除的工时记录。取 1 可以返回已删除的记录
-	Limit                       *int        `url:"limit,omitempty"`                          // [可选]设置返回数量限制，默认为30
-	Page                        *int        `url:"page,omitempty"`                           // [可选]返回当前数量限制下第N页的数据，默认为1（第一页）
-	Order                       *Order      `url:"order,omitempty"`                          // [可选]排序规则，规则：字段名 ASC或者DESC，然后 urlencode 如按创建时间逆序
-	Fields                      *Fields     `url:"fields,omitempty"`                         // [可选]设置获取的字段，多个字段间以','逗号隔开
+	// [可选]id 支持多ID查询
+	ID *ID `url:"id,omitempty"`
+
+	// [必选]项目ID
+	WorkspaceID *int `url:"workspace_id,omitempty"`
+
+	// [可选]对象类型，如story、task、bug等
+	EntityType *EntityType `url:"entity_type,omitempty"`
+
+	// [可选]对象ID
+	EntityID *int `url:"entity_id,omitempty"`
+
+	// [可选]花费工时
+	Timespent *string `url:"timespent,omitempty"`
+
+	// [可选]花费日期 支持时间查询
+	Spentdate *string `url:"spentdate,omitempty"`
+
+	// [可选]最后修改时间 支持时间查询
+	Modified *string `url:"modified,omitempty"`
+
+	// [可选]花费创建人
+	Owner *string `url:"owner,omitempty"`
+
+	// [可选]值=0不返回父需求的花费
+	IncludeParentStoryTimesheet *int `url:"include_parent_story_timesheet,omitempty"`
+
+	// [可选]创建时间 支持时间查询
+	Created *string `url:"created,omitempty"`
+
+	// [可选]花费描述
+	Memo *string `url:"memo,omitempty"`
+
+	// [可选]是否已删除。默认取 0，不返回已删除的工时记录。取 1 可以返回已删除的记录
+	IsDelete *int `url:"is_delete,omitempty"`
+
+	// [可选]设置返回数量限制，默认为30
+	Limit *int `url:"limit,omitempty"`
+
+	// [可选]返回当前数量限制下第N页的数据，默认为1（第一页）
+	Page *int `url:"page,omitempty"`
+
+	// [可选]排序规则，规则：字段名 ASC或者DESC，然后 urlencode 如按创建时间逆序
+	Order *Order `url:"order,omitempty"`
+
+	// [可选]设置获取的字段，多个字段间以','逗号隔开
+	Fields *Fields `url:"fields,omitempty"`
 }
 
 // GetTimesheets 获取工时花费
@@ -121,18 +152,41 @@ func (s *TimesheetService) GetTimesheets(
 // -----------------------------------------------------------------------------
 
 type GetTimesheetsCountRequest struct {
-	ID                          *ID         `url:"id,omitempty"`                             // [可选]id 支持多ID查询
-	WorkspaceID                 *int        `url:"workspace_id,omitempty"`                   // [必选]项目ID
-	EntityType                  *EntityType `url:"entity_type,omitempty"`                    // [可选]对象类型，如story、task、bug等
-	EntityID                    *int        `url:"entity_id,omitempty"`                      // [可选]对象ID
-	Timespent                   *string     `url:"timespent,omitempty"`                      // [可选]花费工时
-	Spentdate                   *string     `url:"spentdate,omitempty"`                      // [可选]花费日期 支持时间查询
-	Modified                    *string     `url:"modified,omitempty"`                       // [可选]最后修改时间 支持时间查询
-	Owner                       *string     `url:"owner,omitempty"`                          // [可选]花费创建人
-	IncludeParentStoryTimesheet *int        `url:"include_parent_story_timesheet,omitempty"` // [可选]值=0不返回父需求的花费
-	Created                     *string     `url:"created,omitempty"`                        // [可选]创建时间 支持时间查询
-	Memo                        *string     `url:"memo,omitempty"`                           // [可选]花费描述
-	IsDelete                    *int        `url:"is_delete,omitempty"`                      // [可选]是否已删除。默认取 0，不返回已删除的工时记录。取 1 可以返回已删除的记录
+	// [可选]id 支持多ID查询
+	ID *ID `url:"id,omitempty"`
+
+	// [必选]项目ID
+	WorkspaceID *int `url:"workspace_id,omitempty"`
+
+	// [可选]对象类型，如story、task、bug等
+	EntityType *EntityType `url:"entity_type,omitempty"`
+
+	// [可选]对象ID
+	EntityID *int `url:"entity_id,omitempty"`
+
+	// [可选]花费工时
+	Timespent *string `url:"timespent,omitempty"`
+
+	// [可选]花费日期 支持时间查询
+	Spentdate *string `url:"spentdate,omitempty"`
+
+	// [可选]最后修改时间 支持时间查询
+	Modified *string `url:"modified,omitempty"`
+
+	// [可选]花费创建人
+	Owner *string `url:"owner,omitempty"`
+
+	// [可选]值=0不返回父需求的花费
+	IncludeParentStoryTimesheet *int `url:"include_parent_story_timesheet,omitempty"`
+
+	// [可选]创建时间 支持时间查询
+	Created *string `url:"created,omitempty"`
+
+	// [可选]花费描述
+	Memo *string `url:"memo,omitempty"`
+
+	// [可选]是否已删除。默认取 0，不返回已删除的工时记录。取 1 可以返回已删除的记录
+	IsDelete *int `url:"is_delete,omitempty"`
 }
 
 // GetTimesheetsCount 获取工时花费的数量
