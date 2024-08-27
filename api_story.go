@@ -503,6 +503,62 @@ func (s *StoryService) GetStoryCustomFieldsSettings(
 // -----------------------------------------------------------------------------
 // 更新需求
 // -----------------------------------------------------------------------------
+type UpdateStoryRequest struct {
+	CustomFieldsRequest
+	CustomPlanFieldsRequest
+
+	ID              *int           `json:"id"`                           // 必须
+	WorkspaceID     *int           `json:"workspace_id"`                 // 必须
+	Name            *string        `json:"name,omitempty"`               // 标题
+	Priority        *string        `url:"priority,omitempty"`            // 优先级。
+	PriorityLabel   *PriorityLabel `url:"priority_label,omitempty"`      // 优先级。推荐使用这个字段
+	BusinessValue   *int           `json:"business_value,omitempty"`     // 业务价值
+	Status          *string        `json:"status,omitempty"`             // 状态
+	VStatus         *string        `json:"v_status,omitempty"`           // 中文状态名称
+	Version         *string        `json:"version,omitempty"`            // 版本
+	Module          *string        `json:"module,omitempty"`             // 模块
+	TestFocus       *string        `json:"test_focus,omitempty"`         // 测试重点
+	Size            *int           `json:"size,omitempty"`               // 规模
+	Owner           *string        `json:"owner,omitempty"`              // 处理人
+	CurrentUser     *string        `json:"current_user,omitempty"`       // 变更人
+	CC              *string        `json:"cc,omitempty"`                 // 抄送人
+	Developer       *string        `json:"developer,omitempty"`          // 开发人员
+	Begin           *string        `json:"begin,omitempty"`              // 预计开始
+	Due             *string        `json:"due,omitempty"`                // 预计结束
+	IterationID     *string        `json:"iteration_id,omitempty"`       // 迭代ID
+	Effort          *string        `json:"effort,omitempty"`             // 预估工时
+	EffortCompleted *string        `json:"effort_completed,omitempty"`   // 完成工时
+	Remain          *float64       `json:"remain,omitempty"`             // 剩余工时
+	Exceed          *float64       `json:"exceed,omitempty"`             // 超出工时
+	CategoryID      *int           `json:"category_id,omitempty"`        // 需求分类ID
+	ReleaseID       *int           `json:"release_id,omitempty"`         // 发布计划ID
+	Source          *string        `json:"source,omitempty"`             // 来源
+	Type            *string        `json:"type,omitempty"`               // 类型
+	Description     *string        `json:"description,omitempty"`        // 详细描述
+	IsAutoCloseTask *int           `json:"is_auto_close_task,omitempty"` // 自动关闭关联任务
+	Label           *string        `json:"label,omitempty"`              // 标签
+}
+
+// UpdateStory 更新需求
+// https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/update_story.html
+func (s *StoryService) UpdateStory(
+	ctx context.Context, request *UpdateStoryRequest, opts ...RequestOption,
+) (*Story, *Response, error) {
+	req, err := s.client.NewRequest(ctx, http.MethodPost, "stories", request, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var response struct {
+		Story *Story `json:"story"`
+	}
+	resp, err := s.client.Do(req, &response)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return response.Story, resp, nil
+}
 
 // -----------------------------------------------------------------------------
 // 更新需求的需求类别
