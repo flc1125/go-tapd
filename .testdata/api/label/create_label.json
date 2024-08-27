@@ -1,0 +1,17 @@
+{
+  "status": 1,
+  "data": {
+    "LabelPool": {
+      "id": "1134190502001000812",
+      "workspace_id": "1111222",
+      "name": "test3",
+      "color": "1",
+      "category": "workspace",
+      "creator": "tapd-username",
+      "modifier": "",
+      "created": "2024-08-26 22:33:14",
+      "modified": "2024-08-26 22:33:14"
+    }
+  },
+  "info": "success"
+}

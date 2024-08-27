@@ -1,0 +1,150 @@
+package tapd
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/url"
+	"strconv"
+	"strings"
+
+	"github.com/google/go-querystring/query"
+)
+
+// -----------------------------------------------------------------------------
+// PriorityLabel is a type for priority labels.
+// -----------------------------------------------------------------------------
+
+type PriorityLabel string
+
+const (
+	High       PriorityLabel = "High"
+	Middle     PriorityLabel = "Middle"
+	Low        PriorityLabel = "Low"
+	NiceToHave PriorityLabel = "Nice To Have"
+)
+
+func (p PriorityLabel) String() string {
+	return string(p)
+}
+
+// -----------------------------------------------------------------------------
+// ID is a query encoder for id parameters.
+// -----------------------------------------------------------------------------
+
+type ID struct {
+	id []int
+}
+
+var _ query.Encoder = (*ID)(nil)
+
+func NewID(id ...int) *ID {
+	return &ID{id: id}
+}
+
+func (i *ID) EncodeValues(key string, v *url.Values) error {
+	ids := make([]string, 0, len(i.id))
+	for _, id := range i.id {
+		ids = append(ids, strconv.Itoa(id))
+	}
+	if len(ids) > 0 {
+		v.Add(key, strings.Join(ids, ","))
+	}
+	return nil
+}
+
+// -----------------------------------------------------------------------------
+// Order is a query encoder for order parameters.
+// -----------------------------------------------------------------------------
+
+type OrderType string
+
+const (
+	OrderTypeAsc  OrderType = "asc"
+	OrderTypeDesc OrderType = "desc"
+)
+
+type Order struct {
+	Field     string
+	OrderType OrderType
+}
+
+var (
+	_ json.Marshaler   = (*Order)(nil)
+	_ json.Unmarshaler = (*Order)(nil)
+	_ query.Encoder    = (*Order)(nil)
+)
+
+type OrderOption func(*Order)
+
+func WithOrderType(orderType OrderType) OrderOption {
+	return func(o *Order) {
+		o.OrderType = orderType
+	}
+}
+
+var (
+	OrderAsc  = WithOrderType(OrderTypeAsc)
+	OrderDesc = WithOrderType(OrderTypeDesc)
+)
+
+func NewOrder(field string, opts ...OrderOption) *Order {
+	o := &Order{
+		Field:     field,
+		OrderType: OrderTypeAsc,
+	}
+	for _, opt := range opts {
+		opt(o)
+	}
+	return o
+}
+
+func (o *Order) MarshalJSON() ([]byte, error) {
+	return json.Marshal(fmt.Sprintf("%s %s", o.Field, o.OrderType))
+}
+
+func (o *Order) UnmarshalJSON(bytes []byte) error {
+	var s string
+	if err := json.Unmarshal(bytes, &s); err != nil {
+		return err
+	}
+	_, err := fmt.Sscanf(s, "%s %s", &o.Field, &o.OrderType)
+	return err
+}
+
+func (o *Order) EncodeValues(key string, v *url.Values) error {
+	v.Add(key, fmt.Sprintf("%s %s", o.Field, o.OrderType))
+	return nil
+}
+
+// -----------------------------------------------------------------------------
+// Fields is a query encoder for fields parameters.
+// -----------------------------------------------------------------------------
+
+type Fields struct {
+	fields []string
+}
+
+var _ query.Encoder = (*Fields)(nil)
+
+func NewFields(fields ...string) *Fields {
+	return &Fields{fields: fields}
+}
+
+func (f *Fields) EncodeValues(key string, v *url.Values) error {
+	if len(f.fields) > 0 {
+		v.Add(key, strings.Join(f.fields, ","))
+	}
+	return nil
+}
+
+// -----------------------------------------------------------------------------
+// EntityType is a type for entity types.
+// -----------------------------------------------------------------------------
+
+type EntityType string
+
+const (
+	EntityTypeTask  EntityType = "task"
+	EntityTypeStory EntityType = "story"
+	EntityTypeBug   EntityType = "bug"
+)

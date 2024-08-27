@@ -1,0 +1,132 @@
+{
+  "status": 1,
+  "data": [
+    {
+      "LabelPool": {
+        "id": "1134190502001000811",
+        "workspace_id": "11112222",
+        "name": "test2",
+        "color": "2",
+        "category": "workspace",
+        "creator": "tapd-username",
+        "modifier": "tapd-username",
+        "created": "2024-08-26 21:38:29",
+        "modified": "2024-08-26 21:41:59",
+        "color_value": "#FF6770"
+      }
+    },
+    {
+      "LabelPool": {
+        "id": "1134190502001000810",
+        "workspace_id": "11112222",
+        "name": "test1",
+        "color": "1",
+        "category": "workspace",
+        "creator": "tapd-username",
+        "modifier": "",
+        "created": "2024-08-26 21:34:14",
+        "modified": "2024-08-26 21:34:14",
+        "color_value": "#28AB80"
+      }
+    },
+    {
+      "LabelPool": {
+        "id": "1134190502001000809",
+        "workspace_id": "11112222",
+        "name": "test",
+        "color": "1",
+        "category": "workspace",
+        "creator": "tapd-username",
+        "modifier": "",
+        "created": "2024-08-26 21:32:12",
+        "modified": "2024-08-26 21:32:12",
+        "color_value": "#28AB80"
+      }
+    },
+    {
+      "LabelPool": {
+        "id": "1134190502001000352",
+        "workspace_id": "11112222",
+        "name": "\u7b49\u5f85\u8f6c\u6d4b",
+        "color": "1",
+        "category": "workspace",
+        "creator": "TAPD system",
+        "modifier": "",
+        "created": "2023-05-09 22:44:35",
+        "modified": "2023-05-09 22:44:35",
+        "color_value": "#28AB80"
+      }
+    },
+    {
+      "LabelPool": {
+        "id": "1134190502001000351",
+        "workspace_id": "11112222",
+        "name": "\u65b9\u6848\u5df2\u6c9f\u901a",
+        "color": "1",
+        "category": "workspace",
+        "creator": "TAPD system",
+        "modifier": "",
+        "created": "2023-05-09 22:44:35",
+        "modified": "2023-05-09 22:44:35",
+        "color_value": "#28AB80"
+      }
+    },
+    {
+      "LabelPool": {
+        "id": "1134190502001000350",
+        "workspace_id": "11112222",
+        "name": "\u7b49\u5f85\u8bbe\u8ba1\u8d70\u67e5",
+        "color": "1",
+        "category": "workspace",
+        "creator": "TAPD system",
+        "modifier": "",
+        "created": "2023-05-09 22:44:35",
+        "modified": "2023-05-09 22:44:35",
+        "color_value": "#28AB80"
+      }
+    },
+    {
+      "LabelPool": {
+        "id": "1134190502001000349",
+        "workspace_id": "11112222",
+        "name": "\u6709\u98ce\u9669",
+        "color": "2",
+        "category": "workspace",
+        "creator": "TAPD system",
+        "modifier": "",
+        "created": "2023-05-09 22:44:35",
+        "modified": "2023-05-09 22:44:35",
+        "color_value": "#FF6770"
+      }
+    },
+    {
+      "LabelPool": {
+        "id": "1134190502001000348",
+        "workspace_id": "11112222",
+        "name": "\u5f00\u53d1\u53d7\u963b",
+        "color": "2",
+        "category": "workspace",
+        "creator": "TAPD system",
+        "modifier": "",
+        "created": "2023-05-09 22:44:35",
+        "modified": "2023-05-09 22:44:35",
+        "color_value": "#FF6770"
+      }
+    },
+    {
+      "LabelPool": {
+        "id": "1134190502001000347",
+        "workspace_id": "11112222",
+        "name": "\u963b\u585e",
+        "color": "2",
+        "category": "workspace",
+        "creator": "TAPD system",
+        "modifier": "",
+        "created": "2023-05-09 22:44:35",
+        "modified": "2023-05-09 22:44:35",
+        "color_value": "#FF6770"
+      }
+    }
+  ],
+  "info": "success"
+}

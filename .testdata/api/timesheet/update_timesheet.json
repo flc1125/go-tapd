@@ -1,0 +1,19 @@
+{
+  "status": 1,
+  "data": {
+    "Timesheet": {
+      "id": "1134190502001044767",
+      "entity_type": "story",
+      "entity_id": "1134190502001057318",
+      "timespent": "2",
+      "spentdate": "2024-08-22",
+      "owner": "1",
+      "created": "2024-08-27 08:55:16",
+      "modified": "2024-08-27 08:55:16",
+      "workspace_id": "11112222",
+      "memo": "1",
+      "is_delete": "0"
+    }
+  },
+  "info": "success"
+}
