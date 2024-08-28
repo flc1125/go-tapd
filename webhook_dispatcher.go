@@ -43,8 +43,12 @@ func (d *WebhookDispatcher) Register(listeners ...any) {
 
 func (d *WebhookDispatcher) Dispatch(ctx context.Context, event any) error {
 	switch e := event.(type) {
+	case *BugCreateEvent:
+		return d.processBugCreate(ctx, e)
 	case *StoryUpdateEvent:
 		return d.processStoryUpdate(ctx, e)
+	case *StoryCreateEvent:
+		return d.processStoryCreate(ctx, e)
 	default:
 		return errors.New("tapd: webhook dispatcher unsupported event")
 	}

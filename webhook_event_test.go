@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -61,7 +60,7 @@ func TestWebhookEvent_EventChangeFields(t *testing.T) {
 	assert.NoError(t, json.Unmarshal(bytes, &fields2))
 	assert.Equal(t, fields, fields2)
 
-	spew.Dump(fields, fields2)
+	t.Log(fields, fields2)
 }
 
 func TestWebhookEvent_EventChangeFields_Extends(t *testing.T) {
@@ -83,5 +82,5 @@ func TestWebhookEvent_EventChangeFields_Extends(t *testing.T) {
 	assert.NoError(t, json.Unmarshal(bytes, &extends2))
 	assert.Equal(t, extends, extends2)
 
-	spew.Dump(extends, extends2)
+	t.Log(extends, extends2)
 }

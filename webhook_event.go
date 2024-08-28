@@ -61,8 +61,10 @@ func decodeWebhookEvent[T any](eventType EventType, payload []byte) (EventType, 
 // EventChangeFields represents the changed fields in the webhook event.
 type EventChangeFields []string
 
-var _ json.Marshaler = (*EventChangeFields)(nil)
-var _ json.Unmarshaler = (*EventChangeFields)(nil)
+var (
+	_ json.Marshaler   = (*EventChangeFields)(nil)
+	_ json.Unmarshaler = (*EventChangeFields)(nil)
+)
 
 func (f EventChangeFields) MarshalJSON() ([]byte, error) {
 	if f == nil {
