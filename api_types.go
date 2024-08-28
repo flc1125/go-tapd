@@ -148,3 +148,44 @@ const (
 	EntityTypeStory EntityType = "story"
 	EntityTypeBug   EntityType = "bug"
 )
+
+// -----------------------------------------------------------------------------
+// OperateType is a type for operate types.
+//
+// 操作类型，默认为所有，可以填写add,delete,download,upload中的一个
+// -----------------------------------------------------------------------------
+
+type OperateType string
+
+const (
+	OperateTypeAdd      OperateType = "add"
+	OperateTypeDelete   OperateType = "delete"
+	OperateTypeDownload OperateType = "download"
+	OperateTypeUpload   OperateType = "upload"
+)
+
+// -----------------------------------------------------------------------------
+// OperateObject is a type for operate objects.
+//
+// 操作对象，默认为所有，可以填写attachment,board,bug,document,
+// iteration,launch,member_activity_log,
+// release,story,task,tcase,testplan,wiki中的一个
+// -----------------------------------------------------------------------------
+
+type OperateObject string
+
+const (
+	OperateObjectAttachment        OperateObject = "attachment"
+	OperateObjectBoard             OperateObject = "board"
+	OperateObjectBug               OperateObject = "bug"
+	OperateObjectDocument          OperateObject = "document"
+	OperateObjectIteration         OperateObject = "iteration"
+	OperateObjectLaunch            OperateObject = "launch"
+	OperateObjectMemberActivityLog OperateObject = "member_activity_log"
+	OperateObjectRelease           OperateObject = "release"
+	OperateObjectStory             OperateObject = "story"
+	OperateObjectTask              OperateObject = "task"
+	OperateObjectTestCase          OperateObject = "tcase"
+	OperateObjectTestPlan          OperateObject = "testplan"
+	OperateObjectWiki              OperateObject = "wiki"
+)

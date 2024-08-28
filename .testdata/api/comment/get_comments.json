@@ -1,0 +1,36 @@
+{
+  "status": 1,
+  "data": [
+    {
+      "Comment": {
+        "id": "1123402991001033061",
+        "title": "title1",
+        "description": "description1",
+        "author": "author1",
+        "entry_type": "bug",
+        "entry_id": "1123402991001037223",
+        "reply_id": "0",
+        "root_id": "0",
+        "created": "2024-08-28 10:06:24",
+        "modified": "2024-08-28 10:06:24",
+        "workspace_id": "11112222"
+      }
+    },
+    {
+      "Comment": {
+        "id": "1123402991001033060",
+        "title": "title2",
+        "description": "description2",
+        "author": "author2",
+        "entry_type": "bug_remark",
+        "entry_id": "1123402991001037173",
+        "reply_id": "0",
+        "root_id": "0",
+        "created": "2024-08-28 09:38:31",
+        "modified": "2024-08-28 09:38:31",
+        "workspace_id": "11112222"
+      }
+    }
+  ],
+  "info": "success"
+}

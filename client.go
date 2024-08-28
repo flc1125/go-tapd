@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -37,7 +38,9 @@ type Client struct {
 	StoryService     *StoryService
 	BugService       *BugService
 	IterationService *IterationService
+	CommentService   *CommentService
 	TimesheetService *TimesheetService
+	WorkspaceService *WorkspaceService
 	LabelService     *LabelService
 	MeasureService   *MeasureService
 }
@@ -75,7 +78,9 @@ func newClient(opts ...ClientOption) (*Client, error) {
 	c.StoryService = NewStoryService(c)
 	c.BugService = NewBugService(c)
 	c.IterationService = NewIterationService(c)
+	c.CommentService = NewCommentService(c)
 	c.TimesheetService = NewTimesheetService(c)
+	c.WorkspaceService = NewWorkspaceService(c)
 	c.LabelService = NewLabelService(c)
 	c.MeasureService = NewMeasureService(c)
 
@@ -188,8 +193,8 @@ func (c *Client) Do(req *http.Request, v any) (*Response, error) {
 	}
 
 	// debug mode
-	// body, _ := json.Marshal(rawBody)
-	// fmt.Println(string(body)
+	body, _ := json.Marshal(rawBody)
+	fmt.Println(string(body))
 	// spew.Dump(rawBody)
 
 	if rawBody.Status != 1 {
