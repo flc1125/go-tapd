@@ -38,6 +38,7 @@ type Client struct {
 	BugService       *BugService
 	IterationService *IterationService
 	TimesheetService *TimesheetService
+	WorkspaceService *WorkspaceService
 	LabelService     *LabelService
 	MeasureService   *MeasureService
 }
@@ -76,6 +77,7 @@ func newClient(opts ...ClientOption) (*Client, error) {
 	c.BugService = NewBugService(c)
 	c.IterationService = NewIterationService(c)
 	c.TimesheetService = NewTimesheetService(c)
+	c.WorkspaceService = NewWorkspaceService(c)
 	c.LabelService = NewLabelService(c)
 	c.MeasureService = NewMeasureService(c)
 
@@ -189,7 +191,7 @@ func (c *Client) Do(req *http.Request, v any) (*Response, error) {
 
 	// debug mode
 	// body, _ := json.Marshal(rawBody)
-	// fmt.Println(string(body)
+	// fmt.Println(string(body))
 	// spew.Dump(rawBody)
 
 	if rawBody.Status != 1 {
