@@ -8,129 +8,78 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestWebhook_Event_StoryUpdateEvent(t *testing.T) {
-	rawBody := `{
-  "event": "task::update",
-  "event_from": "web",
-  "referer": "https://www.tapd.cn/22933961/prong/stories/view/1122933961001070621",
-  "workspace_id": "22933961",
-  "current_user": "Tc陈辉旺",
-  "id": "1122933961001070762",
-  "old_id": "1122933961001070762",
-  "old_name": "多个Tab增加筛选调整",
-  "old_description": "",
-  "old_markdown_description": "",
-  "old_description_type": "1",
-  "old_creator": "Tc陈辉旺",
-  "old_created": "2024-08-26 17:43:41",
-  "old_modified": "2024-08-26 17:44:15",
-  "old_parent_id": "0",
-  "old_children_id": "|",
-  "old_ancestor_id": "0",
-  "old_path": "",
-  "old_level": "",
-  "old_workspace_id": "22933961",
-  "old_status": "open",
-  "old_flows": "",
-  "old_priority": "Middle",
-  "old_owner": "Tc陈辉旺;",
-  "old_cc": "",
-  "old_begin": "2024-08-28",
-  "old_due": "2024-08-28",
-  "old_source": "",
-  "old_workitem_id": "",
-  "old_story_id": "1122933961001070621",
-  "old_iteration_id": "1122933961001001970",
-  "old_substrace": "",
-  "old_completed": "",
-  "old_effort": "6",
-  "old_effort_completed": "0",
-  "old_effort_total": "",
-  "old_exceed": "0",
-  "old_remain": "6",
-  "old_progress": "0",
-  "old_entity_type": "Task",
-  "old_custom_field_one": "",
-  "old_custom_field_two": "",
-  "old_custom_field_three": "",
-  "old_custom_field_four": "",
-  "old_custom_field_five": "",
-  "old_custom_field_six": "",
-  "old_custom_field_seven": "",
-  "old_custom_field_eight": "",
-  "old_custom_field_9": "",
-  "old_custom_field_10": "",
-  "old_custom_field_11": "",
-  "old_custom_field_12": "",
-  "old_custom_field_13": "",
-  "old_custom_field_14": "",
-  "old_custom_field_15": "",
-  "old_custom_field_16": "",
-  "old_custom_field_17": "",
-  "old_custom_field_18": "",
-  "old_custom_field_19": "",
-  "old_custom_field_20": "",
-  "old_custom_field_21": "",
-  "old_custom_field_22": "",
-  "old_custom_field_23": "",
-  "old_custom_field_24": "",
-  "old_custom_field_25": "",
-  "old_custom_field_26": "",
-  "old_custom_field_27": "",
-  "old_custom_field_28": "",
-  "old_custom_field_29": "",
-  "old_custom_field_30": "",
-  "old_custom_field_31": "",
-  "old_custom_field_32": "",
-  "old_custom_field_33": "",
-  "old_custom_field_34": "",
-  "old_custom_field_35": "",
-  "old_custom_field_36": "",
-  "old_custom_field_37": "",
-  "old_custom_field_38": "",
-  "old_custom_field_39": "",
-  "old_custom_field_40": "",
-  "old_custom_field_41": "",
-  "old_custom_field_42": "",
-  "old_custom_field_43": "",
-  "old_custom_field_44": "",
-  "old_custom_field_45": "",
-  "old_custom_field_46": "",
-  "old_custom_field_47": "",
-  "old_custom_field_48": "",
-  "old_custom_field_49": "",
-  "old_custom_field_50": "",
-  "old_custom_plan_field_1": "0",
-  "old_custom_plan_field_2": "0",
-  "old_custom_plan_field_3": "0",
-  "old_custom_plan_field_4": "0",
-  "old_custom_plan_field_5": "0",
-  "old_custom_plan_field_6": "0",
-  "old_custom_plan_field_7": "0",
-  "old_custom_plan_field_8": "0",
-  "old_custom_plan_field_9": "0",
-  "old_custom_plan_field_10": "0",
-  "old_attachment_count": "0",
-  "old_has_attachment": "0",
-  "old_follower": "",
-  "old_created_from": "",
-  "old_predecessor_count": "0",
-  "old_successor_count": "0",
-  "old_release_id": "0",
-  "old_label": "",
-  "old_new_story_id": "0",
-  "new_effort": "3",
-  "new_modified": "2024-08-27 14:34:15",
-  "change_fields": "effort,modified",
-  "secret": "asdfasdfsadfasdf",
-  "rio_token": "",
-  "devproxy_host": "http://websocket-proxy",
-  "queue_id": "281674094",
-  "event_id": "168542261",
-  "created": "2024-08-27 14:34:15"
-}`
+func TestWebhookEvent_EventType(t *testing.T) {
+	tests := []struct {
+		name string
+		want EventType
+	}{
+		{"story::create", EventTypeStoryCreate},
+		{"story::update", EventTypeStoryUpdate},
+		{"task::update", EventTypeTaskUpdate},
+		{"bug::create", EventTypeBugCreate},
+		{"bug::update", EventTypeBugUpdate},
+		{"bug_comment::update", EventTypeBugCommentUpdate},
+	}
 
-	var event StoryUpdateEvent
-	assert.NoError(t, json.Unmarshal([]byte(rawBody), &event))
-	spew.Dump(event)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, EventType(tt.name))
+			assert.Equal(t, tt.name, tt.want.String())
+		})
+	}
+}
+
+func TestWebhookEvent_ParseWebhookEvent(t *testing.T) {
+	tests := []struct {
+		filename  string
+		eventType EventType
+		event     any
+	}{
+		{"story_update_event.json", EventTypeStoryUpdate, &StoryUpdateEvent{}},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.filename, func(t *testing.T) {
+			payload := loadData(t, ".testdata/webhook/"+tt.filename)
+			eventType, event, err := ParseWebhookEvent(payload)
+			assert.NoError(t, err)
+			assert.Equal(t, tt.eventType, eventType)
+			assert.IsType(t, tt.event, event)
+		})
+	}
+}
+
+func TestWebhookEvent_EventChangeFields(t *testing.T) {
+	fields := EventChangeFields{"field1", "field2"}
+	bytes, err := json.Marshal(fields)
+	assert.NoError(t, err)
+	assert.Equal(t, `"field1,field2"`, string(bytes))
+
+	var fields2 EventChangeFields
+	assert.NoError(t, json.Unmarshal(bytes, &fields2))
+	assert.Equal(t, fields, fields2)
+
+	spew.Dump(fields, fields2)
+}
+
+func TestWebhookEvent_EventChangeFields_Extends(t *testing.T) {
+	type Extends struct {
+		Name   string            `json:"name"`
+		Fields EventChangeFields `json:"fields,omitempty"`
+	}
+
+	extends := Extends{
+		Name:   "extends",
+		Fields: EventChangeFields{"field1", "field2"},
+	}
+
+	bytes, err := json.Marshal(extends)
+	assert.NoError(t, err)
+	assert.Equal(t, `{"name":"extends","fields":"field1,field2"}`, string(bytes))
+
+	var extends2 Extends
+	assert.NoError(t, json.Unmarshal(bytes, &extends2))
+	assert.Equal(t, extends, extends2)
+
+	spew.Dump(extends, extends2)
 }

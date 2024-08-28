@@ -2,77 +2,80 @@ package tapd
 
 import (
 	"encoding/json"
+	"errors"
 	"strings"
 )
 
+// EventType represents the type of webhook event.
 type EventType string
 
 const (
-	StoryCreateEventType      EventType = "story::create"
-	StoryUpdateEventType      EventType = "story::update"
-	TaskUpdateEventType       EventType = "task::update"
-	BugCreateEventType        EventType = "bug::create"
-	BugUpdateEventType        EventType = "bug::update"
-	BugCommentUpdateEventType EventType = "bug_comment::update"
+	EventTypeStoryCreate      EventType = "story::create"
+	EventTypeStoryUpdate      EventType = "story::update"
+	EventTypeTaskUpdate       EventType = "task::update"
+	EventTypeBugCreate        EventType = "bug::create"
+	EventTypeBugUpdate        EventType = "bug::update"
+	EventTypeBugCommentUpdate EventType = "bug_comment::update"
 )
 
-type ChangeFields []string
+func (e EventType) String() string {
+	return string(e)
+}
 
-func (c *ChangeFields) UnmarshalJSON(data []byte) error {
+// ParseWebhookEvent parses the webhook event from the payload.
+func ParseWebhookEvent(payload []byte) (EventType, any, error) {
+	var raw map[string]interface{}
+	if err := json.Unmarshal(payload, &raw); err != nil {
+		return "", nil, err
+	}
+
+	// get event type
+	eventType, ok := raw["event"].(string)
+	if !ok {
+		return "", nil, errors.New("tapd: webhook event type not found")
+	}
+
+	// decode event
+	switch EventType(eventType) {
+	// todo: add more event types
+	case EventTypeStoryUpdate:
+		return decodeWebhookEvent[StoryUpdateEvent](EventTypeStoryUpdate, payload)
+	default:
+		return "", nil, errors.New("tapd: webhook event not supported")
+	}
+}
+
+// decodeWebhookEvent decodes the webhook event from the payload.
+func decodeWebhookEvent[T any](eventType EventType, payload []byte) (EventType, *T, error) {
+	var event T
+	if err := json.Unmarshal(payload, &event); err != nil {
+		return eventType, nil, err
+	}
+	return eventType, &event, nil
+}
+
+// EventChangeFields represents the changed fields in the webhook event.
+type EventChangeFields []string
+
+var _ json.Marshaler = (*EventChangeFields)(nil)
+var _ json.Unmarshaler = (*EventChangeFields)(nil)
+
+func (f EventChangeFields) MarshalJSON() ([]byte, error) {
+	if f == nil {
+		return json.Marshal(nil)
+	}
+	return json.Marshal(strings.Join(f, ","))
+}
+
+func (f *EventChangeFields) UnmarshalJSON(data []byte) error {
+	if f == nil {
+		return errors.New("tapd: unmarshal nil pointer")
+	}
+
 	var raw string
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return err
 	}
-	*c = strings.Split(raw, ",")
-	return nil
-}
-
-type StoryUpdateEvent struct {
-	Event        string            `json:"event"`
-	EventFrom    string            `json:"event_from"`
-	Referer      string            `json:"referer"`
-	WorkspaceID  string            `json:"workspace_id"`
-	CurrentUser  string            `json:"current_user"`
-	ID           string            `json:"id"`
-	ChangeFields ChangeFields      `json:"change_fields"`
-	Old          map[string]string `json:"old"`
-	New          map[string]string `json:"new"`
-	Secret       string            `json:"secret"`
-	RioToken     string            `json:"rio_token"`
-	DevProxyHost string            `json:"devproxy_host"`
-	QueueID      string            `json:"queue_id"`
-	EventID      string            `json:"event_id"`
-	Created      string            `json:"created"`
-}
-
-var _ json.Unmarshaler = (*StoryUpdateEvent)(nil)
-
-func (e *StoryUpdateEvent) UnmarshalJSON(data []byte) error {
-	type Alias StoryUpdateEvent
-	aux := &struct {
-		*Alias
-	}{
-		Alias: (*Alias)(e),
-	}
-	if err := json.Unmarshal(data, &aux); err != nil {
-		return err
-	}
-
-	var raw map[string]string
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return err
-	}
-
-	e.Old = make(map[string]string)
-	e.New = make(map[string]string)
-
-	for k, v := range raw {
-		if strings.HasPrefix(k, "old_") {
-			e.Old[strings.TrimPrefix(k, "old_")] = v
-		} else if strings.HasPrefix(k, "new_") {
-			e.New[strings.TrimPrefix(k, "new_")] = v
-		}
-	}
-
+	*f = strings.Split(raw, ",")
 	return nil
 }

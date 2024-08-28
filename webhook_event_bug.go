@@ -1,7 +1,7 @@
 package tapd
 
 type BugCreateEvent struct {
-	Event            EventType `json:"event,omitempty,omitempty"`
+	Event            EventType `json:"event,omitempty"`
 	EventFrom        string    `json:"event_from,omitempty"`
 	Referer          string    `json:"referer,omitempty"`
 	WorkspaceID      string    `json:"workspace_id,omitempty"`
