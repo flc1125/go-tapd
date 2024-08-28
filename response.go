@@ -21,6 +21,7 @@ type RawBody struct {
 	Info   string          `json:"info"`
 }
 
+// ErrorResponse represents an error response.
 type ErrorResponse struct {
 	response *http.Response
 	rawBody  *RawBody
