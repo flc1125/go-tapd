@@ -35,20 +35,30 @@ func NewWebhookDispatcher(opts ...WebhookDispatcherOption) *WebhookDispatcher {
 
 func (d *WebhookDispatcher) Register(listeners ...any) {
 	for _, listener := range listeners {
+		if l, ok := listener.(StoryCreateListener); ok {
+			d.RegisterStoryCreateListener(l)
+		}
+
 		if l, ok := listener.(StoryUpdateListener); ok {
 			d.RegisterStoryUpdateListener(l)
 		}
+
+		if l, ok := listener.(BugCreateListener); ok {
+			d.RegisterBugCreateListener(l)
+		}
+
+		// todo: add other listeners
 	}
 }
 
 func (d *WebhookDispatcher) Dispatch(ctx context.Context, event any) error {
 	switch e := event.(type) {
-	case *BugCreateEvent:
-		return d.processBugCreate(ctx, e)
-	case *StoryUpdateEvent:
-		return d.processStoryUpdate(ctx, e)
 	case *StoryCreateEvent:
 		return d.processStoryCreate(ctx, e)
+	case *StoryUpdateEvent:
+		return d.processStoryUpdate(ctx, e)
+	case *BugCreateEvent:
+		return d.processBugCreate(ctx, e)
 	default:
 		return errors.New("tapd: webhook dispatcher unsupported event")
 	}

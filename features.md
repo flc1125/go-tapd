@@ -272,6 +272,13 @@
 
 ### webhook
 
+- [x] story::create
+- [x] story::update
+- [x] bug::create
+- [ ] bug::update
+- [ ] task::create
+- [ ] task::update
+
 
 ### 用户
 
