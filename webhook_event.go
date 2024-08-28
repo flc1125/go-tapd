@@ -38,8 +38,12 @@ func ParseWebhookEvent(payload []byte) (EventType, any, error) {
 	// decode event
 	switch EventType(eventType) {
 	// todo: add more event types
+	case EventTypeStoryCreate:
+		return decodeWebhookEvent[StoryCreateEvent](EventTypeStoryCreate, payload)
 	case EventTypeStoryUpdate:
 		return decodeWebhookEvent[StoryUpdateEvent](EventTypeStoryUpdate, payload)
+	case EventTypeBugCreate:
+		return decodeWebhookEvent[BugCreateEvent](EventTypeBugCreate, payload)
 	default:
 		return "", nil, errors.New("tapd: webhook event not supported")
 	}

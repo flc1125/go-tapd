@@ -35,7 +35,9 @@ func TestWebhookEvent_ParseWebhookEvent(t *testing.T) {
 		eventType EventType
 		event     any
 	}{
+		{"story_create_event.json", EventTypeStoryCreate, &StoryCreateEvent{}},
 		{"story_update_event.json", EventTypeStoryUpdate, &StoryUpdateEvent{}},
+		{"bug_create_event.json", EventTypeBugCreate, &BugCreateEvent{}},
 	}
 
 	for _, tt := range tests {

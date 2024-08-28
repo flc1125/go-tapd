@@ -11,7 +11,9 @@ import (
 
 // WebhookDispatcher is a dispatcher for webhook events.
 type WebhookDispatcher struct {
+	storyCreateListeners []StoryCreateListener
 	storyUpdateListeners []StoryUpdateListener
+	bugCreateListeners   []BugCreateListener
 }
 
 type WebhookDispatcherOption func(*WebhookDispatcher)
@@ -64,8 +66,27 @@ func (d *WebhookDispatcher) DispatchRequest(req *http.Request) error {
 	return d.DispatchPayload(req.Context(), payload)
 }
 
+func (d *WebhookDispatcher) RegisterStoryCreateListener(listeners ...StoryCreateListener) {
+	d.storyCreateListeners = append(d.storyCreateListeners, listeners...)
+}
+
 func (d *WebhookDispatcher) RegisterStoryUpdateListener(listeners ...StoryUpdateListener) {
 	d.storyUpdateListeners = append(d.storyUpdateListeners, listeners...)
+}
+
+func (d *WebhookDispatcher) RegisterBugCreateListener(listeners ...BugCreateListener) {
+	d.bugCreateListeners = append(d.bugCreateListeners, listeners...)
+}
+
+func (d *WebhookDispatcher) processStoryCreate(ctx context.Context, event *StoryCreateEvent) error {
+	eg, ctx := errgroup.WithContext(ctx)
+	for _, listener := range d.storyCreateListeners {
+		listener := listener
+		eg.Go(func() error {
+			return listener.OnStoryCreate(ctx, event)
+		})
+	}
+	return eg.Wait()
 }
 
 func (d *WebhookDispatcher) processStoryUpdate(ctx context.Context, event *StoryUpdateEvent) error {
@@ -74,6 +95,17 @@ func (d *WebhookDispatcher) processStoryUpdate(ctx context.Context, event *Story
 		listener := listener
 		eg.Go(func() error {
 			return listener.OnStoryUpdate(ctx, event)
+		})
+	}
+	return eg.Wait()
+}
+
+func (d *WebhookDispatcher) processBugCreate(ctx context.Context, event *BugCreateEvent) error {
+	eg, ctx := errgroup.WithContext(ctx)
+	for _, listener := range d.bugCreateListeners {
+		listener := listener
+		eg.Go(func() error {
+			return listener.OnBugCreate(ctx, event)
 		})
 	}
 	return eg.Wait()

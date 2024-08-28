@@ -2,6 +2,34 @@ package tapd
 
 // StoryCreateEvent represents the story create event.
 type StoryCreateEvent struct {
+	Event           EventType `json:"event,omitempty"`
+	EventFrom       string    `json:"event_from,omitempty"`
+	Referer         string    `json:"referer,omitempty"`
+	WorkspaceID     string    `json:"workspace_id,omitempty"`
+	CurrentUser     string    `json:"current_user,omitempty"`
+	ID              string    `json:"id,omitempty"`
+	Name            string    `json:"name,omitempty"`
+	Description     string    `json:"description,omitempty"`
+	DescriptionType string    `json:"description_type,omitempty"`
+	Owner           string    `json:"owner,omitempty"`
+	Begin           string    `json:"begin,omitempty"`
+	Due             string    `json:"due,omitempty"`
+	Creator         string    `json:"creator,omitempty"`
+	Priority        string    `json:"priority,omitempty"`
+	WorkitemTypeID  string    `json:"workitem_type_id,omitempty"`
+	Status          string    `json:"status,omitempty"`
+	TemplatedID     string    `json:"templated_id,omitempty"`
+	EntityType      string    `json:"entity_type,omitempty"`
+	Remain          string    `json:"remain,omitempty"`
+	ParentID        string    `json:"parent_id,omitempty"`
+	AncestorID      string    `json:"ancestor_id,omitempty"`
+	ChildrenID      string    `json:"children_id,omitempty"`
+	Secret          string    `json:"secret,omitempty"`
+	RioToken        string    `json:"rio_token,omitempty"`
+	DevProxyHost    string    `json:"devproxy_host,omitempty"`
+	QueueID         string    `json:"queue_id,omitempty"`
+	EventID         string    `json:"event_id,omitempty"`
+	Created         string    `json:"created,omitempty"`
 }
 
 // StoryUpdateEvent represents the story update event.
