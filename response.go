@@ -2,6 +2,7 @@ package tapd
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 )
@@ -11,17 +12,19 @@ type Response struct {
 	*http.Response
 }
 
+// newResponse creates a new Response.
 func newResponse(httpResp *http.Response) *Response {
 	return &Response{Response: httpResp}
 }
 
+// RawBody represents a raw body.
 type RawBody struct {
 	Status int             `json:"status"`
 	Data   json.RawMessage `json:"data"`
 	Info   string          `json:"info"`
 }
 
-// ErrorResponse represents an error response.
+// ErrorResponse represents a tapd error response.
 type ErrorResponse struct {
 	response *http.Response
 	rawBody  *RawBody
@@ -42,6 +45,11 @@ func (e *ErrorResponse) Error() string {
 
 func (e *ErrorResponse) Unwrap() error {
 	return e.err
+}
+
+func IsErrorResponse(err error) bool {
+	var e *ErrorResponse
+	return errors.As(err, &e)
 }
 
 // CountResponse represents the response of count.

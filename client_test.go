@@ -54,3 +54,23 @@ func TestClient_BasicAuth(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 }
+
+func TestClient_ErrorResponse(t *testing.T) {
+	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodGet, r.Method)
+		assert.Equal(t, "/__/error-response", r.URL.Path)
+
+		fmt.Fprint(w, `{
+  "status": 429,
+  "data": {},
+  "info": "To many requests, api account brookechen max request rates is 6000req/10min"
+}`)
+	}))
+
+	req, err := client.NewRequest(ctx, http.MethodGet, "__/error-response", nil, nil)
+	assert.NoError(t, err)
+
+	_, err = client.Do(req, nil)
+	assert.Error(t, err)
+	assert.True(t, IsErrorResponse(err))
+}

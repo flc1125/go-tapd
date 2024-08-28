@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -185,18 +184,18 @@ func (c *Client) Do(req *http.Request, v any) (*Response, error) {
 	defer resp.Body.Close()              // nolint:errcheck
 	defer io.Copy(io.Discard, resp.Body) // nolint:errcheck
 
-	// todo: if status code is not 200
-
+	// decode response body
 	var rawBody RawBody
 	if err := json.NewDecoder(resp.Body).Decode(&rawBody); err != nil {
 		return nil, err
 	}
 
 	// debug mode
-	body, _ := json.Marshal(rawBody)
-	fmt.Println(string(body))
+	// body, _ := json.Marshal(rawBody)
+	// fmt.Println(string(body))
 	// spew.Dump(rawBody)
 
+	// check status
 	if rawBody.Status != 1 {
 		return nil, &ErrorResponse{
 			response: resp,
