@@ -5,8 +5,6 @@ import (
 	"net/http"
 )
 
-type ()
-
 type WorkspaceService struct {
 	client *Client
 }
@@ -52,7 +50,8 @@ type GetMemberActivityLogRequest struct {
 	// [可选]操作类型，默认为所有，可以填写add,delete,download,upload中的一个
 	OperateType *OperateType `url:"operate_type,omitempty"`
 
-	// [可选]操作对象，默认为所有，可以填写attachment,board,bug,document,iteration,launch,member_activity_log,release,story,task,tcase,testplan,wiki中的一个
+	// [可选]操作对象，默认为所有，可以填写attachment,board,bug,document,iteration,
+	// launch,member_activity_log,release,story,task,tcase,testplan,wiki中的一个
 	OperatorObject *OperateObject `url:"operator_object,omitempty"`
 
 	// [可选]请求IP条件，严格匹配
@@ -68,7 +67,7 @@ type MemberActivityLog struct {
 	OperateType   OperateType   `json:"operate_type,omitempty"`
 	OperateObject OperateObject `json:"operate_object,omitempty"`
 	Title         string        `json:"title,omitempty"`
-	Url           string        `json:"url,omitempty"`
+	URL           string        `json:"url,omitempty"`
 	IP            string        `json:"ip,omitempty"`
 	UA            string        `json:"ua,omitempty"`
 }

@@ -116,7 +116,7 @@ func (s *CommentService) GetComments(
 		return nil, resp, err
 	}
 
-	var comments []*Comment
+	comments := make([]*Comment, 0, len(items))
 	for _, item := range items {
 		comments = append(comments, item.Comment)
 	}

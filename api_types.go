@@ -167,7 +167,9 @@ const (
 // -----------------------------------------------------------------------------
 // OperateObject is a type for operate objects.
 //
-// 操作对象，默认为所有，可以填写attachment,board,bug,document,iteration,launch,member_activity_log,release,story,task,tcase,testplan,wiki中的一个
+// 操作对象，默认为所有，可以填写attachment,board,bug,document,
+// iteration,launch,member_activity_log,
+// release,story,task,tcase,testplan,wiki中的一个
 // -----------------------------------------------------------------------------
 
 type OperateObject string
