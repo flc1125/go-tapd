@@ -22,7 +22,7 @@ func NewUserService(client *Client) *UserService {
 
 // GetRolesRequest represents a request to get roles
 type GetRolesRequest struct {
-	WorkspaceID *int `url:"workspace_id,omitempty"`
+	WorkspaceID *int `url:"workspace_id,omitempty"` // 项目 ID
 }
 
 // GetRoles 获取角色ID对照关系
