@@ -112,6 +112,7 @@ var (
 	OrderDesc = WithOrderType(OrderTypeDesc)
 )
 
+// NewOrder todo: refactor to Order
 func NewOrder(field string, opts ...OrderOption) *Order {
 	o := &Order{
 		Field:     field,
