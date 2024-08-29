@@ -3,6 +3,7 @@ package tapd
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -17,7 +18,13 @@ func createServerClient(t *testing.T, handler http.Handler) (*httptest.Server, *
 	srv := httptest.NewServer(handler)
 	t.Cleanup(srv.Close)
 
-	client, err := NewClient("tapd-username", "tapd-password", WithBaseURL(srv.URL))
+	client, err := NewClient(
+		"tapd-username", "tapd-password",
+		WithBaseURL(srv.URL),
+		WithHTTPClient(NewRetryableHTTPClient(
+			WithRetryableHTTPClientLogger(log.New(os.Stderr, "", log.LstdFlags)),
+		)),
+	)
 	assert.NoError(t, err)
 
 	return srv, client
