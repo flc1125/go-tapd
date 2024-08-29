@@ -1,0 +1,257 @@
+{
+  "status": 1,
+  "data": {
+    "id": {
+      "name": "id",
+      "html_type": "input",
+      "label": "ID",
+      "options": [],
+      "color_options": [],
+      "pure_options": []
+    },
+    "name": {
+      "name": "name",
+      "label": "标题",
+      "options": [],
+      "color_options": [],
+      "pure_options": [],
+      "html_type": "input"
+    },
+    "status": {
+      "name": "status",
+      "html_type": "select",
+      "label": "状态",
+      "options": {
+        "open": "未开始",
+        "progressing": "进行中",
+        "done": "已完成"
+      },
+      "color_options": [],
+      "pure_options": []
+    },
+    "description": {
+      "name": "description",
+      "label": "详细描述",
+      "options": [],
+      "color_options": [],
+      "pure_options": [],
+      "html_type": "rich_edit"
+    },
+    "owner": {
+      "name": "owner",
+      "html_type": "user_chooser",
+      "label": "处理人",
+      "options": [],
+      "color_options": [],
+      "pure_options": []
+    },
+    "creator": {
+      "name": "creator",
+      "html_type": "user_chooser",
+      "label": "创建人",
+      "options": [],
+      "color_options": [],
+      "pure_options": []
+    },
+    "created": {
+      "name": "created",
+      "label": "创建时间",
+      "options": [],
+      "color_options": [],
+      "pure_options": [],
+      "html_type": "datetime"
+    },
+    "iteration_id": {
+      "name": "iteration_id",
+      "html_type": "select",
+      "label": "迭代",
+      "options": {
+        "1111112222001001246": "迭代2",
+        "1111112222001001245": "迭代1"
+      },
+      "color_options": [],
+      "pure_options": [
+        {
+          "parent_id": "0",
+          "workspace_id": "11112222",
+          "sort": "100124600000",
+          "value": "1111112222001001246",
+          "label": "迭代2",
+          "panel": 0
+        },
+        {
+          "parent_id": "0",
+          "workspace_id": "11112222",
+          "sort": "100124500000",
+          "value": "1111112222001001245",
+          "label": "迭代1",
+          "panel": 0
+        }
+      ],
+      "lock_info": []
+    },
+    "effort": {
+      "name": "effort",
+      "html_type": "float",
+      "label": "预估工时",
+      "options": [],
+      "color_options": [],
+      "pure_options": []
+    },
+    "effort_completed": {
+      "name": "effort_completed",
+      "label": "完成工时",
+      "options": [],
+      "color_options": [],
+      "pure_options": [],
+      "html_type": "float"
+    },
+    "remain": {
+      "name": "remain",
+      "html_type": "float",
+      "label": "剩余工时",
+      "options": [],
+      "color_options": [],
+      "pure_options": []
+    },
+    "exceed": {
+      "name": "exceed",
+      "html_type": "float",
+      "label": "超出工时",
+      "options": [],
+      "color_options": [],
+      "pure_options": []
+    },
+    "progress": {
+      "name": "progress",
+      "html_type": "input",
+      "label": "进度",
+      "options": [],
+      "color_options": [],
+      "pure_options": []
+    },
+    "modified": {
+      "name": "modified",
+      "label": "最后修改时间",
+      "options": [],
+      "color_options": [],
+      "pure_options": [],
+      "html_type": "datetime"
+    },
+    "priority": {
+      "name": "priority",
+      "html_type": "select",
+      "label": "优先级",
+      "options": {
+        "High": "High",
+        "Middle": "Middle",
+        "Low": "Low",
+        "Nice To Have": "Nice To Have"
+      },
+      "color_options": [
+        {
+          "value": "High",
+          "label": "High",
+          "color": "#FF6770"
+        },
+        {
+          "value": "Middle",
+          "label": "Middle",
+          "color": "#28AB80"
+        },
+        {
+          "value": "Low",
+          "label": "Low",
+          "color": "#7C8597"
+        },
+        {
+          "value": "Nice To Have",
+          "label": "Nice To Have",
+          "color": "#7C8597"
+        }
+      ],
+      "pure_options": []
+    },
+    "cc": {
+      "name": "cc",
+      "html_type": "mix_chooser",
+      "label": "抄送人",
+      "options": [],
+      "color_options": [],
+      "pure_options": []
+    },
+    "begin": {
+      "name": "begin",
+      "html_type": "dateinput",
+      "label": "预计开始",
+      "options": [],
+      "color_options": [],
+      "pure_options": []
+    },
+    "due": {
+      "name": "due",
+      "html_type": "dateinput",
+      "label": "预计结束",
+      "options": [],
+      "color_options": [],
+      "pure_options": []
+    },
+    "story_id": {
+      "name": "story_id",
+      "label": "需求",
+      "options": [],
+      "color_options": [],
+      "pure_options": [],
+      "html_type": "input"
+    },
+    "completed": {
+      "name": "completed",
+      "label": "完成时间",
+      "options": [],
+      "color_options": [],
+      "pure_options": [],
+      "html_type": "datetime"
+    },
+    "release_id": {
+      "name": "release_id",
+      "html_type": "select",
+      "label": "发布计划",
+      "options": {
+        "1111112222001000185": "发布计划1"
+      },
+      "color_options": [],
+      "pure_options": []
+    },
+    "has_attachment": {
+      "name": "has_attachment",
+      "label": "附件",
+      "options": {
+        "0": "-空-",
+        "1": "-不为空-"
+      },
+      "color_options": [],
+      "pure_options": [],
+      "html_type": "checkbox"
+    },
+    "label": {
+      "name": "label",
+      "html_type": "multi_select",
+      "label": "标签",
+      "options": {
+        "test3": "test3",
+        "test2": "test2",
+        "test1": "test1",
+        "test": "test",
+        "阻塞": "阻塞",
+        "开发受阻": "开发受阻",
+        "有风险": "有风险",
+        "等待设计走查": "等待设计走查",
+        "方案已沟通": "方案已沟通",
+        "等待转测": "等待转测"
+      },
+      "color_options": [],
+      "pure_options": []
+    }
+  },
+  "info": "success"
+}
