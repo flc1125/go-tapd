@@ -276,7 +276,7 @@ type GetStoryCategoriesRequest struct {
 	Modified    *string     `url:"modified,omitempty"`     // 最后修改时间	支持时间查询
 	Limit       *int        `url:"limit,omitempty"`        // 设置返回数量限制，默认为30
 	Page        *int        `url:"page,omitempty"`         // 返回当前数量限制下第N页的数据，默认为1（第一页）
-	Order       *Order      `url:"order,omitempty"`        // 排序规则，规则：字段名 ASC或者DESC，然后 urlencode	如按创建时间逆序：order=created%20desc
+	Order       *Order      `url:"order,omitempty"`        //nolint:lll // 排序规则，规则：字段名 ASC或者DESC，然后 urlencode	如按创建时间逆序：order=created%20desc
 	Fields      *string     `url:"fields,omitempty"`       // 设置获取的字段，多个字段间以','逗号隔开
 }
 
