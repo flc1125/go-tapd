@@ -100,7 +100,7 @@ func TestTimesheetService_GetTimesheets(t *testing.T) {
 		Limit:                       Ptr(10),
 		Page:                        Ptr(1),
 		Order:                       NewOrder("id", OrderDesc),
-		Fields:                      NewFields("id", "workspace_id"),
+		Fields:                      Multi("id", "workspace_id"),
 	})
 	assert.NoError(t, err)
 	spew.Dump(timesheets)

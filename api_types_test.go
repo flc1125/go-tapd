@@ -57,24 +57,48 @@ func TestTypes_Enum(t *testing.T) {
 	values := &url.Values{}
 
 	// string
-	enum1 := NewEnum("a", "b", "c")
+	enum1 := Enum("a", "b", "c")
 	assert.NoError(t, enum1.EncodeValues("key1", values))
 	assert.Equal(t, "a|b|c", values.Get("key1"))
 
 	// int
-	enum2 := NewEnum(1, 2, 3)
+	enum2 := Enum(1, 2, 3)
 	assert.NoError(t, enum2.EncodeValues("key2", values))
 	assert.Equal(t, "1|2|3", values.Get("key2"))
 
 	// float64
-	enum3 := NewEnum(1.1, 2.2, 3.3)
+	enum3 := Enum(1.1, 2.2, 3.3)
 	assert.NoError(t, enum3.EncodeValues("key3", values))
 	assert.Equal(t, "1.1|2.2|3.3", values.Get("key3"))
 
-	// Enum{}
-	enum4 := Enum[string]([]string{"a", "b", "c"})
+	// EnumType{}
+	enum4 := EnumType[string]([]string{"a", "b", "c"})
 	assert.NoError(t, enum4.EncodeValues("key4", values))
 	assert.Equal(t, "a|b|c", values.Get("key4"))
+}
+
+func TestTypes_Multi(t *testing.T) {
+	values := &url.Values{}
+
+	// string
+	multi1 := Multi("a", "b", "c")
+	assert.NoError(t, multi1.EncodeValues("key1", values))
+	assert.Equal(t, "a,b,c", values.Get("key1"))
+
+	// int
+	multi2 := Multi(1, 2, 3)
+	assert.NoError(t, multi2.EncodeValues("key2", values))
+	assert.Equal(t, "1,2,3", values.Get("key2"))
+
+	// float64
+	multi3 := Multi(1.1, 2.2, 3.3)
+	assert.NoError(t, multi3.EncodeValues("key3", values))
+	assert.Equal(t, "1.1,2.2,3.3", values.Get("key3"))
+
+	// MultiType{}
+	multi4 := MultiType[string]([]string{"a", "b", "c"})
+	assert.NoError(t, multi4.EncodeValues("key4", values))
+	assert.Equal(t, "a,b,c", values.Get("key4"))
 }
 
 func TestTypes_Order_Custom(t *testing.T) {
