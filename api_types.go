@@ -63,6 +63,7 @@ const (
 	OrderTypeDesc OrderType = "desc"
 )
 
+// Order is a type for order parameters.
 type Order struct {
 	Field     string
 	OrderType OrderType
@@ -120,6 +121,7 @@ func (o *Order) EncodeValues(key string, v *url.Values) error {
 // Fields is a query encoder for fields parameters.
 // -----------------------------------------------------------------------------
 
+// Fields todo: refactor to type Fields []string
 type Fields struct {
 	fields []string
 }
@@ -133,6 +135,30 @@ func NewFields(fields ...string) *Fields {
 func (f *Fields) EncodeValues(key string, v *url.Values) error {
 	if len(f.fields) > 0 {
 		v.Add(key, strings.Join(f.fields, ","))
+	}
+	return nil
+}
+
+// -----------------------------------------------------------------------------
+// Enum is a type for enum values.
+// Enum{Value1, Value2, Value3} => value1|value2|value3
+// -----------------------------------------------------------------------------
+
+type Enum[T any] []T
+
+var _ query.Encoder = (*Enum[string])(nil)
+
+func NewEnum[T any](values ...T) *Enum[T] {
+	return (*Enum[T])(&values)
+}
+
+func (e Enum[T]) EncodeValues(key string, v *url.Values) error {
+	if len(e) > 0 {
+		var values []string
+		for _, value := range e {
+			values = append(values, fmt.Sprint(value))
+		}
+		v.Add(key, strings.Join(values, "|"))
 	}
 	return nil
 }
