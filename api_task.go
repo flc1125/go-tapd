@@ -134,7 +134,7 @@ type GetTasksRequest struct {
 	Due              *string           `url:"due,omitempty"`              // 预计结束	支持时间查询
 	StoryID          *ID               `url:"story_id,omitempty"`         // 关联需求的ID	支持多ID查询
 	IterationID      *Enum[int]        `url:"iteration_id,omitempty"`     // 所属迭代的ID	支持枚举查询
-	Priority         *string           `url:"priority,omitempty"`         // 优先级。为了兼容自定义优先级，请使用 priority_label 字段，详情参考：如何兼容自定义优先级
+	Priority         *string           `url:"priority,omitempty"`         //nolint:lll // 优先级。为了兼容自定义优先级，请使用 priority_label 字段，详情参考：如何兼容自定义优先级
 	PriorityLabel    *PriorityLabel    `url:"priority_label,omitempty"`   // 优先级。推荐使用这个字段
 	Progress         *int              `url:"progress,omitempty"`         // 进度
 	Completed        *string           `url:"completed,omitempty"`        // 完成时间	支持时间查询
@@ -194,7 +194,7 @@ type GetTasksRequest struct {
 	CustomField50    *string           `url:"custom_field_50,omitempty"`
 	Limit            *int              `url:"limit,omitempty"`  // 设置返回数量限制，默认为30
 	Page             *int              `url:"page,omitempty"`   // 返回当前数量限制下第N页的数据，默认为1（第一页）
-	Order            *Order            `url:"order,omitempty"`  // 排序规则，规则：字段名 ASC或者DESC，然后 urlencode	如按创建时间逆序：order=created%20desc
+	Order            *Order            `url:"order,omitempty"`  //nolint:lll // 排序规则，规则：字段名 ASC或者DESC，然后 urlencode	如按创建时间逆序：order=created%20desc
 	Fields           *Fields           `url:"fields,omitempty"` // 设置获取的字段，多个字段间以','逗号隔开
 }
 
