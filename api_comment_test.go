@@ -14,6 +14,7 @@ func TestCommentService_CommentEntryType(t *testing.T) {
 	assert.Equal(t, "stories", CommentEntryTypeStories.String())
 	assert.Equal(t, "tasks", CommentEntryTypeTasks.String())
 	assert.Equal(t, "wiki", CommentEntryTypeWiki.String())
+	assert.Equal(t, "mini_items", CommentEntryTypeMiniItems.String())
 }
 
 func TestCommentService_CreateComment(t *testing.T) {

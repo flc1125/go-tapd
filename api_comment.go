@@ -5,16 +5,17 @@ import (
 	"net/http"
 )
 
-// CommentEntryType 评论类型（取值： bug、 bug_remark （流转缺陷时候的评论）、 stories、 tasks 。多个类型间以竖线隔开）
+// CommentEntryType 评论类型
 type CommentEntryType string
 
-// CommentEntryType 评论类型（取值： bug、 bug_remark （流转缺陷时候的评论）、 stories、 tasks 。多个类型间以竖线隔开）
+// CommentEntryType 评论类型
 const (
-	CommentEntryTypeBug       CommentEntryType = "bug"
-	CommentEntryTypeBugRemark CommentEntryType = "bug_remark"
-	CommentEntryTypeStories   CommentEntryType = "stories"
-	CommentEntryTypeTasks     CommentEntryType = "tasks"
-	CommentEntryTypeWiki      CommentEntryType = "wiki"
+	CommentEntryTypeBug       CommentEntryType = "bug"        // bug
+	CommentEntryTypeBugRemark CommentEntryType = "bug_remark" // bug_remark （流转缺陷时候的评论）
+	CommentEntryTypeStories   CommentEntryType = "stories"    // stories
+	CommentEntryTypeTasks     CommentEntryType = "tasks"      // tasks
+	CommentEntryTypeWiki      CommentEntryType = "wiki"       // wiki
+	CommentEntryTypeMiniItems CommentEntryType = "mini_items" // mini_items
 )
 
 // String CommentEntryType to string
