@@ -1,0 +1,44 @@
+{
+  "status": 1,
+  "data": [
+    {
+      "WorkspaceReport": {
+        "id": "10000000000000846",
+        "title": "test report",
+        "workspace_id": "11112222",
+        "report_type": "test",
+        "receiver": "receiver",
+        "cc": "cc",
+        "receiver_organization_ids": null,
+        "cc_organization_ids": null,
+        "sender": "sender",
+        "send_time": "2024-08-26 17:15:23",
+        "author": "author",
+        "created": "2024-08-26 17:15:22",
+        "status": "sent",
+        "modified": "2024-08-26 17:15:23",
+        "last_modify": "last_modify"
+      }
+    },
+    {
+      "WorkspaceReport": {
+        "id": "10000000000000845",
+        "title": "test report",
+        "workspace_id": "11112222",
+        "report_type": "test",
+        "receiver": "receiver",
+        "cc": "cc",
+        "receiver_organization_ids": null,
+        "cc_organization_ids": null,
+        "sender": null,
+        "send_time": null,
+        "author": "author",
+        "created": "2024-08-26 17:14:40",
+        "status": "hidden",
+        "modified": "2024-08-26 17:14:40",
+        "last_modify": "last_modify"
+      }
+    }
+  ],
+  "info": "success"
+}
