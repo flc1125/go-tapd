@@ -38,6 +38,7 @@ type Client struct {
 	BugService       *BugService
 	IterationService *IterationService
 	CommentService   *CommentService
+	ReportService    *ReportService
 	TimesheetService *TimesheetService
 	WorkspaceService *WorkspaceService
 	LabelService     *LabelService
@@ -79,6 +80,7 @@ func newClient(opts ...ClientOption) (*Client, error) {
 	c.BugService = NewBugService(c)
 	c.IterationService = NewIterationService(c)
 	c.CommentService = NewCommentService(c)
+	c.ReportService = NewReportService(c)
 	c.TimesheetService = NewTimesheetService(c)
 	c.WorkspaceService = NewWorkspaceService(c)
 	c.LabelService = NewLabelService(c)
