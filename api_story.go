@@ -77,7 +77,7 @@ type GetStoriesRequest struct {
 	CustomFieldsRequest
 	CustomPlanFieldsRequest
 
-	ID              *ID            `url:"id,omitempty"`               // ID	支持多ID查询,多个ID用逗号分隔
+	ID              *Multi[int]    `url:"id,omitempty"`               // ID	支持多ID查询,多个ID用逗号分隔
 	Name            *string        `url:"name,omitempty"`             // 标题	支持模糊匹配
 	Priority        *string        `url:"priority,omitempty"`         // 优先级
 	PriorityLabel   *PriorityLabel `url:"priority_label,omitempty"`   // 优先级。推荐使用这个字段
@@ -203,7 +203,7 @@ type GetStoriesCountRequest struct {
 	CustomFieldsRequest
 	CustomPlanFieldsRequest
 
-	ID              *ID            `url:"id,omitempty"`               // ID	支持多ID查询,多个ID用逗号分隔
+	ID              *Multi[int]    `url:"id,omitempty"`               // ID	支持多ID查询,多个ID用逗号分隔
 	Name            *string        `url:"name,omitempty"`             // 标题	支持模糊匹配
 	Priority        *string        `url:"priority,omitempty"`         // 优先级。
 	PriorityLabel   *PriorityLabel `url:"priority_label,omitempty"`   // 优先级。推荐使用这个字段
@@ -267,17 +267,17 @@ func (s *StoryService) GetStoriesCount(
 // 获取保密需求数量
 
 type GetStoryCategoriesRequest struct {
-	WorkspaceID *int    `url:"workspace_id,omitempty"` // [必须]项目ID
-	ID          *ID     `url:"id,omitempty"`           // ID 支持多ID查询，多个ID用逗号分隔
-	Name        *string `url:"name,omitempty"`         // 需求分类名称	支持模糊匹配
-	Description *string `url:"description,omitempty"`  // 需求分类描述
-	ParentID    *int    `url:"parent_id,omitempty"`    // 父分类ID
-	Created     *string `url:"created,omitempty"`      // 创建时间	支持时间查询
-	Modified    *string `url:"modified,omitempty"`     // 最后修改时间	支持时间查询
-	Limit       *int    `url:"limit,omitempty"`        // 设置返回数量限制，默认为30
-	Page        *int    `url:"page,omitempty"`         // 返回当前数量限制下第N页的数据，默认为1（第一页）
-	Order       *Order  `url:"order,omitempty"`        // 排序规则，规则：字段名 ASC或者DESC，然后 urlencode	如按创建时间逆序：order=created%20desc
-	Fields      *string `url:"fields,omitempty"`       // 设置获取的字段，多个字段间以','逗号隔开
+	WorkspaceID *int        `url:"workspace_id,omitempty"` // [必须]项目ID
+	ID          *Multi[int] `url:"id,omitempty"`           // ID 支持多ID查询，多个ID用逗号分隔
+	Name        *string     `url:"name,omitempty"`         // 需求分类名称	支持模糊匹配
+	Description *string     `url:"description,omitempty"`  // 需求分类描述
+	ParentID    *int        `url:"parent_id,omitempty"`    // 父分类ID
+	Created     *string     `url:"created,omitempty"`      // 创建时间	支持时间查询
+	Modified    *string     `url:"modified,omitempty"`     // 最后修改时间	支持时间查询
+	Limit       *int        `url:"limit,omitempty"`        // 设置返回数量限制，默认为30
+	Page        *int        `url:"page,omitempty"`         // 返回当前数量限制下第N页的数据，默认为1（第一页）
+	Order       *Order      `url:"order,omitempty"`        // 排序规则，规则：字段名 ASC或者DESC，然后 urlencode	如按创建时间逆序：order=created%20desc
+	Fields      *string     `url:"fields,omitempty"`       // 设置获取的字段，多个字段间以','逗号隔开
 }
 
 type StoryCategory struct {
@@ -317,13 +317,13 @@ func (s *StoryService) GetStoryCategories(
 }
 
 type GetStoryCategoriesCountRequest struct {
-	WorkspaceID *int    `url:"workspace_id,omitempty"` // [必须]项目ID
-	ID          *ID     `url:"id,omitempty"`           // ID 支持多ID查询，多个ID用逗号分隔
-	Name        *string `url:"name,omitempty"`         // 需求分类名称	支持模糊匹配
-	Description *string `url:"description,omitempty"`  // 需求分类描述
-	ParentID    *int    `url:"parent_id,omitempty"`    // 父分类ID
-	Created     *string `url:"created,omitempty"`      // 创建时间	支持时间查询
-	Modified    *string `url:"modified,omitempty"`     // 最后修改时间	支持时间查询
+	WorkspaceID *int        `url:"workspace_id,omitempty"` // [必须]项目ID
+	ID          *Multi[int] `url:"id,omitempty"`           // ID 支持多ID查询，多个ID用逗号分隔
+	Name        *string     `url:"name,omitempty"`         // 需求分类名称	支持模糊匹配
+	Description *string     `url:"description,omitempty"`  // 需求分类描述
+	ParentID    *int        `url:"parent_id,omitempty"`    // 父分类ID
+	Created     *string     `url:"created,omitempty"`      // 创建时间	支持时间查询
+	Modified    *string     `url:"modified,omitempty"`     // 最后修改时间	支持时间查询
 }
 
 // GetStoryCategoriesCount 获取需求分类数量
@@ -354,21 +354,21 @@ func (s *StoryService) GetStoryCategoriesCount(
 // -----------------------------------------------------------------------------
 
 type GetStoryChangesRequest struct {
-	ID               *ID     `url:"id,omitempty"`
-	StoryID          *ID     `url:"story_id,omitempty"`           // 需求id	支持多ID查询
-	WorkspaceID      *int    `url:"workspace_id,omitempty"`       // [必须]项目ID
-	Creator          *string `url:"creator,omitempty"`            // 创建人（操作人）
-	Created          *string `url:"created,omitempty"`            // 创建时间（变更时间）	支持时间查询
-	ChangeType       *string `url:"change_type,omitempty"`        // 变更类型	值范围见文档下方附录1
-	ChangeSummary    *string `url:"change_summary,omitempty"`     // 需求变更描述
-	Comment          *string `url:"comment,omitempty"`            // 评论
-	EntityType       *string `url:"entity_type,omitempty"`        // 变更的对象类型
-	ChangeField      *string `url:"change_field,omitempty"`       // 设置获取变更字段如（status）
-	NeedParseChanges *int    `url:"need_parse_changes,omitempty"` // 设置field_changes字段是否返回（默认取 1。取 0 则不返回）
-	Limit            *int    `url:"limit,omitempty"`              // 设置返回数量限制，默认为30，最大取 100
-	Page             *int    `url:"page,omitempty"`               // 返回当前数量限制下第N页的数据，默认为1（第一页）
-	Order            *Order  `url:"order,omitempty"`              // 排序规则，规则：字段名 ASC或者DESC
-	Fields           *string `url:"fields,omitempty"`             // 设置获取的字段，多个字段间以','逗号隔开
+	ID               *Multi[int] `url:"id,omitempty"`
+	StoryID          *Multi[int] `url:"story_id,omitempty"`           // 需求id	支持多ID查询
+	WorkspaceID      *int        `url:"workspace_id,omitempty"`       // [必须]项目ID
+	Creator          *string     `url:"creator,omitempty"`            // 创建人（操作人）
+	Created          *string     `url:"created,omitempty"`            // 创建时间（变更时间）	支持时间查询
+	ChangeType       *string     `url:"change_type,omitempty"`        // 变更类型	值范围见文档下方附录1
+	ChangeSummary    *string     `url:"change_summary,omitempty"`     // 需求变更描述
+	Comment          *string     `url:"comment,omitempty"`            // 评论
+	EntityType       *string     `url:"entity_type,omitempty"`        // 变更的对象类型
+	ChangeField      *string     `url:"change_field,omitempty"`       // 设置获取变更字段如（status）
+	NeedParseChanges *int        `url:"need_parse_changes,omitempty"` // 设置field_changes字段是否返回（默认取 1。取 0 则不返回）
+	Limit            *int        `url:"limit,omitempty"`              // 设置返回数量限制，默认为30，最大取 100
+	Page             *int        `url:"page,omitempty"`               // 返回当前数量限制下第N页的数据，默认为1（第一页）
+	Order            *Order      `url:"order,omitempty"`              // 排序规则，规则：字段名 ASC或者DESC
+	Fields           *string     `url:"fields,omitempty"`             // 设置获取的字段，多个字段间以','逗号隔开
 }
 
 type StoryChange struct {
@@ -593,8 +593,8 @@ func (s *StoryService) UpdateStory(
 // -----------------------------------------------------------------------------
 
 type GetStoryRelatedBugsRequest struct {
-	WorkspaceID *int `url:"workspace_id,omitempty"`
-	StoryID     *ID  `url:"story_id,omitempty"`
+	WorkspaceID *int        `url:"workspace_id,omitempty"`
+	StoryID     *Multi[int] `url:"story_id,omitempty"`
 }
 
 type StoryRelatedBug struct {

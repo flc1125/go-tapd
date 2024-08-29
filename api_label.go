@@ -52,14 +52,14 @@ func NewLabelService(client *Client) *LabelService {
 // -----------------------------------------------------------------------------
 
 type GetLabelsRequest struct {
-	WorkspaceID *int    `url:"workspace_id,omitempty"` // [必选]项目ID
-	ID          *ID     `url:"id,omitempty"`           // [可选]id 支持多ID查询
-	Name        *string `url:"name,omitempty"`         // [可选]标签名称 支持模糊匹配
-	Creator     *string `url:"creator,omitempty"`      // [可选]创建人
-	Created     *string `url:"created,omitempty"`      // [可选]创建时间 支持时间查询
-	Limit       *int    `url:"limit,omitempty"`        // [可选]设置返回数量限制，默认为30
-	Page        *int    `url:"page,omitempty"`         // [可选]返回当前数量限制下第N页的数据，默认为1（第一页）
-	Order       *Order  `url:"order,omitempty"`        // [可选]排序规则，规则：字段名 ASC或者DESC，然后 urlencode 如按创建时间逆序
+	WorkspaceID *int        `url:"workspace_id,omitempty"` // [必选]项目ID
+	ID          *Multi[int] `url:"id,omitempty"`           // [可选]id 支持多ID查询
+	Name        *string     `url:"name,omitempty"`         // [可选]标签名称 支持模糊匹配
+	Creator     *string     `url:"creator,omitempty"`      // [可选]创建人
+	Created     *string     `url:"created,omitempty"`      // [可选]创建时间 支持时间查询
+	Limit       *int        `url:"limit,omitempty"`        // [可选]设置返回数量限制，默认为30
+	Page        *int        `url:"page,omitempty"`         // [可选]返回当前数量限制下第N页的数据，默认为1（第一页）
+	Order       *Order      `url:"order,omitempty"`        // [可选]排序规则，规则：字段名 ASC或者DESC，然后 urlencode 如按创建时间逆序
 }
 
 // GetLabels 获取自定义标签
@@ -91,11 +91,11 @@ func (s *LabelService) GetLabels(
 // -----------------------------------------------------------------------------
 
 type GetLabelCountRequest struct {
-	WorkspaceID *int    `url:"workspace_id,omitempty"` // [必选]项目ID
-	ID          *ID     `url:"id,omitempty"`           // [可选]id 支持多ID查询
-	Name        *string `url:"name,omitempty"`         // [可选]标签名称 支持模糊匹配
-	Creator     *string `url:"creator,omitempty"`      // [可选]创建人
-	Created     *string `url:"created,omitempty"`      // [可选]创建时间 支持时间查询
+	WorkspaceID *int        `url:"workspace_id,omitempty"` // [必选]项目ID
+	ID          *Multi[int] `url:"id,omitempty"`           // [可选]id 支持多ID查询
+	Name        *string     `url:"name,omitempty"`         // [可选]标签名称 支持模糊匹配
+	Creator     *string     `url:"creator,omitempty"`      // [可选]创建人
+	Created     *string     `url:"created,omitempty"`      // [可选]创建时间 支持时间查询
 }
 
 // GetLabelsCount 获取标签数量

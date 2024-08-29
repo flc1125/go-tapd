@@ -4,11 +4,60 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
-	"strconv"
 	"strings"
 
 	"github.com/google/go-querystring/query"
 )
+
+// -----------------------------------------------------------------------------
+// Multi is a type for multi values.
+// Multi{Value1, Value2, Value3} => value1,value2,value3
+//
+// Useful for ID/Fields/...
+// -----------------------------------------------------------------------------
+
+type Multi[T any] []T
+
+var _ query.Encoder = (*Multi[string])(nil)
+
+func NewMulti[T any](values ...T) *Multi[T] {
+	return (*Multi[T])(&values)
+}
+
+func (m Multi[T]) EncodeValues(key string, v *url.Values) error {
+	if len(m) > 0 {
+		var values []string
+		for _, value := range m {
+			values = append(values, fmt.Sprint(value))
+		}
+		v.Add(key, strings.Join(values, ","))
+	}
+	return nil
+}
+
+// -----------------------------------------------------------------------------
+// Enum is a type for enum values.
+// Enum{Value1, Value2, Value3} => value1|value2|value3
+// -----------------------------------------------------------------------------
+
+type Enum[T any] []T
+
+var _ query.Encoder = (*Enum[string])(nil)
+
+func NewEnum[T any](values ...T) *Enum[T] {
+	return (*Enum[T])(&values)
+}
+
+func (e Enum[T]) EncodeValues(key string, v *url.Values) error {
+	if len(e) > 0 {
+		var values []string
+		for _, value := range e {
+			values = append(values, fmt.Sprint(value))
+		}
+		v.Add(key, strings.Join(values, "|"))
+	}
+	return nil
+}
 
 // -----------------------------------------------------------------------------
 // PriorityLabel is a type for priority labels.
@@ -25,31 +74,6 @@ const (
 
 func (p PriorityLabel) String() string {
 	return string(p)
-}
-
-// -----------------------------------------------------------------------------
-// ID is a query encoder for id parameters.
-// -----------------------------------------------------------------------------
-
-type ID struct {
-	id []int
-}
-
-var _ query.Encoder = (*ID)(nil)
-
-func NewID(id ...int) *ID {
-	return &ID{id: id}
-}
-
-func (i *ID) EncodeValues(key string, v *url.Values) error {
-	ids := make([]string, 0, len(i.id))
-	for _, id := range i.id {
-		ids = append(ids, strconv.Itoa(id))
-	}
-	if len(ids) > 0 {
-		v.Add(key, strings.Join(ids, ","))
-	}
-	return nil
 }
 
 // -----------------------------------------------------------------------------
@@ -114,52 +138,6 @@ func (o *Order) UnmarshalJSON(bytes []byte) error {
 
 func (o *Order) EncodeValues(key string, v *url.Values) error {
 	v.Add(key, fmt.Sprintf("%s %s", o.Field, o.OrderType))
-	return nil
-}
-
-// -----------------------------------------------------------------------------
-// Fields is a query encoder for fields parameters.
-// -----------------------------------------------------------------------------
-
-// Fields todo: refactor to type Fields []string
-type Fields struct {
-	fields []string
-}
-
-var _ query.Encoder = (*Fields)(nil)
-
-func NewFields(fields ...string) *Fields {
-	return &Fields{fields: fields}
-}
-
-func (f *Fields) EncodeValues(key string, v *url.Values) error {
-	if len(f.fields) > 0 {
-		v.Add(key, strings.Join(f.fields, ","))
-	}
-	return nil
-}
-
-// -----------------------------------------------------------------------------
-// Enum is a type for enum values.
-// Enum{Value1, Value2, Value3} => value1|value2|value3
-// -----------------------------------------------------------------------------
-
-type Enum[T any] []T
-
-var _ query.Encoder = (*Enum[string])(nil)
-
-func NewEnum[T any](values ...T) *Enum[T] {
-	return (*Enum[T])(&values)
-}
-
-func (e Enum[T]) EncodeValues(key string, v *url.Values) error {
-	if len(e) > 0 {
-		var values []string
-		for _, value := range e {
-			values = append(values, fmt.Sprint(value))
-		}
-		v.Add(key, strings.Join(values, "|"))
-	}
 	return nil
 }
 

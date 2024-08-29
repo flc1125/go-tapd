@@ -29,7 +29,7 @@ func TestMeasureService_LifeTimes(t *testing.T) {
 		Created:     Ptr("2024-08-26"),
 		Limit:       Ptr(10),
 		Page:        Ptr(1),
-		Fields:      NewFields("id", "workspace_id"),
+		Fields:      NewMulti("id", "workspace_id"),
 	})
 	assert.NoError(t, err)
 	assert.Len(t, lifeTimes, 1)

@@ -84,7 +84,7 @@ func (s *CommentService) CreateComment(
 
 type GetCommentsRequest struct {
 	// 评论ID 支持多ID查询
-	ID *ID `url:"id,omitempty"`
+	ID *Multi[int] `url:"id,omitempty"`
 
 	// 标题
 	Title *string `url:"title,omitempty"`
@@ -126,7 +126,7 @@ type GetCommentsRequest struct {
 	Order *Order `url:"order,omitempty"`
 
 	// 设置获取的字段，多个字段间以','逗号隔开
-	Fields *Fields `url:"fields,omitempty"`
+	Fields *Multi[string] `url:"fields,omitempty"`
 }
 
 // GetComments 获取评论
@@ -158,7 +158,7 @@ func (s *CommentService) GetComments(
 
 type GetCommentsCountRequest struct {
 	// 评论ID 支持多ID查询
-	ID *ID `url:"id,omitempty"`
+	ID *Multi[int] `url:"id,omitempty"`
 
 	// 标题
 	Title *string `url:"title,omitempty"`

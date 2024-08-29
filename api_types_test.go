@@ -77,6 +77,30 @@ func TestTypes_Enum(t *testing.T) {
 	assert.Equal(t, "a|b|c", values.Get("key4"))
 }
 
+func TestTypes_Multi(t *testing.T) {
+	values := &url.Values{}
+
+	// string
+	multi1 := NewMulti("a", "b", "c")
+	assert.NoError(t, multi1.EncodeValues("key1", values))
+	assert.Equal(t, "a,b,c", values.Get("key1"))
+
+	// int
+	multi2 := NewMulti(1, 2, 3)
+	assert.NoError(t, multi2.EncodeValues("key2", values))
+	assert.Equal(t, "1,2,3", values.Get("key2"))
+
+	// float64
+	multi3 := NewMulti(1.1, 2.2, 3.3)
+	assert.NoError(t, multi3.EncodeValues("key3", values))
+	assert.Equal(t, "1.1,2.2,3.3", values.Get("key3"))
+
+	// Multi{}
+	multi4 := Multi[string]([]string{"a", "b", "c"})
+	assert.NoError(t, multi4.EncodeValues("key4", values))
+	assert.Equal(t, "a,b,c", values.Get("key4"))
+}
+
 func TestTypes_Order_Custom(t *testing.T) {
 	type Demo struct {
 		Order *Order `json:"order"`

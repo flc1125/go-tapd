@@ -26,7 +26,7 @@ func TestLabelService_GetLabels(t *testing.T) {
 
 	labels, _, err := client.LabelService.GetLabels(ctx, &GetLabelsRequest{
 		WorkspaceID: Ptr(11112222),
-		ID:          NewID(111, 222),
+		ID:          NewMulti(111, 222),
 		Name:        Ptr("test"),
 		Creator:     Ptr("tapd-username"),
 		Created:     Ptr("2024-08-26"),
@@ -63,7 +63,7 @@ func TestLabelService_GetLabelCount(t *testing.T) {
 
 	count, _, err := client.LabelService.GetLabelsCount(ctx, &GetLabelCountRequest{
 		WorkspaceID: Ptr(11112222),
-		ID:          NewID(111, 222),
+		ID:          NewMulti(111, 222),
 		Name:        Ptr("test"),
 		Creator:     Ptr("tapd-username"),
 		Created:     Ptr("2024-08-26"),
