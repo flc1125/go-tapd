@@ -47,7 +47,7 @@ func WithRetryableHTTPClientBackoff(backoff retryablehttp.Backoff) RetryableHTTP
 
 func NewRetryableHTTPClient(opts ...RetryableHTTPClientOption) *http.Client {
 	retryClient := retryablehttp.NewClient()
-	// retryClient.Logger = nil // todo: set default logger
+	retryClient.Logger = nil
 	for _, opt := range opts {
 		opt(retryClient)
 	}
