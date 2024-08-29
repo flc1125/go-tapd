@@ -39,13 +39,13 @@ func NewMeasureService(client *Client) *MeasureService {
 // -----------------------------------------------------------------------------
 
 type LifeTimesRequest struct {
-	EntityID    *int           `url:"entity_id,omitempty"`    // [必须]业务对象ID
-	EntityType  *EntityType    `url:"entity_type,omitempty"`  // [必须]业务对象类型 目前type可选值：task,story,bug
-	WorkspaceID *int           `url:"workspace_id,omitempty"` // [必须]项目ID
-	Created     *string        `url:"created,omitempty"`      // 创建时间
-	Limit       *int           `url:"limit,omitempty"`        // 设置返回数量限制，默认为30
-	Page        *int           `url:"page,omitempty"`         // 返回当前数量限制下第N页的数据，默认为1（第一页）
-	Fields      *Multi[string] `url:"fields,omitempty"`       // 设置获取的字段，多个字段间以','逗号隔开
+	EntityID    *int               `url:"entity_id,omitempty"`    // [必须]业务对象ID
+	EntityType  *EntityType        `url:"entity_type,omitempty"`  // [必须]业务对象类型 目前type可选值：task,story,bug
+	WorkspaceID *int               `url:"workspace_id,omitempty"` // [必须]项目ID
+	Created     *string            `url:"created,omitempty"`      // 创建时间
+	Limit       *int               `url:"limit,omitempty"`        // 设置返回数量限制，默认为30
+	Page        *int               `url:"page,omitempty"`         // 返回当前数量限制下第N页的数据，默认为1（第一页）
+	Fields      *MultiType[string] `url:"fields,omitempty"`       // 设置获取的字段，多个字段间以','逗号隔开
 }
 
 // LifeTimes 获取状态流转时间

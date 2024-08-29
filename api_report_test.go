@@ -31,7 +31,7 @@ func TestReportService_GetReports(t *testing.T) {
 		Created:     Ptr("created"),
 		Limit:       Ptr(10),
 		Page:        Ptr(1),
-		Fields:      NewMulti("id", "title"),
+		Fields:      Multi("id", "title"),
 	})
 	assert.NoError(t, err)
 	assert.True(t, len(reports) > 0)

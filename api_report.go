@@ -54,14 +54,14 @@ func NewReportService(client *Client) *ReportService {
 
 // GetReportsRequest represents a request to get reports
 type GetReportsRequest struct {
-	WorkspaceID *int           `url:"workspace_id,omitempty"` // [必须]项目 ID
-	ID          *int           `url:"id,omitempty"`           // ID
-	Title       *string        `url:"title,omitempty"`        // 标题
-	Author      *string        `url:"author,omitempty"`       // 创建人
-	Created     *string        `url:"created,omitempty"`      // 创建时间
-	Limit       *int           `url:"limit,omitempty"`        // 设置返回数量限制，默认为30
-	Page        *int           `url:"page,omitempty"`         // 返回当前数量限制下第N页的数据，默认为1（第一页）
-	Fields      *Multi[string] `url:"fields,omitempty"`       // 设置获取的字段，多个字段间以','逗号隔开
+	WorkspaceID *int               `url:"workspace_id,omitempty"` // [必须]项目 ID
+	ID          *int               `url:"id,omitempty"`           // ID
+	Title       *string            `url:"title,omitempty"`        // 标题
+	Author      *string            `url:"author,omitempty"`       // 创建人
+	Created     *string            `url:"created,omitempty"`      // 创建时间
+	Limit       *int               `url:"limit,omitempty"`        // 设置返回数量限制，默认为30
+	Page        *int               `url:"page,omitempty"`         // 返回当前数量限制下第N页的数据，默认为1（第一页）
+	Fields      *MultiType[string] `url:"fields,omitempty"`       // 设置获取的字段，多个字段间以','逗号隔开
 }
 
 // GetReports 获取项目报告

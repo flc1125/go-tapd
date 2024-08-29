@@ -10,21 +10,21 @@ import (
 )
 
 // -----------------------------------------------------------------------------
-// Multi is a type for multi values.
-// Multi{Value1, Value2, Value3} => value1,value2,value3
+// MultiType is a type for multi values.
+// MultiType{Value1, Value2, Value3} => value1,value2,value3
 //
 // Useful for ID/Fields/...
 // -----------------------------------------------------------------------------
 
-type Multi[T any] []T
+type MultiType[T any] []T
 
-var _ query.Encoder = (*Multi[string])(nil)
+var _ query.Encoder = (*MultiType[string])(nil)
 
-func NewMulti[T any](values ...T) *Multi[T] {
-	return (*Multi[T])(&values)
+func Multi[T any](values ...T) *MultiType[T] {
+	return (*MultiType[T])(&values)
 }
 
-func (m Multi[T]) EncodeValues(key string, v *url.Values) error {
+func (m MultiType[T]) EncodeValues(key string, v *url.Values) error {
 	if len(m) > 0 {
 		var values []string
 		for _, value := range m {
@@ -36,19 +36,19 @@ func (m Multi[T]) EncodeValues(key string, v *url.Values) error {
 }
 
 // -----------------------------------------------------------------------------
-// Enum is a type for enum values.
-// Enum{Value1, Value2, Value3} => value1|value2|value3
+// EnumType is a type for enum values.
+// EnumType{Value1, Value2, Value3} => value1|value2|value3
 // -----------------------------------------------------------------------------
 
-type Enum[T any] []T
+type EnumType[T any] []T
 
-var _ query.Encoder = (*Enum[string])(nil)
+var _ query.Encoder = (*EnumType[string])(nil)
 
-func NewEnum[T any](values ...T) *Enum[T] {
-	return (*Enum[T])(&values)
+func Enum[T any](values ...T) *EnumType[T] {
+	return (*EnumType[T])(&values)
 }
 
-func (e Enum[T]) EncodeValues(key string, v *url.Values) error {
+func (e EnumType[T]) EncodeValues(key string, v *url.Values) error {
 	if len(e) > 0 {
 		var values []string
 		for _, value := range e {
