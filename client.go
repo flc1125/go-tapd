@@ -169,15 +169,16 @@ func (c *Client) NewRequest(ctx context.Context, method, path string, data any, 
 		req.SetBasicAuth(c.username, c.password)
 	}
 
+	// Set the request specific headers.
+	for k, v := range reqHeaders {
+		req.Header[k] = v
+	}
+
+	// Apply request options
 	for _, opt := range opts {
 		if err := opt(req); err != nil {
 			return nil, err
 		}
-	}
-
-	// Set the request specific headers.
-	for k, v := range reqHeaders {
-		req.Header[k] = v
 	}
 
 	return req, nil
