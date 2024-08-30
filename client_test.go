@@ -149,7 +149,6 @@ func TestClient_WithRequestOption(t *testing.T) {
 			header.Set("func-name", "func-value")
 			header.Add("func-name-2", "func-value-2")
 			header.Add("func-name-2", "func-value-3")
-
 		}),
 		WithRequestUserAgent("test-user-agent"),
 	})
