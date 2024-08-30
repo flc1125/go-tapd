@@ -54,8 +54,8 @@ func TestClient_BasicAuth(t *testing.T) {
 		// check basic auth
 		username, password, ok := r.BasicAuth()
 		assert.True(t, ok)
-		assert.Equal(t, "tapd-username", username)
-		assert.Equal(t, "tapd-password", password)
+		assert.Equal(t, apiUsername, username)
+		assert.Equal(t, apiPassword, password)
 
 		fmt.Fprint(w, `{
   "status": 1,
