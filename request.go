@@ -28,3 +28,17 @@ func WithRequestHeaders(headers map[string]string) RequestOption {
 		return nil
 	}
 }
+
+func WithRequestHeaderFunc(fn func(http.Header)) RequestOption {
+	return func(req *http.Request) error {
+		fn(req.Header)
+		return nil
+	}
+}
+
+func WithRequestUserAgent(userAgent string) RequestOption {
+	return func(req *http.Request) error {
+		req.Header.Set("User-Agent", userAgent)
+		return nil
+	}
+}
