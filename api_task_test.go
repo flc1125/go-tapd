@@ -1,6 +1,7 @@
 package tapd
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -40,6 +41,60 @@ func TestTaskService_GetTasksCount(t *testing.T) {
 	})
 	assert.NoError(t, err)
 	assert.Equal(t, 36, count)
+}
+
+func TestTaskService_GetTaskChanges(t *testing.T) {
+	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodGet, r.Method)
+		assert.Equal(t, "/task_changes", r.URL.Path)
+		assert.Equal(t, "11112222", r.URL.Query().Get("workspace_id"))
+
+		_, _ = w.Write(loadData(t, ".testdata/api/task/get_task_changes.json"))
+	}))
+
+	changes, _, err := client.TaskService.GetTaskChanges(context.Background(), &GetTaskChangesRequest{
+		WorkspaceID: Ptr(11112222),
+	})
+	assert.NoError(t, err)
+	assert.True(t, len(changes) > 0)
+
+	var flag1, flag2 bool
+	for _, change := range changes {
+		if change.ID == "1111112222001019140" {
+			for _, fieldChange := range change.FieldChanges {
+				if fieldChange.Field == "remain" {
+					assert.Equal(t, "1", fieldChange.ValueBefore)
+					assert.Equal(t, "0", fieldChange.ValueAfter)
+					assert.Equal(t, "剩余工时", fieldChange.FieldLabel)
+					flag1 = true
+				}
+				if fieldChange.Field == "effort_completed" {
+					assert.Equal(t, "0", fieldChange.ValueBefore)
+					assert.Equal(t, "1", fieldChange.ValueAfter)
+					assert.Equal(t, "完成工时", fieldChange.FieldLabel)
+					flag2 = true
+				}
+			}
+		}
+	}
+	assert.True(t, flag1)
+	assert.True(t, flag2)
+}
+
+func TestTaskService_GetTaskChangesCount(t *testing.T) {
+	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodGet, r.Method)
+		assert.Equal(t, "/task_changes/count", r.URL.Path)
+		assert.Equal(t, "11112222", r.URL.Query().Get("workspace_id"))
+
+		_, _ = w.Write(loadData(t, ".testdata/api/task/get_task_changes_count.json"))
+	}))
+
+	count, _, err := client.TaskService.GetTaskChangesCount(context.Background(), &GetTaskChangesCountRequest{
+		WorkspaceID: Ptr(11112222),
+	})
+	assert.NoError(t, err)
+	assert.Equal(t, 189, count)
 }
 
 func TestTaskService_GetTaskFieldsInfo(t *testing.T) {

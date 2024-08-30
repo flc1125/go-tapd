@@ -2,7 +2,9 @@ package tapd
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"strconv"
 )
 
 // TaskStatus 任务状态
@@ -114,9 +116,172 @@ func NewTaskService(client *Client) *TaskService {
 }
 
 // 创建任务
-// 获取任务变更历史
-// 获取任务变更次数
+
+type TaskChange struct {
+	ID             string                  `json:"id,omitempty"`
+	WorkspaceID    string                  `json:"workspace_id,omitempty"`
+	AppID          string                  `json:"app_id,omitempty"`
+	WorkitemTypeID string                  `json:"workitem_type_id,omitempty"`
+	Creator        string                  `json:"creator,omitempty"`
+	Created        string                  `json:"created,omitempty"`
+	ChangeSummary  string                  `json:"change_summary,omitempty"`
+	Comment        string                  `json:"comment,omitempty"`
+	Changes        string                  `json:"changes,omitempty"`
+	EntityType     string                  `json:"entity_type,omitempty"`
+	ChangeType     string                  `json:"change_type,omitempty"`
+	ChangeTypeText string                  `json:"change_type_text,omitempty"`
+	FieldChanges   []TaskChangeFieldChange `json:"field_changes,omitempty"`
+	TaskID         string                  `json:"task_id,omitempty"`
+}
+
+type TaskChangeFieldChange struct {
+	Field             string `json:"field,omitempty"`
+	ValueBefore       string `json:"value_before,omitempty"`
+	ValueAfter        string `json:"value_after,omitempty"`
+	ValueBeforeParsed string `json:"value_before_parsed,omitempty"`
+	ValueAfterParsed  string `json:"value_after_parsed,omitempty"`
+	FieldLabel        string `json:"field_label,omitempty"`
+}
+
+// ↓↓↓↓ 这段代码是为了解决 Tapd API 返回的不同数据类型问题，官方的 API 写的非常好 🙂🙂----开始
+type rawTaskChange struct {
+	TaskChange
+	FieldChanges []struct {
+		TaskChangeFieldChange
+		ValueBefore any `json:"value_before"` // 为了兼容自定义字段，value_before 和 value_after 为 any 类型
+		ValueAfter  any `json:"value_after"`  // 为了兼容自定义字段，value_before 和 value_after 为 any 类型
+	} `json:"field_changes,omitempty"`
+}
+
+func parseRawTaskChange(raw *rawTaskChange) (*TaskChange, error) {
+	fieldChanges := make([]TaskChangeFieldChange, 0, len(raw.TaskChange.FieldChanges))
+
+	for _, rawFieldChange := range raw.FieldChanges {
+		fieldChange := rawFieldChange.TaskChangeFieldChange
+
+		// value_before 和 value_after 为 any 类型，需要根据实际类型解析
+		valueBefore, err := decodeGetTaskChangesFieldChangesValue(rawFieldChange.ValueBefore)
+		if err != nil {
+			return nil, err
+		}
+		fieldChange.ValueBefore = valueBefore
+
+		valueAfter, err := decodeGetTaskChangesFieldChangesValue(rawFieldChange.ValueAfter)
+		if err != nil {
+			return nil, err
+		}
+		fieldChange.ValueAfter = valueAfter
+
+		fieldChanges = append(fieldChanges, fieldChange)
+	}
+
+	change := raw.TaskChange
+	change.FieldChanges = fieldChanges
+	return &change, nil
+}
+
+func decodeGetTaskChangesFieldChangesValue(v any) (string, error) {
+	switch v := v.(type) {
+	case string:
+		return v, nil
+	case int:
+		return strconv.Itoa(v), nil
+	case float64:
+		return strconv.FormatFloat(v, 'f', -1, 64), nil
+	case nil:
+		return "", nil
+	default:
+		return "", fmt.Errorf("unexpected type %T", v)
+	}
+}
+
+// ↑↑↑↑ 这段代码是为了解决 Tapd API 返回的不同数据类型问题，官方的 API 写的非常好 🙂🙂----结束(再次👏）
+
+type GetTaskChangesRequest struct {
+	ID               *MultiType[int]    `url:"id,omitempty"`                 // 支持多ID查询
+	WorkspaceID      *int               `url:"workspace_id,omitempty"`       // [必须]项目ID
+	TaskID           *int               `url:"task_id,omitempty"`            // 任务ID
+	Creator          *string            `url:"creator,omitempty"`            // 创建人（操作人）
+	Created          *string            `url:"created,omitempty"`            // 创建时间（变更时间）	支持时间查询
+	ChangeSummary    *string            `url:"change_summary,omitempty"`     // 需求变更描述
+	Comment          *string            `url:"comment,omitempty"`            // 评论
+	Changes          *string            `url:"changes,omitempty"`            // 变更详细记录
+	EntityType       *string            `url:"entity_type,omitempty"`        // 变更的对象类型
+	NeedParseChanges *int               `url:"need_parse_changes,omitempty"` // 设置field_changes字段是否返回（默认取 1。取 0 则不返回）
+	Limit            *int               `url:"limit,omitempty"`              // 设置返回数量限制，默认为30
+	Page             *int               `url:"page,omitempty"`               // 返回当前数量限制下第N页的数据，默认为1（第一页）
+	Order            *Order             `url:"order,omitempty"`              //nolint:lll // 排序规则，规则：字段名 ASC或者DESC，然后 urlencode	如按创建时间逆序：order=created%20desc
+	Fields           *MultiType[string] `url:"fields,omitempty"`             // 设置获取的字段，多个字段间以','逗号隔开
+}
+
+// GetTaskChanges 获取任务变更历史
+//
+// https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/task/get_task_changes.html
+func (s *TaskService) GetTaskChanges(
+	ctx context.Context, request *GetTaskChangesRequest, opts ...RequestOption,
+) ([]*TaskChange, *Response, error) {
+	req, err := s.client.NewRequest(ctx, http.MethodGet, "task_changes", request, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var rawItems []struct {
+		WorkitemChange *rawTaskChange `json:"WorkitemChange"`
+	}
+	resp, err := s.client.Do(req, &rawItems)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	changes := make([]*TaskChange, 0, len(rawItems))
+	for _, rawItem := range rawItems {
+		change, err := parseRawTaskChange(rawItem.WorkitemChange)
+		if err != nil {
+			return nil, resp, err
+		}
+		changes = append(changes, change)
+	}
+
+	return changes, resp, nil
+}
+
+type GetTaskChangesCountRequest struct {
+	ID            *MultiType[int] `url:"id,omitempty"`             // 支持多ID查询
+	WorkspaceID   *int            `url:"workspace_id,omitempty"`   // [必须]项目ID
+	TaskID        *int            `url:"task_id,omitempty"`        // 任务ID
+	Creator       *string         `url:"creator,omitempty"`        // 创建人（操作人）
+	Created       *string         `url:"created,omitempty"`        // 创建时间（变更时间）	支持时间查询
+	ChangeSummary *string         `url:"change_summary,omitempty"` // 需求变更描述
+	Comment       *string         `url:"comment,omitempty"`        // 评论
+	Changes       *string         `url:"changes,omitempty"`        // 变更详细记录
+	EntityType    *string         `url:"entity_type,omitempty"`    // 变更的对象类型
+}
+
+// GetTaskChangesCount 获取任务变更次数
+//
+// https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/task/get_task_changes_count.html
+func (s *TaskService) GetTaskChangesCount(
+	ctx context.Context, request *GetTaskChangesCountRequest, opts ...RequestOption,
+) (int, *Response, error) {
+	req, err := s.client.NewRequest(ctx, http.MethodGet, "task_changes/count", request, opts)
+	if err != nil {
+		return 0, nil, err
+	}
+
+	var response CountResponse
+	resp, err := s.client.Do(req, &response)
+	if err != nil {
+		return 0, resp, err
+	}
+
+	return response.Count, resp, nil
+}
+
 // 获取任务自定义字段配置
+
+// -----------------------------------------------------------------------------
+// 获取任务
+// -----------------------------------------------------------------------------
 
 type GetTasksRequest struct {
 	ID               *MultiType[int]       `url:"id,omitempty"`               // 支持多ID查询、模糊匹配
@@ -378,7 +543,7 @@ type TaskFieldsInfo struct {
 	PureOptions  []TaskFieldsInfoPureOption  `json:"pure_options,omitempty"`
 }
 
-type getTaskFieldsInfoResponse map[string]struct {
+type rawTaskFieldsInfo map[string]struct {
 	Name         string                      `json:"name,omitempty"`      // name
 	HTMLType     TaskFieldsInfoHTMLType      `json:"html_type,omitempty"` // 类型
 	Label        string                      `json:"label,omitempty"`     // 中文名称
@@ -398,14 +563,14 @@ func (s *TaskService) GetTaskFieldsInfo(
 		return nil, nil, err
 	}
 
-	var response getTaskFieldsInfoResponse
-	resp, err := s.client.Do(req, &response)
+	var raw rawTaskFieldsInfo
+	resp, err := s.client.Do(req, &raw)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	fields := make([]*TaskFieldsInfo, 0, len(response))
-	for _, item := range response {
+	fields := make([]*TaskFieldsInfo, 0, len(raw))
+	for _, item := range raw {
 		options := make([]TaskFieldsInfoOption, 0)
 
 		if item.Options != nil {
