@@ -1,0 +1,13 @@
+{
+  "status": 1,
+  "data": {
+    "Attachment": {
+      "type": "tfl_image",
+      "value": "/tfl/pictures/202409/demo.jpg",
+      "workspace_id": 11112222,
+      "filename": "demo.jpg",
+      "download_url": "https://file.tapd.cn/attachments/tmp_download/tmp_wiki_attachments_down_478f62fe8899d45db17fcc228f56111?salt=27df411110c0021be&time=1725203451"
+    }
+  },
+  "info": "success"
+}

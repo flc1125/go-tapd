@@ -1,0 +1,32 @@
+{
+  "status": 1,
+  "data": [
+    {
+      "Attachment": {
+        "id": "1111112222001002462",
+        "type": "bug",
+        "entry_id": "1111112222001020342",
+        "filename": "demo.jpg",
+        "description": "this is a demo image",
+        "content_type": "image/jpeg",
+        "created": "2022-04-20 17:32:37",
+        "workspace_id": "11112222",
+        "owner": "Go-Tapd"
+      }
+    },
+    {
+      "Attachment": {
+        "id": "1111112222001002526",
+        "type": "bug",
+        "entry_id": "1111112222001021177",
+        "filename": "example.jpg",
+        "description": null,
+        "content_type": "image/jpeg",
+        "created": "2022-06-08 17:24:22",
+        "workspace_id": "11112222",
+        "owner": "Go-Tapd"
+      }
+    }
+  ],
+  "info": "success"
+}

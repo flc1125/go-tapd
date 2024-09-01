@@ -1,0 +1,19 @@
+{
+  "status": 1,
+  "data": {
+    "Document": {
+      "id": "1134190502001000725",
+      "workspace_id": "11112222",
+      "name": "文档功能使用秘籍",
+      "type": "word",
+      "folder_id": "1134190502001000443",
+      "creator": "TAPD",
+      "modifier": "TAPD",
+      "status": null,
+      "created": "2022-06-10 10:04:13",
+      "modified": "2022-06-10 10:04:13",
+      "download_url": "https://file.tapd.cn/34190502/documents/download/1134190502001111?api_tmp_token=ffeb999ded9c397f5dbfa111&client_id=xxxx"
+    }
+  },
+  "info": "success"
+}
