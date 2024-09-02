@@ -2,7 +2,6 @@ package tapd
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 )
 
@@ -49,6 +48,7 @@ type CreateStoryRequest struct {
 }
 
 // CreateStory 创建需求
+//
 // https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/add_story.html
 func (s *StoryService) CreateStory(
 	ctx context.Context, request *CreateStoryRequest, opts ...RequestOption,
@@ -434,22 +434,23 @@ type GetStoryCustomFieldsSettingsRequest struct {
 }
 
 type StoryCustomFieldsSetting struct {
-	ID              string          `json:"id,omitempty"`           // 自定义字段配置的ID
-	WorkspaceID     string          `json:"workspace_id,omitempty"` // 所属项目ID
-	AppID           string          `json:"app_id,omitempty"`
-	EntryType       string          `json:"entry_type,omitempty"`   // 所属实体对象
-	CustomField     string          `json:"custom_field,omitempty"` // 自定义字段标识（英文名）
-	Type            string          `json:"type,omitempty"`         // 输入类型
-	Name            string          `json:"name,omitempty"`         // 自定义字段显示名称
-	Options         json.RawMessage `json:"options,omitempty"`      // 自定义字段可选值
-	Enabled         string          `json:"enabled,omitempty"`      // 是否启用
-	Freeze          string          `json:"freeze,omitempty"`
-	Sort            string          `json:"sort,omitempty"` // 显示时排序系数
-	Memo            string          `json:"memo,omitempty"`
-	OpenExtensionID string          `json:"open_extension_id,omitempty"`
-	IsOut           int             `json:"is_out,omitempty"`
-	IsUninstall     int             `json:"is_uninstall,omitempty"`
-	AppName         string          `json:"app_name,omitempty"`
+	ID              string  `json:"id,omitempty"`           // 自定义字段配置的ID
+	WorkspaceID     string  `json:"workspace_id,omitempty"` // 所属项目ID
+	AppID           string  `json:"app_id,omitempty"`
+	EntryType       string  `json:"entry_type,omitempty"`   // 所属实体对象
+	CustomField     string  `json:"custom_field,omitempty"` // 自定义字段标识（英文名）
+	Type            string  `json:"type,omitempty"`         // 输入类型
+	Name            string  `json:"name,omitempty"`         // 自定义字段显示名称
+	Options         *string `json:"options,omitempty"`      // 自定义字段可选值
+	ExtraConfig     *string `json:"extra_config,omitempty"` // 额外配置
+	Enabled         string  `json:"enabled,omitempty"`      // 是否启用
+	Freeze          string  `json:"freeze,omitempty"`
+	Sort            *string `json:"sort,omitempty"` // 显示时排序系数
+	Memo            *string `json:"memo,omitempty"`
+	OpenExtensionID string  `json:"open_extension_id,omitempty"`
+	IsOut           int     `json:"is_out,omitempty"`
+	IsUninstall     int     `json:"is_uninstall,omitempty"`
+	AppName         string  `json:"app_name,omitempty"`
 }
 
 // GetStoryCustomFieldsSettings 获取需求自定义字段配置
@@ -510,6 +511,7 @@ func (s *StoryService) GetStoryCustomFieldsSettings(
 // -----------------------------------------------------------------------------
 // 更新需求
 // -----------------------------------------------------------------------------
+
 type UpdateStoryRequest struct {
 	CustomFieldsRequest
 	CustomPlanFieldsRequest
@@ -605,12 +607,13 @@ type GetStoryRelatedBugsRequest struct {
 }
 
 type StoryRelatedBug struct {
-	WorkspaceID int    `json:"workspace_id"`
-	StoryID     string `json:"story_id"`
-	BugID       string `json:"bug_id"`
+	WorkspaceID int    `json:"workspace_id,omitempty"`
+	StoryID     string `json:"story_id,omitempty"`
+	BugID       string `json:"bug_id,omitempty"`
 }
 
 // GetStoryRelatedBugs 获取需求关联的缺陷
+//
 // https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_story_related_bugs.html
 func (s *StoryService) GetStoryRelatedBugs(
 	ctx context.Context, request *GetStoryRelatedBugsRequest, opts ...RequestOption,
@@ -620,7 +623,7 @@ func (s *StoryService) GetStoryRelatedBugs(
 		return nil, nil, err
 	}
 
-	bugs := make([]*StoryRelatedBug, 0)
+	var bugs []*StoryRelatedBug
 	resp, err := s.client.Do(req, &bugs)
 	if err != nil {
 		return nil, resp, err
