@@ -5,8 +5,8 @@
 
 1、所有请求参数的字段均为指针类型，响应字段默认非指针类型，若存在null值可使用指针类型
 2、尽可能以精简的请求参数或结构体、响应参数或结构体
-3、支持逗号分隔的列表，如：1,2,3，请使用 *Multi[T] 结构体，如 ID 则为 *Multi[int]，如 Fields 则为 *Multi[string]
-4、支持枚举的列表，如：1|2|3，请使用 *Enum[T] 结构体，如 ID 则为 *Enum[int]，如 Fields 则为 *Enum[string]
+3、支持逗号分隔的列表，如：1,2,3，请使用 *Multi[T] 结构体，如 ID 则为 *Multi[int]，如 Fields 则为 *Multi[string]。使用时可使用 `NewMulti` 函数创建
+4、支持枚举的列表，如：1|2|3，请使用 *Enum[T] 结构体，如 ID 则为 *Enum[int]，如 Fields 则为 *Enum[string]。使用时可使用 `NewEnum` 函数创建
 ```
 
 ## 研发协作API
