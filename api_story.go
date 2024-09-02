@@ -430,23 +430,30 @@ func (s *StoryService) GetStoryChanges(
 // -----------------------------------------------------------------------------
 
 type GetStoryCustomFieldsSettingsRequest struct {
-	WorkspaceID *int `url:"workspace_id,omitempty"`
+	WorkspaceID *int `url:"workspace_id,omitempty"` // 项目ID
 }
 
 type StoryCustomFieldsSetting struct {
-	ID          string          `json:"id"`
-	WorkspaceID string          `json:"workspace_id"`
-	EntryType   string          `json:"entry_type"`
-	CustomField string          `json:"custom_field"`
-	Type        string          `json:"type"`
-	Name        string          `json:"name"`
-	Options     json.RawMessage `json:"options"`
-	Enabled     string          `json:"enabled"`
-	Sort        string          `json:"sort"`
-	Memo        string          `json:"memo"`
+	ID              string          `json:"id,omitempty"`           // 自定义字段配置的ID
+	WorkspaceID     string          `json:"workspace_id,omitempty"` // 所属项目ID
+	AppID           string          `json:"app_id,omitempty"`
+	EntryType       string          `json:"entry_type,omitempty"`   // 所属实体对象
+	CustomField     string          `json:"custom_field,omitempty"` // 自定义字段标识（英文名）
+	Type            string          `json:"type,omitempty"`         // 输入类型
+	Name            string          `json:"name,omitempty"`         // 自定义字段显示名称
+	Options         json.RawMessage `json:"options,omitempty"`      // 自定义字段可选值
+	Enabled         string          `json:"enabled,omitempty"`      // 是否启用
+	Freeze          string          `json:"freeze,omitempty"`
+	Sort            string          `json:"sort,omitempty"` // 显示时排序系数
+	Memo            string          `json:"memo,omitempty"`
+	OpenExtensionID string          `json:"open_extension_id,omitempty"`
+	IsOut           int             `json:"is_out,omitempty"`
+	IsUninstall     int             `json:"is_uninstall,omitempty"`
+	AppName         string          `json:"app_name,omitempty"`
 }
 
 // GetStoryCustomFieldsSettings 获取需求自定义字段配置
+//
 // https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_story_custom_fields_settings.html
 func (s *StoryService) GetStoryCustomFieldsSettings(
 	ctx context.Context, request *GetStoryCustomFieldsSettingsRequest, opts ...RequestOption,
@@ -457,14 +464,14 @@ func (s *StoryService) GetStoryCustomFieldsSettings(
 	}
 
 	response := make([]struct {
-		CustomFieldConfig *StoryCustomFieldsSetting `json:"CustomFieldConfig"`
+		CustomFieldConfig *StoryCustomFieldsSetting `json:"CustomFieldConfig,omitempty"`
 	}, 0)
 	resp, err := s.client.Do(req, &response)
 	if err != nil {
 		return nil, resp, err
 	}
 
-	settings := make([]*StoryCustomFieldsSetting, len(response))
+	settings := make([]*StoryCustomFieldsSetting, 0, len(response))
 	for _, item := range response {
 		settings = append(settings, item.CustomFieldConfig)
 	}
