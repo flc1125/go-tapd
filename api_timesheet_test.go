@@ -99,8 +99,8 @@ func TestTimesheetService_GetTimesheets(t *testing.T) {
 		IsDelete:                    Ptr(0),
 		Limit:                       Ptr(10),
 		Page:                        Ptr(1),
-		Order:                       NewOrder("id", OrderDesc),
-		Fields:                      Multi("id", "workspace_id"),
+		Order:                       NewOrder("id", OrderByDesc),
+		Fields:                      NewMulti("id", "workspace_id"),
 	})
 	assert.NoError(t, err)
 	spew.Dump(timesheets)

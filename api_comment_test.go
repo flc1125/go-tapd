@@ -94,7 +94,7 @@ func TestCommentService_GetComments(t *testing.T) {
 	}))
 
 	comments, _, err := client.CommentService.GetComments(ctx, &GetCommentsRequest{
-		ID:          Multi(111, 222),
+		ID:          NewMulti(111, 222),
 		Title:       Ptr("title"),
 		Description: Ptr("description"),
 		Author:      Ptr("author"),
@@ -107,8 +107,8 @@ func TestCommentService_GetComments(t *testing.T) {
 		ReplyID:     Ptr(333),
 		Limit:       Ptr(10),
 		Page:        Ptr(1),
-		Order:       NewOrder("id", OrderDesc),
-		Fields:      Multi("id", "title"),
+		Order:       NewOrder("id", OrderByDesc),
+		Fields:      NewMulti("id", "title"),
 	})
 	assert.NoError(t, err)
 	assert.NotNil(t, comments)
@@ -146,7 +146,7 @@ func TestCommentService_GetCommentsCount(t *testing.T) {
 	}))
 
 	count, _, err := client.CommentService.GetCommentsCount(ctx, &GetCommentsCountRequest{
-		ID:          Multi(111, 222),
+		ID:          NewMulti(111, 222),
 		Title:       Ptr("test title"),
 		Description: Ptr("test description"),
 		Author:      Ptr("test author"),

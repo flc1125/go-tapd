@@ -10,21 +10,27 @@ import (
 )
 
 // -----------------------------------------------------------------------------
-// MultiType is a type for multi values.
-// MultiType{Value1, Value2, Value3} => value1,value2,value3
+// Multi is a type for multi values.
+// Multi{Value1, Value2, Value3} => value1,value2,value3
 //
 // Useful for ID/Fields/...
 // -----------------------------------------------------------------------------
 
-type MultiType[T any] []T
+type Multi[T any] []T
 
-var _ query.Encoder = (*MultiType[string])(nil)
+var _ query.Encoder = (*Multi[string])(nil)
 
-func Multi[T any](values ...T) *MultiType[T] {
-	return (*MultiType[T])(&values)
+// NewMulti creates a new multi value.
+//
+// Example:
+//
+//	NewMulti("a", "b", "c") => "a,b,c"
+//	NewMulti(1, 2, 3) => "1,2,3"
+func NewMulti[T any](values ...T) *Multi[T] {
+	return (*Multi[T])(&values)
 }
 
-func (m MultiType[T]) EncodeValues(key string, v *url.Values) error {
+func (m Multi[T]) EncodeValues(key string, v *url.Values) error {
 	if len(m) > 0 {
 		var values []string
 		for _, value := range m {
@@ -36,19 +42,25 @@ func (m MultiType[T]) EncodeValues(key string, v *url.Values) error {
 }
 
 // -----------------------------------------------------------------------------
-// EnumType is a type for enum values.
-// EnumType{Value1, Value2, Value3} => value1|value2|value3
+// Enum is a type for enum values.
+// Enum{Value1, Value2, Value3} => value1|value2|value3
 // -----------------------------------------------------------------------------
 
-type EnumType[T any] []T
+type Enum[T any] []T
 
-var _ query.Encoder = (*EnumType[string])(nil)
+var _ query.Encoder = (*Enum[string])(nil)
 
-func Enum[T any](values ...T) *EnumType[T] {
-	return (*EnumType[T])(&values)
+// NewEnum creates a new enum value.
+//
+// Example:
+//
+//	NewEnum("a", "b", "c") => "a|b|c"
+//	NewEnum(1, 2, 3) => "1|2|3"
+func NewEnum[T any](values ...T) *Enum[T] {
+	return (*Enum[T])(&values)
 }
 
-func (e EnumType[T]) EncodeValues(key string, v *url.Values) error {
+func (e Enum[T]) EncodeValues(key string, v *url.Values) error {
 	if len(e) > 0 {
 		var values []string
 		for _, value := range e {
@@ -89,8 +101,8 @@ const (
 
 // Order is a type for order parameters.
 type Order struct {
-	Field     string
-	OrderType OrderType
+	field     string
+	orderType OrderType
 }
 
 var (
@@ -103,20 +115,26 @@ type OrderOption func(*Order)
 
 func WithOrderType(orderType OrderType) OrderOption {
 	return func(o *Order) {
-		o.OrderType = orderType
+		o.orderType = orderType
 	}
 }
 
 var (
-	OrderAsc  = WithOrderType(OrderTypeAsc)
-	OrderDesc = WithOrderType(OrderTypeDesc)
+	OrderByAsc  = WithOrderType(OrderTypeAsc)
+	OrderByDesc = WithOrderType(OrderTypeDesc)
 )
 
-// NewOrder todo: refactor to Order
+// NewOrder creates a new order parameter.
+//
+// Example:
+//
+//	NewOrder("created") => "created asc"
+//	NewOrder("created", OrderByAsc) => "created asc"
+//	NewOrder("created", OrderByDesc) => "created desc"
 func NewOrder(field string, opts ...OrderOption) *Order {
 	o := &Order{
-		Field:     field,
-		OrderType: OrderTypeAsc,
+		field:     field,
+		orderType: OrderTypeAsc,
 	}
 	for _, opt := range opts {
 		opt(o)
@@ -125,7 +143,7 @@ func NewOrder(field string, opts ...OrderOption) *Order {
 }
 
 func (o *Order) MarshalJSON() ([]byte, error) {
-	return json.Marshal(fmt.Sprintf("%s %s", o.Field, o.OrderType))
+	return json.Marshal(fmt.Sprintf("%s %s", o.field, o.orderType))
 }
 
 func (o *Order) UnmarshalJSON(bytes []byte) error {
@@ -133,12 +151,12 @@ func (o *Order) UnmarshalJSON(bytes []byte) error {
 	if err := json.Unmarshal(bytes, &s); err != nil {
 		return err
 	}
-	_, err := fmt.Sscanf(s, "%s %s", &o.Field, &o.OrderType)
+	_, err := fmt.Sscanf(s, "%s %s", &o.field, &o.orderType)
 	return err
 }
 
 func (o *Order) EncodeValues(key string, v *url.Values) error {
-	v.Add(key, fmt.Sprintf("%s %s", o.Field, o.OrderType))
+	v.Add(key, fmt.Sprintf("%s %s", o.field, o.orderType))
 	return nil
 }
 

@@ -18,8 +18,8 @@ func TestTaskService_GetTasks(t *testing.T) {
 
 	tasks, _, err := client.TaskService.GetTasks(ctx, &GetTasksRequest{
 		WorkspaceID: Ptr(11112222),
-		Status:      Enum(TaskStatusOpen, TaskStatusDone),
-		Fields:      Multi("id", "workspace_id"),
+		Status:      NewEnum(TaskStatusOpen, TaskStatusDone),
+		Fields:      NewMulti("id", "workspace_id"),
 	})
 	assert.NoError(t, err)
 	assert.True(t, len(tasks) > 0)
@@ -37,7 +37,7 @@ func TestTaskService_GetTasksCount(t *testing.T) {
 
 	count, _, err := client.TaskService.GetTasksCount(ctx, &GetTasksCountRequest{
 		WorkspaceID: Ptr(11112222),
-		Status:      Enum(TaskStatusOpen, TaskStatusDone),
+		Status:      NewEnum(TaskStatusOpen, TaskStatusDone),
 	})
 	assert.NoError(t, err)
 	assert.Equal(t, 36, count)

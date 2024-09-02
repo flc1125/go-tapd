@@ -73,7 +73,7 @@ func (s *TimesheetService) CreateTimesheet(
 
 type GetTimesheetsRequest struct {
 	// [可选]id 支持多ID查询
-	ID *MultiType[int] `url:"id,omitempty"`
+	ID *Multi[int] `url:"id,omitempty"`
 
 	// [必选]项目ID
 	WorkspaceID *int `url:"workspace_id,omitempty"`
@@ -118,7 +118,7 @@ type GetTimesheetsRequest struct {
 	Order *Order `url:"order,omitempty"`
 
 	// [可选]设置获取的字段，多个字段间以','逗号隔开
-	Fields *MultiType[string] `url:"fields,omitempty"`
+	Fields *Multi[string] `url:"fields,omitempty"`
 }
 
 // GetTimesheets 获取工时花费
@@ -153,7 +153,7 @@ func (s *TimesheetService) GetTimesheets(
 
 type GetTimesheetsCountRequest struct {
 	// [可选]id 支持多ID查询
-	ID *MultiType[int] `url:"id,omitempty"`
+	ID *Multi[int] `url:"id,omitempty"`
 
 	// [必选]项目ID
 	WorkspaceID *int `url:"workspace_id,omitempty"`
