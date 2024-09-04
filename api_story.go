@@ -631,6 +631,50 @@ func (s *StoryService) GetStoryTemplates(
 // 获取需求模板字段
 // -----------------------------------------------------------------------------
 
+type GetStoryTemplateFieldsRequest struct {
+	WorkspaceID *int `url:"workspace_id,omitempty"` // [必须]项目ID
+	TemplateID  *int `url:"template_id,omitempty"`  // [必须]模板ID
+}
+
+type StoryTemplateField struct {
+	ID           string `json:"id,omitempty"`
+	WorkspaceID  string `json:"workspace_id,omitempty"`
+	Type         string `json:"type,omitempty"`
+	TemplateID   string `json:"template_id,omitempty"`
+	Field        string `json:"field,omitempty"`
+	Value        string `json:"value,omitempty"`
+	Required     string `json:"required,omitempty"`
+	Sort         string `json:"sort,omitempty"`
+	LinkageRules string `json:"linkage_rules,omitempty"`
+}
+
+// GetStoryTemplateFields 获取需求模板字段
+//
+// https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_default_story_template.html
+func (s *StoryService) GetStoryTemplateFields(
+	ctx context.Context, request *GetStoryTemplateFieldsRequest, opts ...RequestOption,
+) ([]*StoryTemplateField, *Response, error) {
+	req, err := s.client.NewRequest(ctx, http.MethodGet, "stories/get_default_story_template", request, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var items []struct {
+		WorkitemTemplateField *StoryTemplateField `json:"WorkitemTemplateField,omitempty"`
+	}
+	resp, err := s.client.Do(req, &items)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	templates := make([]*StoryTemplateField, 0, len(items))
+	for _, item := range items {
+		templates = append(templates, item.WorkitemTemplateField)
+	}
+
+	return templates, resp, nil
+}
+
 // -----------------------------------------------------------------------------
 // 更新需求分类
 // -----------------------------------------------------------------------------

@@ -90,6 +90,34 @@ func TestStoryService_GetStoryTemplates(t *testing.T) {
 	assert.Equal(t, "1", templates[0].EditorType)
 }
 
+func TestStoryService_GetStoryTemplateFields(t *testing.T) {
+	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodGet, r.Method)
+		assert.Equal(t, "/stories/get_default_story_template", r.URL.Path)
+
+		assert.Equal(t, "11112222", r.URL.Query().Get("workspace_id"))
+		assert.Equal(t, "1111111111111", r.URL.Query().Get("template_id"))
+
+		_, _ = w.Write(loadData(t, ".testdata/api/story/get_story_template_fields.json"))
+	}))
+
+	fields, _, err := client.StoryService.GetStoryTemplateFields(ctx, &GetStoryTemplateFieldsRequest{
+		WorkspaceID: Ptr(11112222),
+		TemplateID:  Ptr(1111111111111),
+	})
+	assert.NoError(t, err)
+	assert.True(t, len(fields) > 0)
+	assert.Equal(t, "1111112222001000113", fields[0].ID)
+	assert.Equal(t, "11112222", fields[0].WorkspaceID)
+	assert.Equal(t, "story", fields[0].Type)
+	assert.Equal(t, "1111112222001000015", fields[0].TemplateID)
+	assert.Equal(t, "name", fields[0].Field)
+	assert.Equal(t, "", fields[0].Value)
+	assert.Equal(t, "1", fields[0].Required)
+	assert.Equal(t, "0", fields[0].Sort)
+	assert.Equal(t, "", fields[0].LinkageRules)
+}
+
 func TestStoryService_GetConvertStoryIDsToQueryToken(t *testing.T) {
 	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, http.MethodPost, r.Method)
