@@ -810,7 +810,6 @@ type GetConvertStoryIDsToQueryTokenRequest struct {
 type GetConvertStoryIDsToQueryTokenResponse struct {
 	QueryToken string `json:"queryToken,omitempty"` // 列表queryToken
 	Href       string `json:"href,omitempty"`       // 对应的TAPD需求列表链接
-
 }
 
 // GetConvertStoryIDsToQueryToken 转换需求ID成列表queryToken
