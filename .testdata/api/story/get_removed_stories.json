@@ -1,0 +1,28 @@
+{
+  "status": 1,
+  "data": [
+    {
+      "RemovedStory": {
+        "id": "1111112222001069791",
+        "name": "測試測試",
+        "creator": "张三",
+        "created": "2024-08-20 11:22:49",
+        "operation_user": "张三",
+        "deleted": "2024-08-20 11:28:23",
+        "is_archived": "0"
+      }
+    },
+    {
+      "RemovedStory": {
+        "id": "1111112222001047525",
+        "name": "testtest",
+        "creator": "张三",
+        "created": "2023-12-25 18:07:38",
+        "operation_user": "张三",
+        "deleted": "2023-12-25 19:17:37",
+        "is_archived": "0"
+      }
+    }
+  ],
+  "info": "success"
+}

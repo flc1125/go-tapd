@@ -118,6 +118,44 @@ func TestStoryService_GetStoryTemplateFields(t *testing.T) {
 	assert.Equal(t, "", fields[0].LinkageRules)
 }
 
+func TestStoryService_GetRemovedStories(t *testing.T) {
+	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodGet, r.Method)
+		assert.Equal(t, "/stories/get_removed_stories", r.URL.Path)
+
+		assert.Equal(t, "11112222", r.URL.Query().Get("workspace_id"))
+		assert.Equal(t, "1111111111111,1111111111112", r.URL.Query().Get("id"))
+		assert.Equal(t, "creator", r.URL.Query().Get("creator"))
+		assert.Equal(t, "1", r.URL.Query().Get("is_archived"))
+		assert.Equal(t, "2021-01-01", r.URL.Query().Get("created"))
+		assert.Equal(t, "2021-01-02", r.URL.Query().Get("deleted"))
+		assert.Equal(t, "10", r.URL.Query().Get("limit"))
+		assert.Equal(t, "1", r.URL.Query().Get("page"))
+
+		_, _ = w.Write(loadData(t, ".testdata/api/story/get_removed_stories.json"))
+	}))
+
+	stories, _, err := client.StoryService.GetRemovedStories(ctx, &GetRemovedStoriesRequest{
+		WorkspaceID: Ptr(11112222),
+		ID:          NewMulti(1111111111111, 1111111111112),
+		Creator:     Ptr("creator"),
+		IsArchived:  Ptr(1),
+		Created:     Ptr("2021-01-01"),
+		Deleted:     Ptr("2021-01-02"),
+		Limit:       Ptr(10),
+		Page:        Ptr(1),
+	})
+	assert.NoError(t, err)
+	assert.True(t, len(stories) > 0)
+	assert.Equal(t, "1111112222001069791", stories[0].ID)
+	assert.Equal(t, "測試測試", stories[0].Name)
+	assert.Equal(t, "张三", stories[0].Creator)
+	assert.Equal(t, "2024-08-20 11:22:49", stories[0].Created)
+	assert.Equal(t, "张三", stories[0].OperationUser)
+	assert.Equal(t, "2024-08-20 11:28:23", stories[0].Deleted)
+	assert.Equal(t, "0", stories[0].IsArchived)
+}
+
 func TestStoryService_GetConvertStoryIDsToQueryToken(t *testing.T) {
 	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, http.MethodPost, r.Method)
