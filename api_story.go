@@ -266,6 +266,10 @@ func (s *StoryService) GetStoriesCount(
 // 获取保密需求
 // 获取保密需求数量
 
+// -----------------------------------------------------------------------------
+// 获取需求分类
+// -----------------------------------------------------------------------------
+
 type GetStoryCategoriesRequest struct {
 	WorkspaceID *int           `url:"workspace_id,omitempty"` // [必须]项目ID
 	ID          *Multi[int]    `url:"id,omitempty"`           // ID 支持多ID查询，多个ID用逗号分隔
@@ -319,6 +323,10 @@ func (s *StoryService) GetStoryCategories(
 	return categories, resp, nil
 }
 
+// -----------------------------------------------------------------------------
+// 获取需求分类数量
+// -----------------------------------------------------------------------------
+
 type GetStoryCategoriesCountRequest struct {
 	WorkspaceID *int        `url:"workspace_id,omitempty"` // [必须]项目ID
 	ID          *Multi[int] `url:"id,omitempty"`           // ID 支持多ID查询，多个ID用逗号分隔
@@ -330,6 +338,7 @@ type GetStoryCategoriesCountRequest struct {
 }
 
 // GetStoryCategoriesCount 获取需求分类数量
+//
 // https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_story_categories_count.html
 func (s *StoryService) GetStoryCategoriesCount(
 	ctx context.Context, request *GetStoryCategoriesCountRequest, opts ...RequestOption,

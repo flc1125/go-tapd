@@ -43,15 +43,6 @@ func TestStoryService_GetStoryCategories(t *testing.T) {
 	})
 	assert.NoError(t, err)
 	assert.True(t, len(categories) > 0)
-	// "id": "1111112222001000056",
-	// 	"workspace_id": "11112222",
-	// 	"name": "产品需求",
-	// 	"description": "产品需求",
-	// 	"parent_id": "0",
-	// 	"modified": "2024-06-20 11:38:37",
-	// 	"created": "2018-06-29 15:01:38",
-	// 	"creator": null,
-	// 	"modifier": "张三"
 	assert.Equal(t, "1111112222001000056", categories[0].ID)
 	assert.Equal(t, "11112222", categories[0].WorkspaceID)
 	assert.Equal(t, "产品需求", categories[0].Name)
@@ -61,6 +52,35 @@ func TestStoryService_GetStoryCategories(t *testing.T) {
 	assert.Equal(t, "2018-06-29 15:01:38", categories[0].Created)
 	assert.Equal(t, "", categories[0].Creator)
 	assert.Equal(t, "张三", categories[0].Modifier)
+}
+
+func TestStoryService_GetStoryCategoriesCount(t *testing.T) {
+	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodGet, r.Method)
+		assert.Equal(t, "/story_categories/count", r.URL.Path)
+
+		assert.Equal(t, "11112222", r.URL.Query().Get("workspace_id"))
+		assert.Equal(t, "1111111111111,1111111111112", r.URL.Query().Get("id"))
+		assert.Equal(t, "test name", r.URL.Query().Get("name"))
+		assert.Equal(t, "test description", r.URL.Query().Get("description"))
+		assert.Equal(t, "1111111111111", r.URL.Query().Get("parent_id"))
+		assert.Equal(t, "2021-01-01", r.URL.Query().Get("created"))
+		assert.Equal(t, "2021-01-02", r.URL.Query().Get("modified"))
+
+		_, _ = w.Write(loadData(t, ".testdata/api/story/get_story_categories_count.json"))
+	}))
+
+	count, _, err := client.StoryService.GetStoryCategoriesCount(ctx, &GetStoryCategoriesCountRequest{
+		WorkspaceID: Ptr(11112222),
+		ID:          NewMulti(1111111111111, 1111111111112),
+		Name:        Ptr("test name"),
+		Description: Ptr("test description"),
+		ParentID:    Ptr(1111111111111),
+		Created:     Ptr("2021-01-01"),
+		Modified:    Ptr("2021-01-02"),
+	})
+	assert.NoError(t, err)
+	assert.Equal(t, 30, count)
 }
 
 func TestStoryService_GetStoryCustomFieldsSettings(t *testing.T) {
