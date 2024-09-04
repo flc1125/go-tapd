@@ -267,30 +267,33 @@ func (s *StoryService) GetStoriesCount(
 // 获取保密需求数量
 
 type GetStoryCategoriesRequest struct {
-	WorkspaceID *int        `url:"workspace_id,omitempty"` // [必须]项目ID
-	ID          *Multi[int] `url:"id,omitempty"`           // ID 支持多ID查询，多个ID用逗号分隔
-	Name        *string     `url:"name,omitempty"`         // 需求分类名称	支持模糊匹配
-	Description *string     `url:"description,omitempty"`  // 需求分类描述
-	ParentID    *int        `url:"parent_id,omitempty"`    // 父分类ID
-	Created     *string     `url:"created,omitempty"`      // 创建时间	支持时间查询
-	Modified    *string     `url:"modified,omitempty"`     // 最后修改时间	支持时间查询
-	Limit       *int        `url:"limit,omitempty"`        // 设置返回数量限制，默认为30
-	Page        *int        `url:"page,omitempty"`         // 返回当前数量限制下第N页的数据，默认为1（第一页）
-	Order       *Order      `url:"order,omitempty"`        //nolint:lll // 排序规则，规则：字段名 ASC或者DESC，然后 urlencode	如按创建时间逆序：order=created%20desc
-	Fields      *string     `url:"fields,omitempty"`       // 设置获取的字段，多个字段间以','逗号隔开
+	WorkspaceID *int           `url:"workspace_id,omitempty"` // [必须]项目ID
+	ID          *Multi[int]    `url:"id,omitempty"`           // ID 支持多ID查询，多个ID用逗号分隔
+	Name        *string        `url:"name,omitempty"`         // 需求分类名称	支持模糊匹配
+	Description *string        `url:"description,omitempty"`  // 需求分类描述
+	ParentID    *int           `url:"parent_id,omitempty"`    // 父分类ID
+	Created     *string        `url:"created,omitempty"`      // 创建时间	支持时间查询
+	Modified    *string        `url:"modified,omitempty"`     // 最后修改时间	支持时间查询
+	Limit       *int           `url:"limit,omitempty"`        // 设置返回数量限制，默认为30
+	Page        *int           `url:"page,omitempty"`         // 返回当前数量限制下第N页的数据，默认为1（第一页）
+	Order       *Order         `url:"order,omitempty"`        //nolint:lll // 排序规则，规则：字段名 ASC或者DESC，然后 urlencode	如按创建时间逆序：order=created%20desc
+	Fields      *Multi[string] `url:"fields,omitempty"`       // 设置获取的字段，多个字段间以','逗号隔开
 }
 
 type StoryCategory struct {
-	ID          *string `json:"id"`
-	WorkspaceID *string `json:"workspace_id"`
-	Name        *string `json:"name"`
-	Description *string `json:"description"`
-	ParentID    *string `json:"parent_id"`
-	Created     *string `json:"created"`
-	Modified    *string `json:"modified"`
+	ID          string `json:"id,omitempty"`           // ID
+	WorkspaceID string `json:"workspace_id,omitempty"` // 项目ID
+	Name        string `json:"name,omitempty"`         // 需求分类名称
+	Description string `json:"description,omitempty"`  // 需求分类描述
+	ParentID    string `json:"parent_id,omitempty"`    // 父分类ID
+	Created     string `json:"created,omitempty"`      // 创建时间
+	Modified    string `json:"modified,omitempty"`     // 最后修改时间
+	Creator     string `json:"creator,omitempty"`      // 创建人
+	Modifier    string `json:"modifier,omitempty"`     // 最后修改人
 }
 
 // GetStoryCategories 获取需求分类
+//
 // https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_story_categories.html
 func (s *StoryService) GetStoryCategories(
 	ctx context.Context, request *GetStoryCategoriesRequest, opts ...RequestOption,

@@ -8,6 +8,61 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestStoryService_GetStoryCategories(t *testing.T) {
+	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodGet, r.Method)
+		assert.Equal(t, "/story_categories", r.URL.Path)
+
+		assert.Equal(t, "11112222", r.URL.Query().Get("workspace_id"))
+		assert.Equal(t, "1111111111111,1111111111112", r.URL.Query().Get("id"))
+		assert.Equal(t, "test name", r.URL.Query().Get("name"))
+		assert.Equal(t, "test description", r.URL.Query().Get("description"))
+		assert.Equal(t, "1111111111111", r.URL.Query().Get("parent_id"))
+		assert.Equal(t, "2021-01-01", r.URL.Query().Get("created"))
+		assert.Equal(t, "2021-01-02", r.URL.Query().Get("modified"))
+		assert.Equal(t, "10", r.URL.Query().Get("limit"))
+		assert.Equal(t, "1", r.URL.Query().Get("page"))
+		assert.Equal(t, "id asc", r.URL.Query().Get("order"))
+		assert.Equal(t, "id,name", r.URL.Query().Get("fields"))
+
+		_, _ = w.Write(loadData(t, ".testdata/api/story/get_story_categories.json"))
+	}))
+
+	categories, _, err := client.StoryService.GetStoryCategories(ctx, &GetStoryCategoriesRequest{
+		WorkspaceID: Ptr(11112222),
+		ID:          NewMulti(1111111111111, 1111111111112),
+		Name:        Ptr("test name"),
+		Description: Ptr("test description"),
+		ParentID:    Ptr(1111111111111),
+		Created:     Ptr("2021-01-01"),
+		Modified:    Ptr("2021-01-02"),
+		Limit:       Ptr(10),
+		Page:        Ptr(1),
+		Order:       NewOrder("id", OrderByAsc),
+		Fields:      NewMulti("id", "name"),
+	})
+	assert.NoError(t, err)
+	assert.True(t, len(categories) > 0)
+	// "id": "1111112222001000056",
+	// 	"workspace_id": "11112222",
+	// 	"name": "产品需求",
+	// 	"description": "产品需求",
+	// 	"parent_id": "0",
+	// 	"modified": "2024-06-20 11:38:37",
+	// 	"created": "2018-06-29 15:01:38",
+	// 	"creator": null,
+	// 	"modifier": "张三"
+	assert.Equal(t, "1111112222001000056", categories[0].ID)
+	assert.Equal(t, "11112222", categories[0].WorkspaceID)
+	assert.Equal(t, "产品需求", categories[0].Name)
+	assert.Equal(t, "产品需求", categories[0].Description)
+	assert.Equal(t, "0", categories[0].ParentID)
+	assert.Equal(t, "2024-06-20 11:38:37", categories[0].Modified)
+	assert.Equal(t, "2018-06-29 15:01:38", categories[0].Created)
+	assert.Equal(t, "", categories[0].Creator)
+	assert.Equal(t, "张三", categories[0].Modifier)
+}
+
 func TestStoryService_GetStoryCustomFieldsSettings(t *testing.T) {
 	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, http.MethodGet, r.Method)
