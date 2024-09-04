@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -200,8 +201,8 @@ func (c *Client) Do(req *http.Request, v any) (*Response, error) {
 	}
 
 	// debug mode
-	// body, _ := json.Marshal(rawBody)
-	// fmt.Println(string(body))
+	body, _ := json.Marshal(rawBody)
+	fmt.Println(string(body))
 	// spew.Dump(rawBody)
 
 	// check status
