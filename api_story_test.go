@@ -64,7 +64,7 @@ func TestStoryService_GetStoryRelatedBugs(t *testing.T) {
 	assert.Equal(t, "1111112222001035927", relatedBugs[0].BugID)
 }
 
-func TestStoryService_ConvertStoryIDsToQueryToken(t *testing.T) {
+func TestStoryService_GetConvertStoryIDsToQueryToken(t *testing.T) {
 	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, http.MethodPost, r.Method)
 		assert.Equal(t, "/stories/ids_to_query_token", r.URL.Path)
@@ -77,10 +77,10 @@ func TestStoryService_ConvertStoryIDsToQueryToken(t *testing.T) {
 		assert.Equal(t, 11112222, req.WorkspaceID)
 		assert.Equal(t, "33334444,55556666", req.StoryIDs)
 
-		_, _ = w.Write(loadData(t, ".testdata/api/story/convert_story_ids_to_query_token.json"))
+		_, _ = w.Write(loadData(t, ".testdata/api/story/get_convert_story_ids_to_query_token.json"))
 	}))
 
-	response, _, err := client.StoryService.ConvertStoryIDsToQueryToken(ctx, &ConvertStoryIDsToQueryTokenRequest{
+	response, _, err := client.StoryService.GetConvertStoryIDsToQueryToken(ctx, &GetConvertStoryIDsToQueryTokenRequest{
 		WorkspaceID: Ptr(11112222),
 		StoryIDs:    NewMulti(33334444, 55556666),
 	})

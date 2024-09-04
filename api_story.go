@@ -656,29 +656,29 @@ func (s *StoryService) GetStoryRelatedBugs(
 // 转换需求ID成列表queryToken
 // -----------------------------------------------------------------------------
 
-type ConvertStoryIDsToQueryTokenRequest struct {
+type GetConvertStoryIDsToQueryTokenRequest struct {
 	WorkspaceID *int        `json:"workspace_id,omitempty"` // 项目ID
 	StoryIDs    *Multi[int] `json:"ids,omitempty"`          // 需求ID
 }
 
-type ConvertStoryIDsToQueryTokenResponse struct {
+type GetConvertStoryIDsToQueryTokenResponse struct {
 	QueryToken string `json:"queryToken,omitempty"` // 列表queryToken
 	Href       string `json:"href,omitempty"`       // 对应的TAPD需求列表链接
 
 }
 
-// ConvertStoryIDsToQueryToken 转换需求ID成列表queryToken
+// GetConvertStoryIDsToQueryToken 转换需求ID成列表queryToken
 //
 // https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/story_ids_to_query_token.html
-func (s *StoryService) ConvertStoryIDsToQueryToken(
-	ctx context.Context, request *ConvertStoryIDsToQueryTokenRequest, opts ...RequestOption,
-) (*ConvertStoryIDsToQueryTokenResponse, *Response, error) {
+func (s *StoryService) GetConvertStoryIDsToQueryToken(
+	ctx context.Context, request *GetConvertStoryIDsToQueryTokenRequest, opts ...RequestOption,
+) (*GetConvertStoryIDsToQueryTokenResponse, *Response, error) {
 	req, err := s.client.NewRequest(ctx, http.MethodPost, "stories/ids_to_query_token", request, opts)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	response := new(ConvertStoryIDsToQueryTokenResponse)
+	response := new(GetConvertStoryIDsToQueryTokenResponse)
 	resp, err := s.client.Do(req, &response)
 	if err != nil {
 		return nil, resp, err
