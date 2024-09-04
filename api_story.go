@@ -585,6 +585,48 @@ func (s *StoryService) UpdateStory(
 // 获取需求模板列表
 // -----------------------------------------------------------------------------
 
+type GetStoryTemplatesRequest struct {
+	WorkspaceID    *int `url:"workspace_id,omitempty"`     // [必须]项目ID
+	WorkitemTypeID *int `url:"workitem_type_id,omitempty"` // 需求类别ID
+}
+
+type StoryTemplate struct {
+	ID          string `json:"id,omitempty"`          // 模板ID
+	Name        string `json:"name,omitempty"`        // 标题
+	Description string `json:"description,omitempty"` // 详细描述
+	Sort        string `json:"sort,omitempty"`        // 排序
+	Default     string `json:"default,omitempty"`     // 是否启用
+	Creator     string `json:"creator,omitempty"`     // 提交人
+	EditorType  string `json:"editor_type,omitempty"` // 编辑器类型
+}
+
+// GetStoryTemplates 获取需求模板列表
+//
+// https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_story_template_list.html
+func (s *StoryService) GetStoryTemplates(
+	ctx context.Context, request *GetStoryTemplatesRequest, opts ...RequestOption,
+) ([]*StoryTemplate, *Response, error) {
+	req, err := s.client.NewRequest(ctx, http.MethodGet, "stories/template_list", request, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var items []struct {
+		WorkitemTemplate *StoryTemplate `json:"WorkitemTemplate,omitempty"`
+	}
+	resp, err := s.client.Do(req, &items)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	templates := make([]*StoryTemplate, 0, len(items))
+	for _, item := range items {
+		templates = append(templates, item.WorkitemTemplate)
+	}
+
+	return templates, resp, nil
+}
+
 // -----------------------------------------------------------------------------
 // 获取需求模板字段
 // -----------------------------------------------------------------------------

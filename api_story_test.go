@@ -64,6 +64,32 @@ func TestStoryService_GetStoryRelatedBugs(t *testing.T) {
 	assert.Equal(t, "1111112222001035927", relatedBugs[0].BugID)
 }
 
+func TestStoryService_GetStoryTemplates(t *testing.T) {
+	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodGet, r.Method)
+		assert.Equal(t, "/stories/template_list", r.URL.Path)
+
+		assert.Equal(t, "11112222", r.URL.Query().Get("workspace_id"))
+		assert.Equal(t, "1", r.URL.Query().Get("workitem_type_id"))
+
+		_, _ = w.Write(loadData(t, ".testdata/api/story/get_story_templates.json"))
+	}))
+
+	templates, _, err := client.StoryService.GetStoryTemplates(ctx, &GetStoryTemplatesRequest{
+		WorkspaceID:    Ptr(11112222),
+		WorkitemTypeID: Ptr(1),
+	})
+	assert.NoError(t, err)
+	assert.True(t, len(templates) > 0)
+	assert.Equal(t, "1111112222001000015", templates[0].ID)
+	assert.Equal(t, "System default template", templates[0].Name)
+	assert.Equal(t, "Auto created by the system", templates[0].Description)
+	assert.Equal(t, "0", templates[0].Sort)
+	assert.Equal(t, "0", templates[0].Default)
+	assert.Equal(t, "SYSTEM", templates[0].Creator)
+	assert.Equal(t, "1", templates[0].EditorType)
+}
+
 func TestStoryService_GetConvertStoryIDsToQueryToken(t *testing.T) {
 	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, http.MethodPost, r.Method)
