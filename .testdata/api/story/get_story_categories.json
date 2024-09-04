@@ -1,0 +1,32 @@
+{
+  "status": 1,
+  "data": [
+    {
+      "Category": {
+        "id": "1111112222001000056",
+        "workspace_id": "11112222",
+        "name": "产品需求",
+        "description": "产品需求",
+        "parent_id": "0",
+        "modified": "2024-06-20 11:38:37",
+        "created": "2018-06-29 15:01:38",
+        "creator": null,
+        "modifier": "张三"
+      }
+    },
+    {
+      "Category": {
+        "id": "1111112222001000057",
+        "workspace_id": "11112222",
+        "name": "技术需求",
+        "description": "技术需求",
+        "parent_id": "0",
+        "modified": "2024-06-20 11:38:37",
+        "created": "2018-06-29 15:01:38",
+        "creator": null,
+        "modifier": "张三"
+      }
+    }
+  ],
+  "info": "success"
+}

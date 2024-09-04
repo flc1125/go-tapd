@@ -266,31 +266,38 @@ func (s *StoryService) GetStoriesCount(
 // 获取保密需求
 // 获取保密需求数量
 
+// -----------------------------------------------------------------------------
+// 获取需求分类
+// -----------------------------------------------------------------------------
+
 type GetStoryCategoriesRequest struct {
-	WorkspaceID *int        `url:"workspace_id,omitempty"` // [必须]项目ID
-	ID          *Multi[int] `url:"id,omitempty"`           // ID 支持多ID查询，多个ID用逗号分隔
-	Name        *string     `url:"name,omitempty"`         // 需求分类名称	支持模糊匹配
-	Description *string     `url:"description,omitempty"`  // 需求分类描述
-	ParentID    *int        `url:"parent_id,omitempty"`    // 父分类ID
-	Created     *string     `url:"created,omitempty"`      // 创建时间	支持时间查询
-	Modified    *string     `url:"modified,omitempty"`     // 最后修改时间	支持时间查询
-	Limit       *int        `url:"limit,omitempty"`        // 设置返回数量限制，默认为30
-	Page        *int        `url:"page,omitempty"`         // 返回当前数量限制下第N页的数据，默认为1（第一页）
-	Order       *Order      `url:"order,omitempty"`        //nolint:lll // 排序规则，规则：字段名 ASC或者DESC，然后 urlencode	如按创建时间逆序：order=created%20desc
-	Fields      *string     `url:"fields,omitempty"`       // 设置获取的字段，多个字段间以','逗号隔开
+	WorkspaceID *int           `url:"workspace_id,omitempty"` // [必须]项目ID
+	ID          *Multi[int]    `url:"id,omitempty"`           // ID 支持多ID查询，多个ID用逗号分隔
+	Name        *string        `url:"name,omitempty"`         // 需求分类名称	支持模糊匹配
+	Description *string        `url:"description,omitempty"`  // 需求分类描述
+	ParentID    *int           `url:"parent_id,omitempty"`    // 父分类ID
+	Created     *string        `url:"created,omitempty"`      // 创建时间	支持时间查询
+	Modified    *string        `url:"modified,omitempty"`     // 最后修改时间	支持时间查询
+	Limit       *int           `url:"limit,omitempty"`        // 设置返回数量限制，默认为30
+	Page        *int           `url:"page,omitempty"`         // 返回当前数量限制下第N页的数据，默认为1（第一页）
+	Order       *Order         `url:"order,omitempty"`        //nolint:lll // 排序规则，规则：字段名 ASC或者DESC，然后 urlencode	如按创建时间逆序：order=created%20desc
+	Fields      *Multi[string] `url:"fields,omitempty"`       // 设置获取的字段，多个字段间以','逗号隔开
 }
 
 type StoryCategory struct {
-	ID          *string `json:"id"`
-	WorkspaceID *string `json:"workspace_id"`
-	Name        *string `json:"name"`
-	Description *string `json:"description"`
-	ParentID    *string `json:"parent_id"`
-	Created     *string `json:"created"`
-	Modified    *string `json:"modified"`
+	ID          string `json:"id,omitempty"`           // ID
+	WorkspaceID string `json:"workspace_id,omitempty"` // 项目ID
+	Name        string `json:"name,omitempty"`         // 需求分类名称
+	Description string `json:"description,omitempty"`  // 需求分类描述
+	ParentID    string `json:"parent_id,omitempty"`    // 父分类ID
+	Created     string `json:"created,omitempty"`      // 创建时间
+	Modified    string `json:"modified,omitempty"`     // 最后修改时间
+	Creator     string `json:"creator,omitempty"`      // 创建人
+	Modifier    string `json:"modifier,omitempty"`     // 最后修改人
 }
 
 // GetStoryCategories 获取需求分类
+//
 // https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_story_categories.html
 func (s *StoryService) GetStoryCategories(
 	ctx context.Context, request *GetStoryCategoriesRequest, opts ...RequestOption,
@@ -316,6 +323,10 @@ func (s *StoryService) GetStoryCategories(
 	return categories, resp, nil
 }
 
+// -----------------------------------------------------------------------------
+// 获取需求分类数量
+// -----------------------------------------------------------------------------
+
 type GetStoryCategoriesCountRequest struct {
 	WorkspaceID *int        `url:"workspace_id,omitempty"` // [必须]项目ID
 	ID          *Multi[int] `url:"id,omitempty"`           // ID 支持多ID查询，多个ID用逗号分隔
@@ -327,6 +338,7 @@ type GetStoryCategoriesCountRequest struct {
 }
 
 // GetStoryCategoriesCount 获取需求分类数量
+//
 // https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_story_categories_count.html
 func (s *StoryService) GetStoryCategoriesCount(
 	ctx context.Context, request *GetStoryCategoriesCountRequest, opts ...RequestOption,
@@ -585,9 +597,95 @@ func (s *StoryService) UpdateStory(
 // 获取需求模板列表
 // -----------------------------------------------------------------------------
 
+type GetStoryTemplatesRequest struct {
+	WorkspaceID    *int `url:"workspace_id,omitempty"`     // [必须]项目ID
+	WorkitemTypeID *int `url:"workitem_type_id,omitempty"` // 需求类别ID
+}
+
+type StoryTemplate struct {
+	ID          string `json:"id,omitempty"`          // 模板ID
+	Name        string `json:"name,omitempty"`        // 标题
+	Description string `json:"description,omitempty"` // 详细描述
+	Sort        string `json:"sort,omitempty"`        // 排序
+	Default     string `json:"default,omitempty"`     // 是否启用
+	Creator     string `json:"creator,omitempty"`     // 提交人
+	EditorType  string `json:"editor_type,omitempty"` // 编辑器类型
+}
+
+// GetStoryTemplates 获取需求模板列表
+//
+// https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_story_template_list.html
+func (s *StoryService) GetStoryTemplates(
+	ctx context.Context, request *GetStoryTemplatesRequest, opts ...RequestOption,
+) ([]*StoryTemplate, *Response, error) {
+	req, err := s.client.NewRequest(ctx, http.MethodGet, "stories/template_list", request, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var items []struct {
+		WorkitemTemplate *StoryTemplate `json:"WorkitemTemplate,omitempty"`
+	}
+	resp, err := s.client.Do(req, &items)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	templates := make([]*StoryTemplate, 0, len(items))
+	for _, item := range items {
+		templates = append(templates, item.WorkitemTemplate)
+	}
+
+	return templates, resp, nil
+}
+
 // -----------------------------------------------------------------------------
 // 获取需求模板字段
 // -----------------------------------------------------------------------------
+
+type GetStoryTemplateFieldsRequest struct {
+	WorkspaceID *int `url:"workspace_id,omitempty"` // [必须]项目ID
+	TemplateID  *int `url:"template_id,omitempty"`  // [必须]模板ID
+}
+
+type StoryTemplateField struct {
+	ID           string `json:"id,omitempty"`           // 模板字段ID
+	WorkspaceID  string `json:"workspace_id,omitempty"` // 项目ID
+	Type         string `json:"type,omitempty"`         // 类型
+	TemplateID   string `json:"template_id,omitempty"`  // 模板ID
+	Field        string `json:"field,omitempty"`        // 字段名称
+	Value        string `json:"value,omitempty"`        // 默认值
+	Required     string `json:"required,omitempty"`     // 是否必填
+	Sort         string `json:"sort,omitempty"`         // 排序
+	LinkageRules string `json:"linkage_rules,omitempty"`
+}
+
+// GetStoryTemplateFields 获取需求模板字段
+//
+// https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_default_story_template.html
+func (s *StoryService) GetStoryTemplateFields(
+	ctx context.Context, request *GetStoryTemplateFieldsRequest, opts ...RequestOption,
+) ([]*StoryTemplateField, *Response, error) {
+	req, err := s.client.NewRequest(ctx, http.MethodGet, "stories/get_default_story_template", request, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var items []struct {
+		WorkitemTemplateField *StoryTemplateField `json:"WorkitemTemplateField,omitempty"`
+	}
+	resp, err := s.client.Do(req, &items)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	templates := make([]*StoryTemplateField, 0, len(items))
+	for _, item := range items {
+		templates = append(templates, item.WorkitemTemplateField)
+	}
+
+	return templates, resp, nil
+}
 
 // -----------------------------------------------------------------------------
 // 更新需求分类
@@ -596,6 +694,54 @@ func (s *StoryService) UpdateStory(
 // -----------------------------------------------------------------------------
 // 获取回收站下的需求
 // -----------------------------------------------------------------------------
+
+type GetRemovedStoriesRequest struct {
+	WorkspaceID *int        `url:"workspace_id,omitempty"` // [必须]项目ID
+	ID          *Multi[int] `url:"id,omitempty"`           // 需求ID
+	Creator     *string     `url:"creator,omitempty"`      // 创建人
+	IsArchived  *int        `url:"is_archived,omitempty"`  // 是否为归档。默认取 0，为不返回归档的需求。传 is_archived=1 参数则仅返回归档的需求
+	Created     *string     `url:"created,omitempty"`      // 创建时间
+	Deleted     *string     `url:"deleted,omitempty"`      // 删除时间
+	Limit       *int        `url:"limit,omitempty"`        // 设置返回数量限制，默认为30
+	Page        *int        `url:"page,omitempty"`         // 返回当前数量限制下第N页的数据，默认为1（第一页）
+}
+
+type RemovedStory struct {
+	ID            string `json:"id,omitempty"`             // 需求ID
+	Name          string `json:"name,omitempty"`           // 标题
+	Creator       string `json:"creator,omitempty"`        // 创建人
+	Created       string `json:"created,omitempty"`        // 创建时间
+	OperationUser string `json:"operation_user,omitempty"` // 删除人
+	IsArchived    string `json:"is_archived,omitempty"`    // 是否为归档
+	Deleted       string `json:"deleted,omitempty"`        // 删除时间
+}
+
+// GetRemovedStories 获取回收站中的需求
+//
+// https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_removed_stories.html
+func (s *StoryService) GetRemovedStories(
+	ctx context.Context, request *GetRemovedStoriesRequest, opts ...RequestOption,
+) ([]*RemovedStory, *Response, error) {
+	req, err := s.client.NewRequest(ctx, http.MethodGet, "stories/get_removed_stories", request, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var items []struct {
+		RemovedStory *RemovedStory `json:"RemovedStory"`
+	}
+	resp, err := s.client.Do(req, &items)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	stories := make([]*RemovedStory, 0, len(items))
+	for _, item := range items {
+		stories = append(stories, item.RemovedStory)
+	}
+
+	return stories, resp, nil
+}
 
 // -----------------------------------------------------------------------------
 // 获取需求关联的缺陷
@@ -655,6 +801,36 @@ func (s *StoryService) GetStoryRelatedBugs(
 // -----------------------------------------------------------------------------
 // 转换需求ID成列表queryToken
 // -----------------------------------------------------------------------------
+
+type GetConvertStoryIDsToQueryTokenRequest struct {
+	WorkspaceID *int        `json:"workspace_id,omitempty"` // 项目ID
+	StoryIDs    *Multi[int] `json:"ids,omitempty"`          // 需求ID
+}
+
+type GetConvertStoryIDsToQueryTokenResponse struct {
+	QueryToken string `json:"queryToken,omitempty"` // 列表queryToken
+	Href       string `json:"href,omitempty"`       // 对应的TAPD需求列表链接
+}
+
+// GetConvertStoryIDsToQueryToken 转换需求ID成列表queryToken
+//
+// https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/story_ids_to_query_token.html
+func (s *StoryService) GetConvertStoryIDsToQueryToken(
+	ctx context.Context, request *GetConvertStoryIDsToQueryTokenRequest, opts ...RequestOption,
+) (*GetConvertStoryIDsToQueryTokenResponse, *Response, error) {
+	req, err := s.client.NewRequest(ctx, http.MethodPost, "stories/ids_to_query_token", request, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	response := new(GetConvertStoryIDsToQueryTokenResponse)
+	resp, err := s.client.Do(req, &response)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return response, resp, nil
+}
 
 // -----------------------------------------------------------------------------
 // 创建需求关联关系

@@ -18,7 +18,10 @@ import (
 
 type Multi[T any] []T
 
-var _ query.Encoder = (*Multi[string])(nil)
+var (
+	_ query.Encoder  = (*Multi[string])(nil)
+	_ json.Marshaler = (*Multi[string])(nil)
+)
 
 // NewMulti creates a new multi value.
 //
@@ -32,13 +35,27 @@ func NewMulti[T any](values ...T) *Multi[T] {
 
 func (m Multi[T]) EncodeValues(key string, v *url.Values) error {
 	if len(m) > 0 {
+		v.Add(key, m.String())
+	}
+	return nil
+}
+
+func (m Multi[T]) String() string {
+	if len(m) > 0 {
 		var values []string
 		for _, value := range m {
 			values = append(values, fmt.Sprint(value))
 		}
-		v.Add(key, strings.Join(values, ","))
+		return strings.Join(values, ",")
 	}
-	return nil
+	return ""
+}
+
+func (m Multi[T]) MarshalJSON() ([]byte, error) {
+	if len(m) > 0 {
+		return json.Marshal(m.String())
+	}
+	return json.Marshal(nil)
 }
 
 // -----------------------------------------------------------------------------

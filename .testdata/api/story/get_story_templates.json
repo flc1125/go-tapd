@@ -1,0 +1,39 @@
+{
+  "status": 1,
+  "data": [
+    {
+      "WorkitemTemplate": {
+        "id": "1111112222001000015",
+        "name": "System default template",
+        "description": "Auto created by the system",
+        "sort": "0",
+        "default": "0",
+        "creator": "SYSTEM",
+        "editor_type": "1"
+      }
+    },
+    {
+      "WorkitemTemplate": {
+        "id": "1111112222001000138",
+        "name": "系统默认模板",
+        "description": "系统自动创建",
+        "sort": "1",
+        "default": "0",
+        "creator": "张三",
+        "editor_type": "1"
+      }
+    },
+    {
+      "WorkitemTemplate": {
+        "id": "1111112222001000139",
+        "name": "系统默认模板",
+        "description": "系统自动创建",
+        "sort": "2",
+        "default": "1",
+        "creator": "张三",
+        "editor_type": "1"
+      }
+    }
+  ],
+  "info": "success"
+}

@@ -1,0 +1,125 @@
+{
+  "status": 1,
+  "data": [
+    {
+      "WorkitemTemplateField": {
+        "id": "1111112222001000113",
+        "workspace_id": "11112222",
+        "type": "story",
+        "template_id": "1111112222001000015",
+        "field": "name",
+        "value": "",
+        "required": "1",
+        "sort": "0",
+        "linkage_rules": ""
+      }
+    },
+    {
+      "WorkitemTemplateField": {
+        "id": "1111112222001000114",
+        "workspace_id": "11112222",
+        "type": "story",
+        "template_id": "1111112222001000015",
+        "field": "description",
+        "value": "",
+        "required": "1",
+        "sort": "0",
+        "linkage_rules": ""
+      }
+    },
+    {
+      "WorkitemTemplateField": {
+        "id": "1111112222001000120",
+        "workspace_id": "11112222",
+        "type": "story",
+        "template_id": "1111112222001000015",
+        "field": "category_id",
+        "value": "",
+        "required": "0",
+        "sort": "0",
+        "linkage_rules": ""
+      }
+    },
+    {
+      "WorkitemTemplateField": {
+        "id": "1111112222001000115",
+        "workspace_id": "11112222",
+        "type": "story",
+        "template_id": "1111112222001000015",
+        "field": "iteration_id",
+        "value": "",
+        "required": "0",
+        "sort": "1",
+        "linkage_rules": ""
+      }
+    },
+    {
+      "WorkitemTemplateField": {
+        "id": "1111112222001000116",
+        "workspace_id": "11112222",
+        "type": "story",
+        "template_id": "1111112222001000015",
+        "field": "priority",
+        "value": "",
+        "required": "0",
+        "sort": "2",
+        "linkage_rules": ""
+      }
+    },
+    {
+      "WorkitemTemplateField": {
+        "id": "1111112222001000117",
+        "workspace_id": "11112222",
+        "type": "story",
+        "template_id": "1111112222001000015",
+        "field": "owner",
+        "value": "",
+        "required": "0",
+        "sort": "3",
+        "linkage_rules": ""
+      }
+    },
+    {
+      "WorkitemTemplateField": {
+        "id": "1111112222001000118",
+        "workspace_id": "11112222",
+        "type": "story",
+        "template_id": "1111112222001000015",
+        "field": "begin",
+        "value": "",
+        "required": "0",
+        "sort": "4",
+        "linkage_rules": "",
+        "default_value": ""
+      }
+    },
+    {
+      "WorkitemTemplateField": {
+        "id": "1111112222001000119",
+        "workspace_id": "11112222",
+        "type": "story",
+        "template_id": "1111112222001000015",
+        "field": "due",
+        "value": "",
+        "required": "0",
+        "sort": "5",
+        "linkage_rules": "",
+        "default_value": ""
+      }
+    },
+    {
+      "WorkitemTemplateField": {
+        "id": "1111112222001001324",
+        "workspace_id": "11112222",
+        "type": "story",
+        "template_id": "1111112222001000015",
+        "field": "custom_field_97",
+        "value": "",
+        "required": "0",
+        "sort": "8",
+        "linkage_rules": ""
+      }
+    }
+  ],
+  "info": "success"
+}
