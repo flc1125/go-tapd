@@ -361,6 +361,44 @@ func (s *StoryService) GetStoryCategoriesCount(
 // 获取指定分类需求数量
 // -----------------------------------------------------------------------------
 
+type GetStoriesCountByCategoriesRequest struct {
+	WorkspaceID *int        `url:"workspace_id,omitempty"` // [必须]项目ID
+	CategoryID  *Multi[int] `url:"category_id,omitempty"`  // 需求分类 支持多ID。比如 id1,id2,id3
+}
+
+type StoriesCountByCategory struct {
+	CategoryID string `json:"category_id,omitempty"`
+	Count      int    `json:"count,omitempty"`
+}
+
+// GetStoriesCountByCategories 获取指定分类下需求数量
+//
+// https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/count_by_categories.html
+func (s *StoryService) GetStoriesCountByCategories(
+	ctx context.Context, request *GetStoriesCountByCategoriesRequest, opts ...RequestOption,
+) ([]*StoriesCountByCategory, *Response, error) {
+	req, err := s.client.NewRequest(ctx, http.MethodGet, "stories/count_by_categories", request, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var items map[string]int
+	resp, err := s.client.Do(req, &items)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	counts := make([]*StoriesCountByCategory, 0, len(items))
+	for categoryID, count := range items {
+		counts = append(counts, &StoriesCountByCategory{
+			CategoryID: categoryID,
+			Count:      count,
+		})
+	}
+
+	return counts, resp, nil
+}
+
 // -----------------------------------------------------------------------------
 // 获取需求变更历史
 // -----------------------------------------------------------------------------
@@ -408,6 +446,7 @@ type StoryChange struct {
 }
 
 // GetStoryChanges 获取需求变更历史
+//
 // https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_story_changes.html
 func (s *StoryService) GetStoryChanges(
 	ctx context.Context, request *GetStoryChangesRequest, opts ...RequestOption,

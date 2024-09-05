@@ -82,6 +82,26 @@ func TestStoryService_GetStoryCategoriesCount(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, 30, count)
 }
+func TestStoryService_GetStoriesCountByCategories(t *testing.T) {
+	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodGet, r.Method)
+		assert.Equal(t, "/stories/count_by_categories", r.URL.Path)
+
+		assert.Equal(t, "11112222", r.URL.Query().Get("workspace_id"))
+		assert.Equal(t, "1111112222001000103,1111112222001000108", r.URL.Query().Get("category_id"))
+
+		_, _ = w.Write(loadData(t, ".testdata/api/story/get_stories_count_by_categories.json"))
+	}))
+
+	counts, _, err := client.StoryService.GetStoriesCountByCategories(ctx, &GetStoriesCountByCategoriesRequest{
+		WorkspaceID: Ptr(11112222),
+		CategoryID:  NewMulti(1111112222001000103, 1111112222001000108),
+	})
+	assert.NoError(t, err)
+	assert.True(t, len(counts) > 0)
+	assert.Equal(t, "1111112222001000103", counts[0].CategoryID)
+	assert.Equal(t, 85, counts[0].Count)
+}
 
 func TestStoryService_GetStoryCustomFieldsSettings(t *testing.T) {
 	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
