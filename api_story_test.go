@@ -100,12 +100,10 @@ func TestStoryService_GetStoriesCountByCategories(t *testing.T) {
 	})
 	assert.NoError(t, err)
 	assert.True(t, len(counts) > 0)
-
-	for _, count := range counts {
-		if count.CategoryID == "1111112222001000103" {
-			assert.Equal(t, 85, count.Count)
-		}
-	}
+	assert.Contains(t, counts, &StoriesCountByCategory{
+		CategoryID: "1111112222001000103",
+		Count:      85,
+	})
 }
 
 func TestStoryService_GetStoryChanges(t *testing.T) {
