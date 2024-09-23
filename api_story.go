@@ -403,41 +403,67 @@ func (s *StoryService) GetStoriesCountByCategories(
 // 获取需求变更历史
 // -----------------------------------------------------------------------------
 
+// StoreChangeType 变更类型
+//
+// https://open.tapd.cn/document/api-doc/API%E6%96%87%E6%A1%A3/api_reference/story/get_story_changes.html
+type StoreChangeType string
+
+const (
+	StoreChangeTypeSyncCopy            StoreChangeType = "sync_copy"              // 同步复制联动
+	StoreChangeTypeStoryStatusRelation StoreChangeType = "story_status_relation"  // 父子需求联动
+	StoreChangeTypeStoryTaskRelation   StoreChangeType = "story_task_relation"    // 需求任务联动
+	StoreChangeTypeAPI                 StoreChangeType = "api"                    // API变更
+	StoreChangeTypeSmartCommit         StoreChangeType = "smart_commit"           // Smart Commit触发
+	StoreChangeTypeAutoTask            StoreChangeType = "auto_task"              // 自动化任务触发
+	StoreChangeTypeAutoWorkflow        StoreChangeType = "auto_workflow"          // 自动化工作流触发
+	StoreChangeTypeManualUpdate        StoreChangeType = "manual_update"          // 手动变更
+	StoreChangeTypeImportUpdate        StoreChangeType = "import_update"          // 导入更新
+	StoreChangeTypeCodeChange          StoreChangeType = "code_change"            // 代码变更
+	StoreChangeTypeStatusDelete        StoreChangeType = "status_delete"          // 状态删除
+	StoreChangeTypeExitWorkspace       StoreChangeType = "exit_workspace"         // 退出项目触发
+	StoreChangeTypeLinkUpdate          StoreChangeType = "link_update"            // 更新关联
+	StoreChangeTypeLinkCreate          StoreChangeType = "link_create"            // 创建关联
+	StoreChangeTypeLinkDelete          StoreChangeType = "link_delete"            // 删除关联
+	StoreChangeTypeCreateStoryFromCopy StoreChangeType = "create_story_from_copy" // 复制创建
+	StoreChangeTypeCreateStory         StoreChangeType = "create_story"           // 创建需求
+)
+
 type GetStoryChangesRequest struct {
-	ID               *Multi[int] `url:"id,omitempty"`
-	StoryID          *Multi[int] `url:"story_id,omitempty"`           // 需求id	支持多ID查询
-	WorkspaceID      *int        `url:"workspace_id,omitempty"`       // [必须]项目ID
-	Creator          *string     `url:"creator,omitempty"`            // 创建人（操作人）
-	Created          *string     `url:"created,omitempty"`            // 创建时间（变更时间）	支持时间查询
-	ChangeType       *string     `url:"change_type,omitempty"`        // 变更类型	值范围见文档下方附录1
-	ChangeSummary    *string     `url:"change_summary,omitempty"`     // 需求变更描述
-	Comment          *string     `url:"comment,omitempty"`            // 评论
-	EntityType       *string     `url:"entity_type,omitempty"`        // 变更的对象类型
-	ChangeField      *string     `url:"change_field,omitempty"`       // 设置获取变更字段如（status）
-	NeedParseChanges *int        `url:"need_parse_changes,omitempty"` // 设置field_changes字段是否返回（默认取 1。取 0 则不返回）
-	Limit            *int        `url:"limit,omitempty"`              // 设置返回数量限制，默认为30，最大取 100
-	Page             *int        `url:"page,omitempty"`               // 返回当前数量限制下第N页的数据，默认为1（第一页）
-	Order            *Order      `url:"order,omitempty"`              // 排序规则，规则：字段名 ASC或者DESC
-	Fields           *string     `url:"fields,omitempty"`             // 设置获取的字段，多个字段间以','逗号隔开
+	ID               *Multi[int]      `url:"id,omitempty"`
+	StoryID          *Multi[int]      `url:"story_id,omitempty"`           // 需求id	支持多ID查询
+	WorkspaceID      *int             `url:"workspace_id,omitempty"`       // [必须]项目ID
+	Creator          *string          `url:"creator,omitempty"`            // 创建人（操作人）
+	Created          *string          `url:"created,omitempty"`            // 创建时间（变更时间）	支持时间查询
+	ChangeType       *StoreChangeType `url:"change_type,omitempty"`        // 变更类型
+	ChangeSummary    *string          `url:"change_summary,omitempty"`     // 需求变更描述
+	Comment          *string          `url:"comment,omitempty"`            // 评论
+	EntityType       *string          `url:"entity_type,omitempty"`        // 变更的对象类型
+	ChangeField      *string          `url:"change_field,omitempty"`       // 设置获取变更字段如（status）
+	NeedParseChanges *int             `url:"need_parse_changes,omitempty"` // 设置field_changes字段是否返回（默认取 1。取 0 则不返回）
+	Limit            *int             `url:"limit,omitempty"`              // 设置返回数量限制，默认为30，最大取 100
+	Page             *int             `url:"page,omitempty"`               // 返回当前数量限制下第N页的数据，默认为1（第一页）
+	Order            *Order           `url:"order,omitempty"`              // 排序规则，规则：字段名 ASC或者DESC
+	Fields           *Multi[string]   `url:"fields,omitempty"`             // 设置获取的字段，多个字段间以','逗号隔开
 }
 
 type StoryChange struct {
-	ID             string  `json:"id,omitempty"`
-	WorkspaceID    string  `json:"workspace_id,omitempty"`
-	AppID          string  `json:"app_id,omitempty"`
-	WorkitemTypeID string  `json:"workitem_type_id,omitempty"`
-	Creator        string  `json:"creator,omitempty"`
-	Created        string  `json:"created,omitempty"`
-	ChangeSummary  *string `json:"change_summary,omitempty"`
-	Comment        *string `json:"comment,omitempty"`
-	Changes        string  `json:"changes,omitempty"`
-	EntityType     string  `json:"entity_type,omitempty"`
-	ChangeType     string  `json:"change_type,omitempty"`
-	ChangeTypeText string  `json:"change_type_text,omitempty"`
+	ID             string          `json:"id,omitempty"`
+	WorkspaceID    string          `json:"workspace_id,omitempty"`
+	AppID          string          `json:"app_id,omitempty"`
+	WorkitemTypeID string          `json:"workitem_type_id,omitempty"`
+	Creator        string          `json:"creator,omitempty"`
+	Created        string          `json:"created,omitempty"`
+	ChangeSummary  string          `json:"change_summary,omitempty"`
+	Comment        *string         `json:"comment,omitempty"`
+	Changes        string          `json:"changes,omitempty"`
+	EntityType     string          `json:"entity_type,omitempty"`
+	ChangeType     StoreChangeType `json:"change_type,omitempty"`
+	ChangeTypeText string          `json:"change_type_text,omitempty"`
+	Updated        string          `json:"updated,omitempty"`
 	FieldChanges   []struct {
 		Field             string `json:"field,omitempty"`
-		ValueBefore       any    `json:"value_before,omitempty"`
-		ValueAfter        any    `json:"value_after,omitempty"`
+		ValueBefore       any    `json:"value_before,omitempty"` // todo: any to string
+		ValueAfter        any    `json:"value_after,omitempty"`  // todo: any to string
 		ValueBeforeParsed string `json:"value_before_parsed,omitempty"`
 		ValueAfterParsed  string `json:"value_after_parsed,omitempty"`
 		FieldLabel        string `json:"field_label,omitempty"`
@@ -464,7 +490,7 @@ func (s *StoryService) GetStoryChanges(
 		return nil, resp, err
 	}
 
-	changes := make([]*StoryChange, len(items))
+	changes := make([]*StoryChange, 0, len(items))
 	for _, item := range items {
 		changes = append(changes, item.WorkitemChange)
 	}
