@@ -5,6 +5,19 @@ import (
 	"net/http"
 )
 
+type StoryStatus string
+
+const (
+	StoryStatusAudited    StoryStatus = "audited"     // 已评审
+	StoryStatusDeveloping StoryStatus = "developing"  // 开发中
+	StoryStatusForTest    StoryStatus = "for_test"    // 待测试
+	StoryStatusInProgress StoryStatus = "in_progress" // 处理中
+	StoryStatusPlanning   StoryStatus = "planning"    // 规划中
+	StoryStatusRejected   StoryStatus = "rejected"    // 已拒绝
+	StoryStatusResolved   StoryStatus = "resolved"    // 已处理
+	StoryStatusTesting    StoryStatus = "testing"     // 测试中
+)
+
 type StoryService struct {
 	client *Client
 }
@@ -77,47 +90,47 @@ type GetStoriesRequest struct {
 	CustomFieldsRequest
 	CustomPlanFieldsRequest
 
-	ID              *Multi[int]    `url:"id,omitempty"`               // ID	支持多ID查询,多个ID用逗号分隔
-	Name            *string        `url:"name,omitempty"`             // 标题	支持模糊匹配
-	Priority        *string        `url:"priority,omitempty"`         // 优先级
-	PriorityLabel   *PriorityLabel `url:"priority_label,omitempty"`   // 优先级。推荐使用这个字段
-	BusinessValue   *int           `url:"business_value,omitempty"`   // 业务价值
-	Status          *string        `url:"status,omitempty"`           // 状态	支持枚举查询
-	VStatus         *string        `url:"v_status,omitempty"`         // 状态(支持传入中文状态名称)
-	WithVStatus     *string        `url:"with_v_status,omitempty"`    // 值=1可以返回中文状态
-	Label           *string        `url:"label,omitempty"`            // 标签查询	支持枚举查询
-	WorkitemTypeID  *string        `url:"workitem_type_id,omitempty"` // 需求类别ID	支持枚举查询
-	Version         *string        `url:"version,omitempty"`          // 版本
-	Module          *string        `url:"module,omitempty"`           // 模块
-	Feature         *string        `url:"feature,omitempty"`          // 特性
-	TestFocus       *string        `url:"test_focus,omitempty"`       // 测试重点
-	Size            *int           `url:"size,omitempty"`             // 规模
-	Owner           *string        `url:"owner,omitempty"`            // 处理人	支持模糊匹配
-	CC              *string        `url:"cc,omitempty"`               // 抄送人	支持模糊匹配
-	Creator         *string        `url:"creator,omitempty"`          // 创建人	支持多人员查询
-	Developer       *string        `url:"developer,omitempty"`        // 开发人员
-	Begin           *string        `url:"begin,omitempty"`            // 预计开始	支持时间查询
-	Due             *string        `url:"due,omitempty"`              // 预计结束	支持时间查询
-	Created         *string        `url:"created,omitempty"`          // 创建时间	支持时间查询
-	Modified        *string        `url:"modified,omitempty"`         // 最后修改时间	支持时间查询
-	Completed       *string        `url:"completed,omitempty"`        // 完成时间	支持时间查询
-	IterationID     *string        `url:"iteration_id,omitempty"`     // 迭代ID	支持不等于查询
-	Effort          *string        `url:"effort,omitempty"`           // 预估工时
-	EffortCompleted *string        `url:"effort_completed,omitempty"` // 完成工时
-	Remain          *float64       `url:"remain,omitempty"`           // 剩余工时
-	Exceed          *float64       `url:"exceed,omitempty"`           // 超出工时
-	CategoryID      *string        `url:"category_id,omitempty"`      // 需求分类	支持枚举查询
-	ReleaseID       *string        `url:"release_id,omitempty"`       // 发布计划
-	Source          *string        `url:"source,omitempty"`           // 需求来源
-	Type            *string        `url:"type,omitempty"`             // 需求类型
-	ParentID        *string        `url:"parent_id,omitempty"`        // 父需求
-	ChildrenID      *string        `url:"children_id,omitempty"`      // 子需求	为空查询传：丨
-	Description     *string        `url:"description,omitempty"`      // 详细描述	支持模糊匹配
-	WorkspaceID     *int           `url:"workspace_id,omitempty"`     // 项目ID
-	Limit           *int           `url:"limit,omitempty"`            // 设置返回数量限制，默认为30
-	Page            *int           `url:"page,omitempty"`             // 返回当前数量限制下第N页的数据，默认为1（第一页）
-	Order           *Order         `url:"order,omitempty"`            // 排序规则，规则：字段名 ASC或者DESC
-	Fields          *string        `url:"fields,omitempty"`           // 设置获取的字段，多个字段间以','逗号隔开
+	ID              *Multi[int]        `url:"id,omitempty"`               // ID	支持多ID查询,多个ID用逗号分隔
+	Name            *string            `url:"name,omitempty"`             // 标题	支持模糊匹配
+	Priority        *string            `url:"priority,omitempty"`         // 优先级
+	PriorityLabel   *PriorityLabel     `url:"priority_label,omitempty"`   // 优先级。推荐使用这个字段
+	BusinessValue   *int               `url:"business_value,omitempty"`   // 业务价值
+	Status          *Enum[StoryStatus] `url:"status,omitempty"`           // 状态	支持枚举查询
+	VStatus         *string            `url:"v_status,omitempty"`         // 状态(支持传入中文状态名称)
+	WithVStatus     *string            `url:"with_v_status,omitempty"`    // 值=1可以返回中文状态
+	Label           *string            `url:"label,omitempty"`            // 标签查询	支持枚举查询
+	WorkitemTypeID  *string            `url:"workitem_type_id,omitempty"` // 需求类别ID	支持枚举查询
+	Version         *string            `url:"version,omitempty"`          // 版本
+	Module          *string            `url:"module,omitempty"`           // 模块
+	Feature         *string            `url:"feature,omitempty"`          // 特性
+	TestFocus       *string            `url:"test_focus,omitempty"`       // 测试重点
+	Size            *int               `url:"size,omitempty"`             // 规模
+	Owner           *string            `url:"owner,omitempty"`            // 处理人	支持模糊匹配
+	CC              *string            `url:"cc,omitempty"`               // 抄送人	支持模糊匹配
+	Creator         *string            `url:"creator,omitempty"`          // 创建人	支持多人员查询
+	Developer       *string            `url:"developer,omitempty"`        // 开发人员
+	Begin           *string            `url:"begin,omitempty"`            // 预计开始	支持时间查询
+	Due             *string            `url:"due,omitempty"`              // 预计结束	支持时间查询
+	Created         *string            `url:"created,omitempty"`          // 创建时间	支持时间查询
+	Modified        *string            `url:"modified,omitempty"`         // 最后修改时间	支持时间查询
+	Completed       *string            `url:"completed,omitempty"`        // 完成时间	支持时间查询
+	IterationID     *string            `url:"iteration_id,omitempty"`     // 迭代ID	支持不等于查询
+	Effort          *string            `url:"effort,omitempty"`           // 预估工时
+	EffortCompleted *string            `url:"effort_completed,omitempty"` // 完成工时
+	Remain          *float64           `url:"remain,omitempty"`           // 剩余工时
+	Exceed          *float64           `url:"exceed,omitempty"`           // 超出工时
+	CategoryID      *string            `url:"category_id,omitempty"`      // 需求分类	支持枚举查询
+	ReleaseID       *string            `url:"release_id,omitempty"`       // 发布计划
+	Source          *string            `url:"source,omitempty"`           // 需求来源
+	Type            *string            `url:"type,omitempty"`             // 需求类型
+	ParentID        *string            `url:"parent_id,omitempty"`        // 父需求
+	ChildrenID      *string            `url:"children_id,omitempty"`      // 子需求	为空查询传：丨
+	Description     *string            `url:"description,omitempty"`      // 详细描述	支持模糊匹配
+	WorkspaceID     *int               `url:"workspace_id,omitempty"`     // 项目ID
+	Limit           *int               `url:"limit,omitempty"`            // 设置返回数量限制，默认为30
+	Page            *int               `url:"page,omitempty"`             // 返回当前数量限制下第N页的数据，默认为1（第一页）
+	Order           *Order             `url:"order,omitempty"`            // 排序规则，规则：字段名 ASC或者DESC
+	Fields          *Multi[string]     `url:"fields,omitempty"`           // 设置获取的字段，多个字段间以','逗号隔开
 }
 
 type Story struct {
