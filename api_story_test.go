@@ -83,6 +83,68 @@ func TestStoryService_GetStoryCategoriesCount(t *testing.T) {
 	assert.Equal(t, 30, count)
 }
 
+func TestStoryService_GetStoriesCountByCategories(t *testing.T) {
+	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodGet, r.Method)
+		assert.Equal(t, "/stories/count_by_categories", r.URL.Path)
+
+		assert.Equal(t, "11112222", r.URL.Query().Get("workspace_id"))
+		assert.Equal(t, "1111112222001000103,1111112222001000108", r.URL.Query().Get("category_id"))
+
+		_, _ = w.Write(loadData(t, ".testdata/api/story/get_stories_count_by_categories.json"))
+	}))
+
+	counts, _, err := client.StoryService.GetStoriesCountByCategories(ctx, &GetStoriesCountByCategoriesRequest{
+		WorkspaceID: Ptr(11112222),
+		CategoryID:  NewMulti(1111112222001000103, 1111112222001000108),
+	})
+	assert.NoError(t, err)
+	assert.True(t, len(counts) > 0)
+	assert.Contains(t, counts, &StoriesCountByCategory{
+		CategoryID: "1111112222001000103",
+		Count:      85,
+	})
+}
+
+func TestStoryService_GetStoryChanges(t *testing.T) {
+	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodGet, r.Method)
+		assert.Equal(t, "/story_changes", r.URL.Path)
+
+		assert.Equal(t, "11112222", r.URL.Query().Get("workspace_id"))
+		assert.Equal(t, "1111112222001000103,1111112222001000108", r.URL.Query().Get("story_id"))
+
+		_, _ = w.Write(loadData(t, ".testdata/api/story/get_story_changes.json"))
+	}))
+
+	storyChanges, _, err := client.StoryService.GetStoryChanges(ctx, &GetStoryChangesRequest{
+		StoryID:     NewMulti(1111112222001000103, 1111112222001000108),
+		WorkspaceID: Ptr(11112222),
+	})
+	assert.NoError(t, err)
+	assert.True(t, len(storyChanges) > 0)
+	assert.Equal(t, "1111112222001275457", storyChanges[0].ID)
+	assert.Equal(t, "11112222", storyChanges[0].WorkspaceID)
+	assert.Equal(t, "1", storyChanges[0].AppID)
+	assert.Equal(t, "0", storyChanges[0].WorkitemTypeID)
+	assert.Equal(t, "TAPD", storyChanges[0].Creator)
+	assert.Equal(t, "2022-06-10 10:04:12", storyChanges[0].Created)
+	assert.Equal(t, "create_story", storyChanges[0].ChangeSummary)
+	assert.Nil(t, storyChanges[0].Comment)
+	assert.Equal(t, "Story", storyChanges[0].EntityType)
+	assert.Equal(t, StoreChangeTypeCreateStory, storyChanges[0].ChangeType)
+	assert.Equal(t, "需求创建", storyChanges[0].ChangeTypeText)
+	assert.Equal(t, "2024-09-07 23:38:36", storyChanges[0].Updated)
+	assert.Equal(t, "1111112222001032850", storyChanges[0].StoryID)
+	assert.True(t, len(storyChanges[0].FieldChanges) > 0)
+	assert.Equal(t, "name", storyChanges[0].FieldChanges[0].Field)
+	assert.Equal(t, "", storyChanges[0].FieldChanges[0].ValueBefore)
+	assert.Equal(t, "需求3", storyChanges[0].FieldChanges[0].ValueAfter)
+	assert.Equal(t, "--", storyChanges[0].FieldChanges[0].ValueBeforeParsed)
+	assert.Equal(t, "需求3", storyChanges[0].FieldChanges[0].ValueAfterParsed)
+	assert.Equal(t, "标题", storyChanges[0].FieldChanges[0].FieldLabel)
+}
+
 func TestStoryService_GetStoryCustomFieldsSettings(t *testing.T) {
 	_, client := createServerClient(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, http.MethodGet, r.Method)

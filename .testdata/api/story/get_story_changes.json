@@ -1,0 +1,174 @@
+{
+  "status": 1,
+  "data": [
+    {
+      "WorkitemChange": {
+        "id": "1111112222001275457",
+        "workspace_id": "11112222",
+        "app_id": "1",
+        "workitem_type_id": "0",
+        "creator": "TAPD",
+        "created": "2022-06-10 10:04:12",
+        "change_summary": "create_story",
+        "comment": null,
+        "changes": "[{\"field\":\"name\",\"value_before\":\"\",\"value_after\":\"\\u9700\\u6c423\"},{\"field\":\"description\",\"value_before\":\"\",\"value_after\":\"<div><b><span style=\\\"color: rgb(68, 68, 68);\\\">\\u3010\\u7528\\u6237\\u6545\\u4e8b\\uff08User Story\\uff09\\u3011<\\/span><br\\/><\\/b><\\/div><b style=\\\" color: rgb(54, 59, 66) ; ; ; ; ; ; ; ; ; ; ; ;\\\"><span style=\\\"color: rgb(255, 0, 0);\\\"><div><b style=\\\"color: rgb(54, 59, 66);\\\"><span style=\\\"color: rgb(255, 0, 0);\\\"><br\\/><\\/span><\\/b><\\/div>\\u4f5c\\u4e3a<\\/span><\\/b><span style=\\\" color: rgb(54, 59, 66) ; ; ; ; ; ; ; ; ; ; ; ;\\\">&nbsp;...<\\/span><div style=\\\" margin: 0px; padding: 0px ; ; ; ; ; ; ; ; ; ; ; ;\\\"><span style=\\\"color:#363b42;\\\">&nbsp;<\\/span><div style=\\\"margin: 0px; padding: 0px;\\\"><div style=\\\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\\\"><b><span style=\\\"color: rgb(255, 0, 0);\\\">\\u6211\\u5e0c\\u671b<\\/span><\\/b>&nbsp;...<\\/div><div style=\\\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\\\"><br \\/><\\/div><div style=\\\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\\\"><b><span style=\\\"color: rgb(255, 0, 0);\\\">\\u4ee5\\u4fbf<\\/span><\\/b>&nbsp;...<\\/div><div style=\\\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\\\"><br \\/><\\/div><div style=\\\"margin: 0px; padding: 0px;\\\"><b><span style=\\\"color:#363b42;\\\">\\u3010<\\/span><span style=\\\"color:#444444;\\\">\\u9a8c\\u6536\\u6807\\u51c6<\\/span><span style=\\\"color:#363b42;\\\">\\u3011<\\/span><\\/b><\\/div><div style=\\\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\\\"><br \\/><\\/div><div style=\\\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\\\">1\\u3001<\\/div><div style=\\\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\\\">2\\u3001<\\/div><div style=\\\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\\\">3\\u3001<\\/div><\\/div><\\/div>\"},{\"field\":\"creator\",\"value_before\":\"\",\"value_after\":\"TAPD\"},{\"field\":\"created\",\"value_before\":\"\",\"value_after\":\"2022-05-30 00:00:40\"},{\"field\":\"modified\",\"value_before\":\"\",\"value_after\":\"2022-05-30 00:00:40\"},{\"field\":\"priority\",\"value_before\":\"\",\"value_after\":4},{\"field\":\"begin\",\"value_before\":\"\",\"value_after\":\"2022-05-30\"},{\"field\":\"due\",\"value_before\":\"\",\"value_after\":\"2022-06-10\"},{\"field\":\"iteration_id\",\"value_before\":\"\",\"value_after\":\"\\u8fed\\u4ee31\"},{\"field\":\"release_id\",\"value_before\":\"\",\"value_after\":\"1111112222001000185\"},{\"field\":\"completed\",\"value_before\":\"\",\"value_after\":\"2022-05-30 11:00:00\"},{\"field\":\"size\",\"value_before\":\"\",\"value_after\":2},{\"field\":\"category_id\",\"value_before\":\"\",\"value_after\":\"1111112222001000666\"},{\"field\":\"id\",\"value_before\":\"\",\"value_after\":\"1111112222001032850\"}]",
+        "entity_type": "Story",
+        "change_type": "create_story",
+        "updated": "2024-09-07 23:38:36",
+        "change_type_text": "需求创建",
+        "field_changes": [
+          {
+            "field": "name",
+            "value_before": "",
+            "value_after": "需求3",
+            "value_before_parsed": "--",
+            "value_after_parsed": "需求3",
+            "field_label": "标题"
+          },
+          {
+            "field": "description",
+            "value_before": "",
+            "value_after": "<div><b><span style=\"color: rgb(68, 68, 68);\">【用户故事（User Story）】</span><br/></b></div><b style=\" color: rgb(54, 59, 66) ; ; ; ; ; ; ; ; ; ; ; ;\"><span style=\"color: rgb(255, 0, 0);\"><div><b style=\"color: rgb(54, 59, 66);\"><span style=\"color: rgb(255, 0, 0);\"><br/></span></b></div>作为</span></b><span style=\" color: rgb(54, 59, 66) ; ; ; ; ; ; ; ; ; ; ; ;\">&nbsp;...</span><div style=\" margin: 0px; padding: 0px ; ; ; ; ; ; ; ; ; ; ; ;\"><span style=\"color:#363b42;\">&nbsp;</span><div style=\"margin: 0px; padding: 0px;\"><div style=\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\"><b><span style=\"color: rgb(255, 0, 0);\">我希望</span></b>&nbsp;...</div><div style=\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\"><br /></div><div style=\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\"><b><span style=\"color: rgb(255, 0, 0);\">以便</span></b>&nbsp;...</div><div style=\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\"><br /></div><div style=\"margin: 0px; padding: 0px;\"><b><span style=\"color:#363b42;\">【</span><span style=\"color:#444444;\">验收标准</span><span style=\"color:#363b42;\">】</span></b></div><div style=\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\"><br /></div><div style=\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\">1、</div><div style=\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\">2、</div><div style=\"color: rgb(54, 59, 66); margin: 0px; padding: 0px;\">3、</div></div></div>",
+            "value_before_parsed": "--",
+            "value_after_parsed": "查看详细",
+            "field_label": "详细描述"
+          },
+          {
+            "field": "creator",
+            "value_before": "",
+            "value_after": "TAPD",
+            "value_before_parsed": "--",
+            "value_after_parsed": "TAPD",
+            "field_label": "创建人"
+          },
+          {
+            "field": "created",
+            "value_before": "",
+            "value_after": "2022-05-30 00:00:40",
+            "value_before_parsed": "--",
+            "value_after_parsed": "2022-05-30 00:00:40",
+            "field_label": "创建时间"
+          },
+          {
+            "field": "modified",
+            "value_before": "",
+            "value_after": "2022-05-30 00:00:40",
+            "value_before_parsed": "--",
+            "value_after_parsed": "2022-05-30 00:00:40",
+            "field_label": "最后修改时间"
+          },
+          {
+            "field": "priority",
+            "value_before": "",
+            "value_after": 4,
+            "value_before_parsed": "--",
+            "value_after_parsed": "High",
+            "field_label": "优先级"
+          },
+          {
+            "field": "begin",
+            "value_before": "",
+            "value_after": "2022-05-30",
+            "value_before_parsed": "--",
+            "value_after_parsed": "2022-05-30",
+            "field_label": "预计开始"
+          },
+          {
+            "field": "due",
+            "value_before": "",
+            "value_after": "2022-06-10",
+            "value_before_parsed": "--",
+            "value_after_parsed": "2022-06-10",
+            "field_label": "预计结束"
+          },
+          {
+            "field": "iteration_id",
+            "value_before": "",
+            "value_after": "1111112222001001245",
+            "value_before_parsed": "--",
+            "value_after_parsed": "迭代1",
+            "field_label": "迭代"
+          },
+          {
+            "field": "release_id",
+            "value_before": "",
+            "value_after": "1111112222001000185",
+            "value_before_parsed": "--",
+            "value_after_parsed": "发布计划1",
+            "field_label": "发布计划"
+          },
+          {
+            "field": "completed",
+            "value_before": "",
+            "value_after": "2022-05-30 11:00:00",
+            "value_before_parsed": "--",
+            "value_after_parsed": "2022-05-30 11:00:00",
+            "field_label": "完成时间"
+          },
+          {
+            "field": "size",
+            "value_before": "",
+            "value_after": 2,
+            "value_before_parsed": "--",
+            "value_after_parsed": "2",
+            "field_label": "规模"
+          },
+          {
+            "field": "category_id",
+            "value_before": "",
+            "value_after": "1111112222001000666",
+            "value_before_parsed": "--",
+            "value_after_parsed": "新功能",
+            "field_label": "分类"
+          },
+          {
+            "field": "id",
+            "value_before": "",
+            "value_after": "1111112222001032850",
+            "value_before_parsed": "--",
+            "value_after_parsed": "1111112222001032850",
+            "field_label": "ID"
+          }
+        ],
+        "story_id": "1111112222001032850"
+      }
+    },
+    {
+      "WorkitemChange": {
+        "id": "1111112222001900157",
+        "workspace_id": "11112222",
+        "app_id": "1",
+        "workitem_type_id": "0",
+        "creator": "Creator Author",
+        "created": "2024-08-21 19:15:40",
+        "change_summary": null,
+        "comment": null,
+        "changes": "[{\"field\":\"related_bug\",\"value_before\":\"\",\"value_after\":\"1111112222001037077\"},{\"field\":\"tapd_request_id\",\"value_before\":\"\",\"value_after\":\"a116c37fd6ff39318eb3387fe1d25e45\"}]",
+        "entity_type": "Story",
+        "change_type": "link_create",
+        "updated": "2024-09-07 23:38:36",
+        "change_type_text": "创建关联",
+        "field_changes": [
+          {
+            "field": "related_bug",
+            "value_before": "",
+            "value_after": "1111112222001037077",
+            "value_before_parsed": "--",
+            "value_after_parsed": "1111112222001037077",
+            "field_label": "关联缺陷"
+          },
+          {
+            "field": "tapd_request_id",
+            "value_before": "",
+            "value_after": "a116c37fd6ff39318eb3387fe1d25e45",
+            "value_before_parsed": "--",
+            "value_after_parsed": "a116c37fd6ff39318eb3387fe1d25e45",
+            "field_label": "tapd_request_id"
+          }
+        ],
+        "story_id": "1111112222001032850"
+      }
+    }
+  ],
+  "info": "success"
+}
