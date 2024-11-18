@@ -4,9 +4,3 @@ package tapd
 type BugService struct {
 	client *Client
 }
-
-func NewBugService(client *Client) *BugService {
-	return &BugService{
-		client: client,
-	}
-}

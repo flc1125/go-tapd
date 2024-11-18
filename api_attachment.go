@@ -26,11 +26,6 @@ type AttachmentService struct {
 	client *Client
 }
 
-// NewAttachmentService creates a new AttachmentService.
-func NewAttachmentService(client *Client) *AttachmentService {
-	return &AttachmentService{client}
-}
-
 type GetAttachmentsRequest struct {
 	WorkspaceID *int    `url:"workspace_id,omitempty"`  // [必须]项目ID
 	ID          *int    `url:"id,omitempty"`            // [可选]ID

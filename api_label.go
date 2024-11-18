@@ -41,12 +41,6 @@ type LabelService struct {
 	client *Client
 }
 
-func NewLabelService(client *Client) *LabelService {
-	return &LabelService{
-		client: client,
-	}
-}
-
 // -----------------------------------------------------------------------------
 // 获取自定义标签
 // -----------------------------------------------------------------------------

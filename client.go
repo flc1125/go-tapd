@@ -78,18 +78,18 @@ func newClient(opts ...ClientOption) (*Client, error) {
 	}
 
 	// services
-	c.StoryService = NewStoryService(c)
-	c.BugService = NewBugService(c)
-	c.IterationService = NewIterationService(c)
-	c.TaskService = NewTaskService(c)
-	c.CommentService = NewCommentService(c)
-	c.ReportService = NewReportService(c)
-	c.AttachmentService = NewAttachmentService(c)
-	c.TimesheetService = NewTimesheetService(c)
-	c.WorkspaceService = NewWorkspaceService(c)
-	c.LabelService = NewLabelService(c)
-	c.MeasureService = NewMeasureService(c)
-	c.UserService = NewUserService(c)
+	c.StoryService = &StoryService{client: c}
+	c.BugService = &BugService{client: c}
+	c.IterationService = &IterationService{client: c}
+	c.TaskService = &TaskService{client: c}
+	c.CommentService = &CommentService{client: c}
+	c.ReportService = &ReportService{client: c}
+	c.AttachmentService = &AttachmentService{client: c}
+	c.TimesheetService = &TimesheetService{client: c}
+	c.WorkspaceService = &WorkspaceService{client: c}
+	c.LabelService = &LabelService{client: c}
+	c.MeasureService = &MeasureService{client: c}
+	c.UserService = &UserService{client: c}
 
 	return c, nil
 }

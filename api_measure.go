@@ -30,10 +30,6 @@ type MeasureService struct {
 	client *Client
 }
 
-func NewMeasureService(client *Client) *MeasureService {
-	return &MeasureService{client: client}
-}
-
 // -----------------------------------------------------------------------------
 // 获取状态流转时间
 // -----------------------------------------------------------------------------

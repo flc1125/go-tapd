@@ -15,11 +15,6 @@ type UserService struct {
 	client *Client
 }
 
-// NewUserService creates a new user service
-func NewUserService(client *Client) *UserService {
-	return &UserService{client}
-}
-
 // GetRolesRequest represents a request to get roles
 type GetRolesRequest struct {
 	WorkspaceID *int `url:"workspace_id,omitempty"` // 项目 ID

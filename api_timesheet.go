@@ -25,12 +25,6 @@ type TimesheetService struct {
 	client *Client
 }
 
-func NewTimesheetService(client *Client) *TimesheetService {
-	return &TimesheetService{
-		client: client,
-	}
-}
-
 // -----------------------------------------------------------------------------
 // 创建工时花费
 // -----------------------------------------------------------------------------
