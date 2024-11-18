@@ -110,11 +110,6 @@ type TaskService struct {
 	client *Client
 }
 
-// NewTaskService 创建任务服务
-func NewTaskService(client *Client) *TaskService {
-	return &TaskService{client}
-}
-
 // 创建任务
 
 type TaskChange struct {

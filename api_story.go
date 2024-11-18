@@ -22,12 +22,6 @@ type StoryService struct {
 	client *Client
 }
 
-func NewStoryService(client *Client) *StoryService {
-	return &StoryService{
-		client: client,
-	}
-}
-
 type CreateStoryRequest struct {
 	WorkspaceID     *int           `json:"workspace_id,omitempty"`     // [必须]项目ID
 	Name            *string        `json:"name,omitempty"`             // [必须]标题

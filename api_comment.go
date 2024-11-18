@@ -45,10 +45,6 @@ type CommentService struct {
 	client *Client
 }
 
-func NewCommentService(client *Client) *CommentService {
-	return &CommentService{client}
-}
-
 type CreateCommentRequest struct {
 	Title       *string           `json:"title,omitempty"`        // 标题
 	Description *string           `json:"description,omitempty"`  // 内容

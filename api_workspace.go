@@ -9,10 +9,6 @@ type WorkspaceService struct {
 	client *Client
 }
 
-func NewWorkspaceService(client *Client) *WorkspaceService {
-	return &WorkspaceService{client}
-}
-
 // 获取子项目信息
 // 获取项目信息
 // 获取指定项目成员

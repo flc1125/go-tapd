@@ -47,11 +47,6 @@ type ReportService struct {
 	client *Client
 }
 
-// NewReportService creates a new report service
-func NewReportService(client *Client) *ReportService {
-	return &ReportService{client}
-}
-
 // GetReportsRequest represents a request to get reports
 type GetReportsRequest struct {
 	WorkspaceID *int           `url:"workspace_id,omitempty"` // [必须]项目 ID

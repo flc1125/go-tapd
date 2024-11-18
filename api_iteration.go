@@ -4,9 +4,3 @@ package tapd
 type IterationService struct {
 	client *Client
 }
-
-func NewIterationService(client *Client) *IterationService {
-	return &IterationService{
-		client: client,
-	}
-}
