@@ -1,4 +1,4 @@
-package tapd
+package webhook
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 
 func TestWebhookEvent_Story_StoryUpdateEvent(t *testing.T) {
 	var event StoryUpdateEvent
-	assert.NoError(t, json.Unmarshal(loadData(t, ".testdata/webhook/story_update_event.json"), &event))
+	assert.NoError(t, json.Unmarshal(loadData(t, "../.testdata/webhook/story_update_event.json"), &event))
 	assert.Equal(t, EventTypeStoryUpdate, event.Event)
 	assert.Equal(t, "11112222", event.WorkspaceID)
 	assert.Equal(t, "1111112222001069123", event.ID)

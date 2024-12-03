@@ -1,4 +1,4 @@
-package tapd
+package webhook
 
 import (
 	"encoding/json"
@@ -6,37 +6,37 @@ import (
 	"strings"
 )
 
-// EventType represents the type of webhook event.
-type EventType string
+// Event represents the type of webhook event.
+type Event string
 
 const (
-	EventTypeStoryCreate      EventType = "story::create"
-	EventTypeStoryUpdate      EventType = "story::update"
-	EventTypeTaskUpdate       EventType = "task::update"
-	EventTypeBugCreate        EventType = "bug::create"
-	EventTypeBugUpdate        EventType = "bug::update"
-	EventTypeBugCommentUpdate EventType = "bug_comment::update"
+	EventTypeStoryCreate      Event = "story::create"
+	EventTypeStoryUpdate      Event = "story::update"
+	EventTypeTaskUpdate       Event = "task::update"
+	EventTypeBugCreate        Event = "bug::create"
+	EventTypeBugUpdate        Event = "bug::update"
+	EventTypeBugCommentUpdate Event = "bug_comment::update"
 )
 
-func (e EventType) String() string {
+func (e Event) String() string {
 	return string(e)
 }
 
 // ParseWebhookEvent parses the webhook event from the payload.
-func ParseWebhookEvent(payload []byte) (EventType, any, error) {
+func ParseWebhookEvent(payload []byte) (Event, any, error) {
 	var raw map[string]interface{}
 	if err := json.Unmarshal(payload, &raw); err != nil {
 		return "", nil, err
 	}
 
-	// get event type
-	eventType, ok := raw["event"].(string)
+	// get event
+	event, ok := raw["event"].(string)
 	if !ok {
 		return "", nil, errors.New("tapd: webhook event type not found")
 	}
 
 	// decode event
-	switch EventType(eventType) {
+	switch Event(event) {
 	// todo: add more event types
 	case EventTypeStoryCreate:
 		return decodeWebhookEvent[StoryCreateEvent](EventTypeStoryCreate, payload)
@@ -50,7 +50,7 @@ func ParseWebhookEvent(payload []byte) (EventType, any, error) {
 }
 
 // decodeWebhookEvent decodes the webhook event from the payload.
-func decodeWebhookEvent[T any](eventType EventType, payload []byte) (EventType, *T, error) {
+func decodeWebhookEvent[T any](eventType Event, payload []byte) (Event, *T, error) {
 	var event T
 	if err := json.Unmarshal(payload, &event); err != nil {
 		return eventType, nil, err
