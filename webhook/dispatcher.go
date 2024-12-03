@@ -1,4 +1,4 @@
-package tapd
+package webhook
 
 import (
 	"context"
@@ -9,31 +9,31 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-// WebhookDispatcher is a dispatcher for webhook events.
-type WebhookDispatcher struct {
+// Dispatcher is a dispatcher for webhook events.
+type Dispatcher struct {
 	storyCreateListeners []StoryCreateListener
 	storyUpdateListeners []StoryUpdateListener
 	bugCreateListeners   []BugCreateListener
 }
 
-type WebhookDispatcherOption func(*WebhookDispatcher)
+type Option func(*Dispatcher)
 
-func WithWebhookDispatcherRegister(listeners ...any) WebhookDispatcherOption {
-	return func(d *WebhookDispatcher) {
-		d.Register(listeners...)
+func WithRegisters(listeners ...any) Option {
+	return func(d *Dispatcher) {
+		d.Registers(listeners...)
 	}
 }
 
-// NewWebhookDispatcher returns a new WebhookDispatcher instance.
-func NewWebhookDispatcher(opts ...WebhookDispatcherOption) *WebhookDispatcher {
-	dispatcher := &WebhookDispatcher{}
+// NewDispatcher returns a new Dispatcher instance.
+func NewDispatcher(opts ...Option) *Dispatcher {
+	dispatcher := &Dispatcher{}
 	for _, opt := range opts {
 		opt(dispatcher)
 	}
 	return dispatcher
 }
 
-func (d *WebhookDispatcher) Register(listeners ...any) {
+func (d *Dispatcher) Registers(listeners ...any) {
 	for _, listener := range listeners {
 		if l, ok := listener.(StoryCreateListener); ok {
 			d.RegisterStoryCreateListener(l)
@@ -51,7 +51,7 @@ func (d *WebhookDispatcher) Register(listeners ...any) {
 	}
 }
 
-func (d *WebhookDispatcher) Dispatch(ctx context.Context, event any) error {
+func (d *Dispatcher) Dispatch(ctx context.Context, event any) error {
 	switch e := event.(type) {
 	case *StoryCreateEvent:
 		return d.processStoryCreate(ctx, e)
@@ -64,7 +64,7 @@ func (d *WebhookDispatcher) Dispatch(ctx context.Context, event any) error {
 	}
 }
 
-func (d *WebhookDispatcher) DispatchPayload(ctx context.Context, payload []byte) error {
+func (d *Dispatcher) DispatchPayload(ctx context.Context, payload []byte) error {
 	_, event, err := ParseWebhookEvent(payload)
 	if err != nil {
 		return err
@@ -72,7 +72,7 @@ func (d *WebhookDispatcher) DispatchPayload(ctx context.Context, payload []byte)
 	return d.Dispatch(ctx, event)
 }
 
-func (d *WebhookDispatcher) DispatchRequest(req *http.Request) error {
+func (d *Dispatcher) DispatchRequest(req *http.Request) error {
 	payload, err := io.ReadAll(req.Body)
 	if err != nil {
 		return err
@@ -80,19 +80,19 @@ func (d *WebhookDispatcher) DispatchRequest(req *http.Request) error {
 	return d.DispatchPayload(req.Context(), payload)
 }
 
-func (d *WebhookDispatcher) RegisterStoryCreateListener(listeners ...StoryCreateListener) {
+func (d *Dispatcher) RegisterStoryCreateListener(listeners ...StoryCreateListener) {
 	d.storyCreateListeners = append(d.storyCreateListeners, listeners...)
 }
 
-func (d *WebhookDispatcher) RegisterStoryUpdateListener(listeners ...StoryUpdateListener) {
+func (d *Dispatcher) RegisterStoryUpdateListener(listeners ...StoryUpdateListener) {
 	d.storyUpdateListeners = append(d.storyUpdateListeners, listeners...)
 }
 
-func (d *WebhookDispatcher) RegisterBugCreateListener(listeners ...BugCreateListener) {
+func (d *Dispatcher) RegisterBugCreateListener(listeners ...BugCreateListener) {
 	d.bugCreateListeners = append(d.bugCreateListeners, listeners...)
 }
 
-func (d *WebhookDispatcher) processStoryCreate(ctx context.Context, event *StoryCreateEvent) error {
+func (d *Dispatcher) processStoryCreate(ctx context.Context, event *StoryCreateEvent) error {
 	eg, ctx := errgroup.WithContext(ctx)
 	for _, listener := range d.storyCreateListeners {
 		listener := listener
@@ -103,7 +103,7 @@ func (d *WebhookDispatcher) processStoryCreate(ctx context.Context, event *Story
 	return eg.Wait()
 }
 
-func (d *WebhookDispatcher) processStoryUpdate(ctx context.Context, event *StoryUpdateEvent) error {
+func (d *Dispatcher) processStoryUpdate(ctx context.Context, event *StoryUpdateEvent) error {
 	eg, ctx := errgroup.WithContext(ctx)
 	for _, listener := range d.storyUpdateListeners {
 		listener := listener
@@ -114,7 +114,7 @@ func (d *WebhookDispatcher) processStoryUpdate(ctx context.Context, event *Story
 	return eg.Wait()
 }
 
-func (d *WebhookDispatcher) processBugCreate(ctx context.Context, event *BugCreateEvent) error {
+func (d *Dispatcher) processBugCreate(ctx context.Context, event *BugCreateEvent) error {
 	eg, ctx := errgroup.WithContext(ctx)
 	for _, listener := range d.bugCreateListeners {
 		listener := listener

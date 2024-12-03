@@ -67,24 +67,25 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/flc1125/go-tapd"
+	"github.com/flc1125/go-tapd/webhook"
 )
 
 type StoreUpdateListener struct{}
 
-func (l *StoreUpdateListener) OnStoryUpdate(ctx context.Context, event *tapd.StoryUpdateEvent) error {
+func (l *StoreUpdateListener) OnStoryUpdate(ctx context.Context, event *webhook.StoryUpdateEvent) error {
 	log.Printf("StoreUpdateListener: %+v", event)
 	return nil
 }
 
 func main() {
-	dispatcher := tapd.NewWebhookDispatcher(
-		tapd.WithWebhookDispatcherRegister(&StoreUpdateListener{}),
+	dispatcher := webhook.NewDispatcher(
+		webhook.WithRegisters(&StoreUpdateListener{}),
 	)
-	dispatcher.Register(&StoreUpdateListener{})
+	dispatcher.Registers(&StoreUpdateListener{})
 
 	srv := http.NewServeMux()
 	srv.HandleFunc("/webhook", func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Received webhook request")
 		if err := dispatcher.DispatchRequest(r); err != nil {
 			log.Println(err)
 		}

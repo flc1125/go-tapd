@@ -1,4 +1,4 @@
-package tapd
+package webhook
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 func TestWebhookEvent_EventType(t *testing.T) {
 	tests := []struct {
 		name string
-		want EventType
+		want Event
 	}{
 		{"story::create", EventTypeStoryCreate},
 		{"story::update", EventTypeStoryUpdate},
@@ -22,7 +22,7 @@ func TestWebhookEvent_EventType(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, EventType(tt.name))
+			assert.Equal(t, tt.want, Event(tt.name))
 			assert.Equal(t, tt.name, tt.want.String())
 		})
 	}
@@ -31,7 +31,7 @@ func TestWebhookEvent_EventType(t *testing.T) {
 func TestWebhookEvent_ParseWebhookEvent(t *testing.T) {
 	tests := []struct {
 		filename  string
-		eventType EventType
+		eventType Event
 		event     any
 	}{
 		{"story_create_event.json", EventTypeStoryCreate, &StoryCreateEvent{}},
@@ -41,7 +41,7 @@ func TestWebhookEvent_ParseWebhookEvent(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.filename, func(t *testing.T) {
-			payload := loadData(t, ".testdata/webhook/"+tt.filename)
+			payload := loadData(t, "../.testdata/webhook/"+tt.filename)
 			eventType, event, err := ParseWebhookEvent(payload)
 			assert.NoError(t, err)
 			assert.Equal(t, tt.eventType, eventType)
