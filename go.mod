@@ -1,4 +1,4 @@
-module github.com/flc1125/go-tapd
+module github.com/go-tapd/tapd
 
 go 1.18
 

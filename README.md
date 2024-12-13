@@ -1,24 +1,24 @@
 # 🚀 Go-Tapd-SDK
 
 ![Supported Go Versions](https://img.shields.io/badge/Go-%3E%3D1.18-blue)
-[![Package Version](https://badgen.net/github/release/flc1125/go-tapd/stable)](https://github.com/flc1125/go-tapd/releases)
-[![GoDoc](https://pkg.go.dev/badge/github.com/flc1125/go-tapd)](https://pkg.go.dev/github.com/flc1125/go-tapd)
-[![codecov](https://codecov.io/gh/flc1125/go-tapd/graph/badge.svg?token=QPTHZ5L9GT)](https://codecov.io/gh/flc1125/go-tapd)
-[![Go Report Card](https://goreportcard.com/badge/github.com/flc1125/go-tapd)](https://goreportcard.com/report/github.com/flc1125/go-tapd)
-[![lint](https://github.com/flc1125/go-tapd/actions/workflows/lint.yml/badge.svg)](https://github.com/flc1125/go-tapd/actions/workflows/lint.yml)
-[![tests](https://github.com/flc1125/go-tapd/actions/workflows/test.yml/badge.svg)](https://github.com/flc1125/go-tapd/actions/workflows/test.yml)
+[![Package Version](https://badgen.net/github/release/go-tapd/tapd/stable)](https://github.com/go-tapd/tapd/releases)
+[![GoDoc](https://pkg.go.dev/badge/github.com/go-tapd/tapd)](https://pkg.go.dev/github.com/go-tapd/tapd)
+[![codecov](https://codecov.io/gh/go-tapd/tapd/graph/badge.svg?token=QPTHZ5L9GT)](https://codecov.io/gh/go-tapd/tapd)
+[![Go Report Card](https://goreportcard.com/badge/github.com/go-tapd/tapd)](https://goreportcard.com/report/github.com/go-tapd/tapd)
+[![lint](https://github.com/go-tapd/tapd/actions/workflows/lint.yml/badge.svg)](https://github.com/go-tapd/tapd/actions/workflows/lint.yml)
+[![tests](https://github.com/go-tapd/tapd/actions/workflows/test.yml/badge.svg)](https://github.com/go-tapd/tapd/actions/workflows/test.yml)
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 The Go-Tapd-SDK is a Go client library for accessing the [Tapd API](https://www.tapd.cn/).
 
 ⚠️⚠️ **This is currently still a non-stable version; please use it with caution.** 
 
-If you encounter any issues, you are welcome to [submit an issue](https://github.com/flc1125/go-tapd/issues/new).
+If you encounter any issues, you are welcome to [submit an issue](https://github.com/go-tapd/tapd/issues/new).
 
 ## 📥 Installation
 
 ```bash
-go get github.com/flc1125/go-tapd
+go get github.com/go-tapd/tapd
 ```
 
 ## ✨ Features
@@ -36,7 +36,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/flc1125/go-tapd"
+	"github.com/go-tapd/tapd"
 )
 
 func main() {
@@ -67,7 +67,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/flc1125/go-tapd/webhook"
+	"github.com/go-tapd/tapd/webhook"
 )
 
 type StoreUpdateListener struct{}
