@@ -15,21 +15,21 @@ func WithRetryableHTTPClientLogger(logger retryablehttp.Logger) RetryableHTTPCli
 	}
 }
 
-func WithRetryableHTTPClientRetryWaitMin(min time.Duration) RetryableHTTPClientOption {
+func WithRetryableHTTPClientRetryWaitMin(waitMin time.Duration) RetryableHTTPClientOption {
 	return func(client *retryablehttp.Client) {
-		client.RetryWaitMin = min
+		client.RetryWaitMin = waitMin
 	}
 }
 
-func WithRetryableHTTPClientRetryWaitMax(max time.Duration) RetryableHTTPClientOption {
+func WithRetryableHTTPClientRetryWaitMax(waitMax time.Duration) RetryableHTTPClientOption {
 	return func(client *retryablehttp.Client) {
-		client.RetryWaitMax = max
+		client.RetryWaitMax = waitMax
 	}
 }
 
-func WithRetryableHTTPClientRetryMax(max int) RetryableHTTPClientOption {
+func WithRetryableHTTPClientRetryMax(retryMax int) RetryableHTTPClientOption {
 	return func(client *retryablehttp.Client) {
-		client.RetryMax = max
+		client.RetryMax = retryMax
 	}
 }
 

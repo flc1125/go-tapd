@@ -95,7 +95,6 @@ func (d *Dispatcher) RegisterBugCreateListener(listeners ...BugCreateListener) {
 func (d *Dispatcher) processStoryCreate(ctx context.Context, event *StoryCreateEvent) error {
 	eg, ctx := errgroup.WithContext(ctx)
 	for _, listener := range d.storyCreateListeners {
-		listener := listener
 		eg.Go(func() error {
 			return listener.OnStoryCreate(ctx, event)
 		})
@@ -106,7 +105,6 @@ func (d *Dispatcher) processStoryCreate(ctx context.Context, event *StoryCreateE
 func (d *Dispatcher) processStoryUpdate(ctx context.Context, event *StoryUpdateEvent) error {
 	eg, ctx := errgroup.WithContext(ctx)
 	for _, listener := range d.storyUpdateListeners {
-		listener := listener
 		eg.Go(func() error {
 			return listener.OnStoryUpdate(ctx, event)
 		})
@@ -117,7 +115,6 @@ func (d *Dispatcher) processStoryUpdate(ctx context.Context, event *StoryUpdateE
 func (d *Dispatcher) processBugCreate(ctx context.Context, event *BugCreateEvent) error {
 	eg, ctx := errgroup.WithContext(ctx)
 	for _, listener := range d.bugCreateListeners {
-		listener := listener
 		eg.Go(func() error {
 			return listener.OnBugCreate(ctx, event)
 		})
